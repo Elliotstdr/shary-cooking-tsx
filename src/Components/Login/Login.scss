@@ -1,0 +1,27 @@
+@use "src/Styles/_vars.scss" as c;
+
+.login_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // background-color: c.$fond-page;
+  background: c.$beautifulBG;
+  position: relative;
+  &_title {
+    // color: c.$main-color;
+    color: white;
+    margin-bottom: 3rem;
+  }
+  &_buttons {
+    button {
+      width: 10rem;
+      margin-bottom: 1rem;
+      border-color: white;
+      color: white;
+      &:hover {
+        border-color: c.$main-color;
+      }
+    }
+  }
+}

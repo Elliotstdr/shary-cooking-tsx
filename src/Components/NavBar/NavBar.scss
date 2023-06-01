@@ -1,0 +1,84 @@
+@use "src/Styles/_vars.scss" as c;
+
+.navigation {
+  display: flex;
+  justify-content: space-around;
+  ul {
+    display: flex;
+    margin: 2rem;
+    list-style-type: none;
+    height: 3rem;
+
+    a {
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+
+      li {
+        color: c.$main-color;
+        transition: 0.2s;
+        cursor: pointer;
+        font-size: 1.2rem;
+      }
+    }
+
+    .nav-active {
+      position: relative;
+
+      &::after {
+        content: "";
+        height: 4px;
+        width: 0;
+        background: c.$main-color;
+        position: absolute;
+        border-radius: 10px;
+        bottom: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: anim 0.6s ease forwards;
+        @keyframes anim {
+          to {
+            width: 80%;
+          }
+        }
+      }
+    }
+  }
+  button {
+    margin-top: 2rem;
+  }
+  &_parameters {
+    cursor: pointer;
+    margin: 2rem;
+    position: relative;
+    img {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+    }
+    &:hover {
+      .navigation_parameters_menu {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    &_menu {
+      position: absolute;
+      right: -3.5rem;
+      width: 10rem;
+      display: none;
+      background-color: white;
+      color: c.$main-color;
+      border-radius: 10px;
+      span {
+        border-radius: 10px;
+        padding: 0.5rem;
+        font-size: 1.1rem;
+        &:hover {
+          // background-color: c.$gris;
+          background: c.$beautifulBG;
+          color: white;
+        }
+      }
+    }
+  }
+}

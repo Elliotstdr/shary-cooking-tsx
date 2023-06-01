@@ -1,0 +1,46 @@
+@use "src/Styles/_vars.scss" as c;
+
+.p-dialog-mask {
+  min-width: fit-content;
+
+  //?Header
+  .p-dialog-header {
+    // background-color: c.$main-color !important;
+    background: c.$beautifulBG !important;
+
+    color: white !important;
+  }
+  .p-dialog-title {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.1rem !important;
+  }
+  .btn-bleu {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .btn-bleu:hover {
+    background-color: white;
+    color: c.$main-color;
+  }
+  .btn-blanc {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  p {
+    margin: 0.5rem 0 0.5rem 0;
+  }
+  .p-inputtextarea {
+    margin: 0.5rem 0 0 0;
+    width: 80%;
+    height: 10rem;
+  }
+  .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}

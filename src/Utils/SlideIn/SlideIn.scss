@@ -1,0 +1,51 @@
+@use "src/Styles/_vars.scss" as c;
+
+.slidein {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background-color: rgb(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  &_modal {
+    height: 100%;
+    width: 60%;
+    animation-duration: 1s;
+    animation-name: slidein;
+    background-color: white;
+    &_header {
+      position: relative;
+      font-size: 1.6rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 5rem;
+      // background-color: c.$main-color;
+      background: c.$beautifulBG;
+      color: white;
+      .close {
+        cursor: pointer;
+        position: absolute;
+        right: 2rem;
+        height: 2rem;
+        width: 2rem;
+      }
+    }
+    &_content {
+      margin-top: 2rem;
+    }
+  }
+}
+
+@keyframes slidein {
+  from {
+    width: 0%;
+    margin-left: -100%;
+  }
+
+  to {
+    width: 60%;
+    margin-left: 0;
+  }
+}

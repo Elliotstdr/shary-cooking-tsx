@@ -1,0 +1,40 @@
+@use "src/Styles/_vars.scss" as c;
+.loaderContainer {
+  width: 100%;
+  // height: 100%;
+  z-index: 500;
+  background: transparent;
+  text-align: center;
+  padding: 2rem 0;
+  &__loader {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: inline-block;
+    border-top: 0.3rem solid c.$noir-rp;
+    border-right: 0.3rem solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  &__loader::after {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    border-left: 0.3rem solid c.$orange;
+    border-bottom: 0.3rem solid transparent;
+    animation: rotation 0.5s linear infinite reverse;
+  }
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

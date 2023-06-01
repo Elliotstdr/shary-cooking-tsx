@@ -1,0 +1,36 @@
+.shoppingList_container_export_recipes_recipe {
+  border-radius: 10px;
+  background-color: white;
+  margin: 1rem 0;
+  display: flex;
+  .image {
+    border-radius: 10px 0 0 10px;
+    height: 10rem;
+    width: 16rem;
+    background-position: center;
+  }
+  .infos {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    &_top {
+      display: flex;
+      justify-content: space-between;
+      &_title {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+    }
+    &_bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      &_left {
+        display: flex;
+        flex-direction: column;
+        text-align: start;
+      }
+    }
+  }
+}

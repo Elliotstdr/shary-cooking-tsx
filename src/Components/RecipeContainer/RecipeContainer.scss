@@ -1,0 +1,34 @@
+@use "src/Styles/_vars.scss" as c;
+
+.recipeContainer {
+  display: flex;
+  flex-direction: column;
+  &_searchbar {
+    margin-top: 5rem;
+  }
+  &_cards {
+    padding: 5rem 8rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 23rem));
+    gap: 1rem 1rem;
+    grid-auto-rows: auto;
+  }
+  .p-paginator {
+    margin-bottom: 2rem;
+    background-color: c.$fond-page;
+    &-page {
+      color: c.$main-color !important;
+      &.p-highlight,
+      &:hover {
+        color: white !important;
+        background-color: c.$main-color !important;
+      }
+    }
+  }
+  &_loader {
+    height: 25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

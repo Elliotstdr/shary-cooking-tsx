@@ -1,5 +1,9 @@
-.App {
+@use "src/Styles/_vars.scss" as c;
+
+body {
   text-align: center;
+  background-color: c.$fond-page;
+  color: c.$main-color;
 }
 
 .App-logo {

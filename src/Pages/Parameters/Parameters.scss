@@ -1,0 +1,72 @@
+@use "src/Styles/_vars.scss" as c;
+
+.param__form {
+  margin: 2rem 7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .btn-blanc {
+    width: 10rem;
+    align-self: center;
+    margin-top: 2rem;
+  }
+  &__field {
+    display: flex;
+    flex-direction: column;
+    h4 {
+      margin-bottom: 0.5rem;
+    }
+    .p-inputtext {
+      width: 15rem;
+    }
+    .p-fileupload {
+      &-choose {
+        padding: 0.25rem 0.5rem !important;
+        background: none !important;
+        border: none !important;
+        color: c.$main-color;
+        &:hover {
+          color: c.$main-color !important;
+        }
+      }
+      .bouton_valider,
+      .bouton_supprimer {
+        width: 3rem;
+        margin-top: 0;
+        display: flex;
+        border-radius: 50%;
+        padding: 0 !important;
+        width: 2.5rem;
+        height: 2.5rem;
+        .p-button-icon {
+          margin-left: 0.7rem;
+          margin-right: 0;
+          align-self: center;
+        }
+      }
+      .bouton_valider {
+        background: #367e18;
+        border-color: #367e18;
+      }
+      .bouton_supprimer {
+        background: #cc3636;
+        border-color: #cc3636;
+      }
+      &-buttonbar {
+        flex-wrap: nowrap;
+        background-color: white !important;
+      }
+      &-content {
+        padding: 0 1rem !important;
+        .p-progressbar {
+          height: 0;
+        }
+      }
+      &-row .p-button-danger,
+      &-row .p-badge {
+        display: none;
+      }
+    }
+  }
+}

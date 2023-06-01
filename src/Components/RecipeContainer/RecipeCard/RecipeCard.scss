@@ -1,0 +1,113 @@
+@use "src/Styles/_vars.scss" as c;
+
+.cardHover {
+  transition-duration: 0.2s;
+  background-color: c.$blanc;
+
+  &:hover {
+    transform: scale(1.01);
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.75);
+  }
+}
+.recipeCard {
+  border-radius: 0.33rem;
+  margin-bottom: 2rem;
+  width: 20rem;
+
+  .detail {
+    position: absolute;
+  }
+
+  &__top {
+    &__categorie {
+      font-size: c.$font-size-normal;
+      font-weight: 700;
+      color: c.$gris-picto;
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      .etiquette {
+        position: absolute;
+        margin-top: 1rem;
+        margin-right: 2rem;
+        padding: 0.2rem 2rem;
+        background-color: c.$fond-page-clair;
+        color: grey;
+        border-radius: 5px;
+      }
+    }
+    &__image {
+      height: 15rem;
+      img {
+        width: 100%;
+        height: 15rem;
+        object-fit: cover;
+        font-weight: 700;
+        border-top-left-radius: 0.33rem;
+        border-top-right-radius: 0.33rem;
+      }
+    }
+  }
+  &__corps {
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    padding: 1rem 1rem 0 1rem;
+    align-items: flex-start;
+    &__author {
+      font-size: 0.8rem;
+    }
+    &__title {
+      align-self: center;
+      color: c.$main-color;
+      padding: 2rem 2rem 0rem 1rem;
+      font-size: 1.5rem;
+      min-height: 6rem;
+    }
+    &__time,
+    &__number,
+    &__regime {
+      span {
+        display: flex;
+        align-items: center;
+        svg {
+          margin: 0 0.5rem;
+        }
+      }
+    }
+  }
+  &__bottom {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 1rem 2rem 1rem;
+    &__edit,
+    &__fav,
+    &__delete {
+      cursor: pointer;
+      svg {
+        color: c.$main-color;
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+    &__fav svg {
+      color: gold;
+    }
+  }
+}
+
+.recipe_delete_modal {
+  &_question {
+    margin: 2rem 0;
+  }
+  &_buttons {
+    display: flex;
+    justify-content: center;
+    button {
+      margin-right: 1rem;
+    }
+  }
+}

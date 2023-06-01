@@ -1,0 +1,49 @@
+.modal-login {
+  .login__form {
+    &__field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      h4 {
+        margin-bottom: 0.5rem;
+      }
+      input {
+        max-width: 20rem;
+      }
+    }
+    &__button {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      .btn-blanc .loaderContainer {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .loaderContainer__loader,
+        .loaderContainer__loader::after {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+    }
+    .equal {
+      border: 1px solid green;
+      border-radius: 6px;
+      input:hover,
+      input:focus {
+        border: 1px solid green;
+        box-shadow: none;
+      }
+    }
+    .nonequal {
+      border: 1px solid red;
+      border-radius: 6px;
+      input:hover,
+      input:focus {
+        border: 1px solid red;
+        box-shadow: none;
+      }
+    }
+  }
+}
