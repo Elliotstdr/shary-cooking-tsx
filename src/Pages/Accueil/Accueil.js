@@ -52,7 +52,7 @@ const Accueil = (props) => {
   ]);
 
   return (
-    <div>
+    <div className="accueil_container">
       {props.auth.isConnected ? (
         <div>
           <NavBar></NavBar>

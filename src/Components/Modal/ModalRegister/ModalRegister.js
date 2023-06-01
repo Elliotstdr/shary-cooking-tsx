@@ -24,6 +24,7 @@ const ModalLogin = (props) => {
     email: "",
     password: "",
     confirmpassword: "",
+    secretKey: "",
   };
 
   useEffect(() => {
@@ -154,7 +155,7 @@ const ModalLogin = (props) => {
                   {...field}
                   placeholder={"Mot de passe"}
                   className="login__form__field-password"
-                  feedback={false}
+                  feedback={true}
                 />
               )}
             />
@@ -192,6 +193,25 @@ const ModalLogin = (props) => {
               )}
             />
             {getFormErrorMessage("confirmpassword")}
+          </div>
+          <div className="login__form__field">
+            <h4 htmlFor="password">{"Clé secrète"}</h4>
+            <Controller
+              name="secretKey"
+              control={control}
+              rules={{
+                required: "La clé secrète est obligatoire",
+              }}
+              render={({ field }) => (
+                <Password
+                  {...field}
+                  placeholder={"Clé secrète"}
+                  className={"login__form__field-secretKey"}
+                  feedback={false}
+                />
+              )}
+            />
+            {getFormErrorMessage("secretKey")}
           </div>
           <div className="login__form__button">
             <Bouton>{isloging ? <Loader /> : "Créer un compte"}</Bouton>

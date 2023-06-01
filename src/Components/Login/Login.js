@@ -9,10 +9,7 @@ const Login = () => {
   const [visibleModalRegister, setVisibleModalRegister] = useState(false);
 
   return (
-    <div
-      className="login_container"
-      style={{ height: window.innerHeight, width: window.innerWidth }}
-    >
+    <div className="login_container">
       <div className="login_container_title">
         <h1>Bienvenue sur Shary Cooking !</h1>
       </div>

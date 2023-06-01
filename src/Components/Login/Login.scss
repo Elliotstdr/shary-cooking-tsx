@@ -1,6 +1,8 @@
 @use "src/Styles/_vars.scss" as c;
 
 .login_container {
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
