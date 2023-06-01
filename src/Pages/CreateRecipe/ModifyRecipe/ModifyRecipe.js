@@ -2,8 +2,6 @@ import React, { useRef, useState } from "react";
 import "./ModifyRecipe.scss";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
-import { InputTextarea } from "primereact/inputtextarea";
 import { Divider } from "primereact/divider";
 import { Checkbox } from "primereact/checkbox";
 import { connect } from "react-redux";
@@ -11,8 +9,14 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import ImageUpload from "../../../Components/ImageUpload/ImageUpload";
 import { Toast } from "primereact/toast";
+import StepsCreation from "../../../Components/FormElements/StepsCreation/StepsCreation";
+import IngredientsCreation from "../../../Components/FormElements/IngredientsCreation/IngredientsCreation";
+import { useFetchGet } from "../../../Services/api";
 
 const ModifyRecipe = (props) => {
+  const ingredientData = useFetchGet("/ingredient_datas");
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [autocompleteData, setAutocompleteData] = useState([]);
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState("");
   const cancelToast = useRef(null);
@@ -133,7 +137,13 @@ const ModifyRecipe = (props) => {
   };
 
   return (
-    <div className="modify_recipe">
+    <div
+      className="modify_recipe"
+      onClick={() => {
+        setAutocompleteData([]);
+        setActiveIndex(-1);
+      }}
+    >
       <form className="recipe__form" onSubmit={handleSubmit(onSubmit)}>
         <Toast ref={uploadToast} />
         <Toast ref={cancelToast} />
@@ -245,88 +255,27 @@ const ModifyRecipe = (props) => {
         <Divider></Divider>
         <div className="recipe__form__field">
           <h4 htmlFor="type">Etapes</h4>
-          <div className="steps">
-            {stepsList.map((step, index) => (
-              <div className="step" key={index}>
-                <InputTextarea
-                  placeholder="Description de l'étape"
-                  className="recipe__form__field-step"
-                  value={step.description}
-                  onChange={(e) => {
-                    let tempArray = [...stepsList];
-                    tempArray.forEach((element) => {
-                      if (element.stepIndex === step.stepIndex) {
-                        element.description = e.target.value;
-                      }
-                    });
-                    setStepsList(tempArray);
-                  }}
-                />
-              </div>
-            ))}
-            {errorStepMessage && (
-              <small className="p-error">{errorStepMessage}</small>
-            )}
-          </div>
+          <StepsCreation
+            stepsList={stepsList}
+            setStepsList={setStepsList}
+            errorStepMessage={errorStepMessage}
+            nobutton
+          ></StepsCreation>
         </div>
         <Divider></Divider>
         <div className="recipe__form__field">
           <h4 htmlFor="type">Ingrédients</h4>
-          <div className="ingredients">
-            {ingredientList.map((ingredient, index) => (
-              <div className="ingredient" key={index}>
-                <InputText
-                  placeholder="Tomates, Boeuf, Pommes..."
-                  className="recipe__form__field-ingredient"
-                  value={ingredient.label}
-                  onChange={(e) => {
-                    let tempArray = [...ingredientList];
-                    tempArray.forEach((element) => {
-                      if (element.id === ingredient.id) {
-                        element.label = e.target.value;
-                      }
-                    });
-                    setIngredientList(tempArray);
-                  }}
-                />
-                <Dropdown
-                  value={ingredient.unit}
-                  options={props.secondaryTables.units}
-                  optionLabel="label"
-                  placeholder="kg, unité..."
-                  className="recipe__form__field-ingredient"
-                  onChange={(e) => {
-                    let tempArray = [...ingredientList];
-                    tempArray.forEach((element) => {
-                      if (element.id === ingredient.id) {
-                        element.unit = e.target.value;
-                      }
-                    });
-                    setIngredientList(tempArray);
-                  }}
-                ></Dropdown>
-                <InputText
-                  placeholder="3, 2.5..."
-                  className="recipe__form__field-ingredient"
-                  value={ingredient.quantity}
-                  type="number"
-                  step={0.5}
-                  onChange={(e) => {
-                    let tempArray = [...ingredientList];
-                    tempArray.forEach((element) => {
-                      if (element.id === ingredient.id) {
-                        element.quantity = e.target.value;
-                      }
-                    });
-                    setIngredientList(tempArray);
-                  }}
-                />
-              </div>
-            ))}
-            {errorIngredientMessage && (
-              <small className="p-error">{errorIngredientMessage}</small>
-            )}
-          </div>
+          <IngredientsCreation
+            ingredientList={ingredientList}
+            setIngredientList={setIngredientList}
+            ingredientData={ingredientData.data}
+            autocompleteData={autocompleteData}
+            setAutocompleteData={setAutocompleteData}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            errorIngredientMessage={errorIngredientMessage}
+            nobutton
+          ></IngredientsCreation>
         </div>
         <button className="btn-bleu">{"Modifier ma recette"}</button>
       </form>

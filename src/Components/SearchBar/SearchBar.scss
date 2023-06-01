@@ -1,6 +1,7 @@
 .searchbar_container {
-  .p-multiselect {
-    margin-right: 2rem;
+  .p-multiselect,
+  .p-inputtext {
+    margin: 0 1rem;
     .p-multiselect-clear-icon {
       right: 1.5rem;
       top: 70%;

@@ -1,0 +1,26 @@
+@use "src/Styles/_vars.scss" as c;
+
+.recipe__form {
+  .steps {
+    width: 40%;
+    .step {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      position: relative;
+      .bin {
+        position: absolute;
+        cursor: pointer;
+        right: -3rem;
+        color: c.$main-color;
+        height: 1.5rem;
+        width: 1.5rem;
+        align-self: center;
+      }
+      .p-inputtextarea {
+        margin: 1rem 0;
+        width: 100%;
+      }
+    }
+  }
+}

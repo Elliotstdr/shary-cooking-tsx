@@ -1,0 +1,51 @@
+@use "src/Styles/_vars.scss" as c;
+
+.recipe__form {
+  .ingredients {
+    .ingredient {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      input,
+      .p-dropdown {
+        margin: 1rem;
+      }
+      .bin {
+        position: absolute;
+        cursor: pointer;
+        right: -3rem;
+        color: c.$main-color;
+        height: 1.5rem;
+        width: 1.5rem;
+        align-self: center;
+      }
+      &_name {
+        position: relative;
+        &_autocomplete {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          background-color: white;
+          border-radius: 10px;
+          top: 4rem;
+          left: 1rem;
+          width: 15rem;
+          text-align: left;
+          &.hidden {
+            display: none;
+          }
+          span {
+            padding: 0.5rem 0 0.5rem 0.5rem;
+            &:hover {
+              cursor: pointer;
+              border-radius: 5px;
+              // background-color: c.$gris;
+              background: c.$beautifulBG;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+}

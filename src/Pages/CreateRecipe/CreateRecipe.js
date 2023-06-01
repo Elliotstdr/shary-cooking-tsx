@@ -3,23 +3,20 @@ import "./CreateRecipe.scss";
 import NavBar from "../../Components/NavBar/NavBar";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
-import { InputTextarea } from "primereact/inputtextarea";
 import { Divider } from "primereact/divider";
 import { Checkbox } from "primereact/checkbox";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { AiOutlinePlusCircle } from "react-icons/ai";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
 import { Toast } from "primereact/toast";
 import ImageUpload from "../../Components/ImageUpload/ImageUpload";
-import { useFetchGet } from "../../Services/api";
+import { errorToast, successToast, useFetchGet } from "../../Services/api";
+import IngredientsCreation from "../../Components/FormElements/IngredientsCreation/IngredientsCreation";
+import StepsCreation from "../../Components/FormElements/StepsCreation/StepsCreation";
 
 const CreateRecipe = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
   const [activeIndex, setActiveIndex] = useState(-1);
-  // const [visibleAutocomplete, setVisibleAutocomplete] = useState(false);
   const [autocompleteData, setAutocompleteData] = useState([]);
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState("");
@@ -40,7 +37,7 @@ const CreateRecipe = (props) => {
       unit: null,
       quantity: 0,
       label: "",
-      index: 1,
+      id: 1,
     },
   ]);
   const [errorStepMessage, setErrorStepMessage] = useState(null);
@@ -109,15 +106,10 @@ const CreateRecipe = (props) => {
         unit: null,
         quantity: 0,
         label: "",
-        index: 1,
+        id: 1,
       },
     ]);
-    uploadToast.current.show({
-      severity: "success",
-      summary: "Succès : ",
-      detail: "Votre recette a bien été créée",
-      life: 3000,
-    });
+    successToast("Votre recette a bien été créée", uploadToast);
   };
 
   const postImage = (res) => {
@@ -133,12 +125,10 @@ const CreateRecipe = (props) => {
         setImageName("");
       })
       .catch(() =>
-        cancelToast.current.show({
-          severity: "error",
-          summary: "Suppression : ",
-          detail: "Une erreur est survenue lors de l'upload de l'image",
-          life: 3000,
-        })
+        errorToast(
+          "Une erreur est survenue lors de l'upload de l'image",
+          cancelToast
+        )
       );
   };
 
@@ -172,32 +162,12 @@ const CreateRecipe = (props) => {
           }
         })
         .catch(() =>
-          cancelToast.current.show({
-            severity: "error",
-            summary: "Suppression : ",
-            detail:
-              "Une erreur est survenue lors de la création de votre recette",
-            life: 3000,
-          })
+          errorToast(
+            "Une erreur est survenue lors de la création de votre recette",
+            cancelToast
+          )
         );
     }
-  };
-
-  const modifyIngredientList = (word, ingredient) => {
-    let tempArray = [...ingredientList];
-    tempArray.forEach((element) => {
-      if (element.index === ingredient.index) {
-        element.label = word;
-      }
-    });
-    setIngredientList(tempArray);
-  };
-
-  const findIngredient = (word) => {
-    const filteredData = ingredientData.data.filter((element) =>
-      element.name.toLowerCase().includes(word.toLowerCase())
-    );
-    setAutocompleteData(filteredData);
   };
 
   return (
@@ -319,175 +289,25 @@ const CreateRecipe = (props) => {
         <Divider></Divider>
         <div className="recipe__form__field">
           <h4 htmlFor="type">Etapes</h4>
-          <div className="steps">
-            {stepsList.map((step, index) => (
-              <div className="step" key={index}>
-                <InputTextarea
-                  placeholder="Description de l'étape"
-                  className="recipe__form__field-step"
-                  value={step.description}
-                  onChange={(e) => {
-                    let tempArray = [...stepsList];
-                    tempArray.forEach((element) => {
-                      if (element.stepIndex === step.stepIndex) {
-                        element.description = e.target.value;
-                      }
-                    });
-                    setStepsList(tempArray);
-                  }}
-                />
-                {step.stepIndex !== 1 && (
-                  <RiDeleteBin6Line
-                    className="bin"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      let tempArray = [...stepsList];
-                      tempArray = tempArray.filter(
-                        (element) => element.stepIndex !== step.stepIndex
-                      );
-                      setStepsList(tempArray);
-                    }}
-                  ></RiDeleteBin6Line>
-                )}
-              </div>
-            ))}
-            {errorStepMessage && (
-              <small className="p-error">{errorStepMessage}</small>
-            )}
-          </div>
-          <button
-            className="btn-blanc"
-            onClick={(e) => {
-              e.preventDefault();
-              setStepsList([
-                ...stepsList,
-                {
-                  description: "",
-                  stepIndex: stepsList[stepsList.length - 1].stepIndex + 1,
-                },
-              ]);
-            }}
-          >
-            <AiOutlinePlusCircle />
-            Ajouter une étape
-          </button>
+          <StepsCreation
+            stepsList={stepsList}
+            setStepsList={setStepsList}
+            errorStepMessage={errorStepMessage}
+          ></StepsCreation>
         </div>
         <Divider></Divider>
         <div className="recipe__form__field">
           <h4 htmlFor="type">Ingrédients</h4>
-          <div className="ingredients">
-            {ingredientList.map((ingredient, index) => (
-              <div className="ingredient" key={index}>
-                <div className="ingredient_name">
-                  <InputText
-                    placeholder="Tomates, Boeuf, Pommes..."
-                    className="recipe__form__field-ingredient"
-                    value={ingredient.label}
-                    onChange={(e) => {
-                      modifyIngredientList(e.target.value, ingredient);
-                      if (e.target.value.length > 2) {
-                        findIngredient(e.target.value);
-                      }
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveIndex(index);
-                    }}
-                  />
-                  <div
-                    className={`ingredient_name_autocomplete ${
-                      autocompleteData.length > 0 && activeIndex === index
-                        ? "visible"
-                        : "hidden"
-                    }`}
-                  >
-                    {autocompleteData
-                      .slice(0, 10)
-                      .sort((a, b) => a.name.length - b.name.length)
-                      .map((element, index) => (
-                        <span
-                          key={index}
-                          onClick={(e) => {
-                            modifyIngredientList(
-                              e.target.textContent,
-                              ingredient
-                            );
-                          }}
-                        >
-                          {element.name}
-                        </span>
-                      ))}
-                  </div>
-                </div>
-                <Dropdown
-                  value={ingredient.unit}
-                  options={props.secondaryTables.units}
-                  optionLabel="label"
-                  placeholder="kg, unité..."
-                  className="recipe__form__field-ingredient"
-                  onChange={(e) => {
-                    let tempArray = [...ingredientList];
-                    tempArray.forEach((element) => {
-                      if (element.index === ingredient.index) {
-                        element.unit = e.target.value;
-                      }
-                    });
-                    setIngredientList(tempArray);
-                  }}
-                ></Dropdown>
-                <InputText
-                  placeholder="3, 2.5..."
-                  className="recipe__form__field-ingredient"
-                  value={ingredient.quantity}
-                  type="number"
-                  step={0.5}
-                  onChange={(e) => {
-                    let tempArray = [...ingredientList];
-                    tempArray.forEach((element) => {
-                      if (element.index === ingredient.index) {
-                        element.quantity = e.target.value;
-                      }
-                    });
-                    setIngredientList(tempArray);
-                  }}
-                />
-                {ingredient.index !== 1 && (
-                  <RiDeleteBin6Line
-                    className="bin"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      let tempArray = [...ingredientList];
-                      tempArray = tempArray.filter(
-                        (element) => element.index !== ingredient.index
-                      );
-                      setIngredientList(tempArray);
-                    }}
-                  ></RiDeleteBin6Line>
-                )}
-              </div>
-            ))}
-            {errorIngredientMessage && (
-              <small className="p-error">{errorIngredientMessage}</small>
-            )}
-          </div>
-          <button
-            className="btn-blanc"
-            onClick={(e) => {
-              e.preventDefault();
-              setIngredientList([
-                ...ingredientList,
-                {
-                  unit: null,
-                  label: "",
-                  quantity: 0,
-                  index: ingredientList[ingredientList.length - 1].index + 1,
-                },
-              ]);
-            }}
-          >
-            <AiOutlinePlusCircle />
-            Ajouter une étape
-          </button>
+          <IngredientsCreation
+            ingredientList={ingredientList}
+            setIngredientList={setIngredientList}
+            ingredientData={ingredientData.data}
+            autocompleteData={autocompleteData}
+            setAutocompleteData={setAutocompleteData}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            errorIngredientMessage={errorIngredientMessage}
+          ></IngredientsCreation>
         </div>
         <button className="btn-bleu">{"Créer ma recette"}</button>
       </form>
