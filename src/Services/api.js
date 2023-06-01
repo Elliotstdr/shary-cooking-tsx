@@ -158,3 +158,21 @@ export const exportRecipe = (chosenRecipes, data) => {
 
   return shoppingList;
 };
+
+export const successToast = (message, ref, summary = "Succès") => {
+  ref.current.show({
+    severity: "success",
+    summary: `${summary} : `,
+    detail: message,
+    life: 3000,
+  });
+};
+
+export const errorToast = (message, ref, summary = "Erreur") => {
+  ref.current.show({
+    severity: "error",
+    summary: `${summary} : `,
+    detail: message,
+    life: 3000,
+  });
+};

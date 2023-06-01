@@ -6,6 +6,7 @@ import { GiKnifeFork } from "react-icons/gi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { updateAuth } from "../../Store/Actions/authActions";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 const NavBar = (props) => {
   const navigate = useNavigate();
@@ -67,6 +68,11 @@ const NavBar = (props) => {
       </div>
     </div>
   );
+};
+
+NavBar.propTypes = {
+  auth: PropTypes.object,
+  handleAuth: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

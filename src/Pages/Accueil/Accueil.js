@@ -28,19 +28,13 @@ const Accueil = (props) => {
 
   useEffect(() => {
     typesData.loaded &&
+      unitsData.loaded &&
+      regimesData.loaded &&
+      ingredientTypeData.loaded &&
       props.handleUpdateSecondaryTables({
         types: typesData.data,
-      });
-    unitsData.loaded &&
-      props.handleUpdateSecondaryTables({
         units: unitsData.data,
-      });
-    regimesData.loaded &&
-      props.handleUpdateSecondaryTables({
         regimes: regimesData.data,
-      });
-    ingredientTypeData.loaded &&
-      props.handleUpdateSecondaryTables({
         ingTypes: ingredientTypeData.data,
       });
     // eslint-disable-next-line

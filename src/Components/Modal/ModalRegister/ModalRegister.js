@@ -12,6 +12,7 @@ import { useState } from "react";
 import Bouton from "../../../Utils/Bouton/Bouton";
 import axios from "axios";
 import { Toast } from "primereact/toast";
+import { errorToast } from "../../../Services/api";
 
 const ModalLogin = (props) => {
   const cancelToast = useRef(null);
@@ -63,12 +64,7 @@ const ModalLogin = (props) => {
       })
       .catch((error) => {
         setIsLoging(false);
-        cancelToast.current.show({
-          severity: "error",
-          summary: "Error Message",
-          detail: error.response.data.detail,
-          life: 3000,
-        });
+        errorToast(error.response.data.detail, cancelToast);
       });
   };
 

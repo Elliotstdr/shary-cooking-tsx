@@ -12,6 +12,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { updateAuth } from "../../Store/Actions/authActions";
 import PropTypes from "prop-types";
+import { errorToast, successToast } from "../../Services/api";
 
 const Parameters = (props) => {
   const [showMDP, setShowMDP] = useState(false);
@@ -71,20 +72,13 @@ const Parameters = (props) => {
         props.handleAuth({
           userConnected: tempUser,
         });
-        uploadToast.current.show({
-          severity: "success",
-          summary: "Succès : ",
-          detail: "Votre profil a bien été mis à jour",
-          life: 3000,
-        });
+        successToast("Votre profil a bien été mis à jour", uploadToast);
       })
       .catch(() =>
-        cancelToast.current.show({
-          severity: "error",
-          summary: "Suppression : ",
-          detail: "Une erreur est survenue lors de l'upload de l'image",
-          life: 3000,
-        })
+        errorToast(
+          "Une erreur est survenue lors de l'upload de l'image",
+          cancelToast
+        )
       );
   };
 
@@ -108,24 +102,17 @@ const Parameters = (props) => {
         ) {
           putPicture();
         } else {
-          uploadToast.current.show({
-            severity: "success",
-            summary: "Succès : ",
-            detail: "Votre profil a bien été mis à jour",
-            life: 3000,
-          });
+          successToast("Votre profil a bien été mis à jour", uploadToast);
         }
       })
       .catch(() =>
-        cancelToast.current.show({
-          severity: "error",
-          summary: "Suppression : ",
-          detail:
-            "Une erreur est survenue lors de la modification de votre profil",
-          life: 3000,
-        })
+        errorToast(
+          "Une erreur est survenue lors de la modification de votre profil",
+          cancelToast
+        )
       );
   };
+
   return (
     <div>
       <NavBar></NavBar>

@@ -18,6 +18,7 @@ import Bouton from "../../../Utils/Bouton/Bouton";
 import { Toast } from "primereact/toast";
 import SlideIn from "../../../Utils/SlideIn/SlideIn";
 import { updateRecipe } from "../../../Store/Actions/recipeActions";
+import { errorToast } from "../../../Services/api";
 
 const RecipeCard = (props) => {
   const [visibleDetail, setVisibleDetail] = useState(false);
@@ -52,13 +53,10 @@ const RecipeCard = (props) => {
         window.location.reload(false);
       })
       .catch(() =>
-        cancelToast.current.show({
-          severity: "error",
-          summary: "Error Message",
-          detail:
-            "Une erreur est survenue, la recette n'a pas pu etre supprimée",
-          life: 3000,
-        })
+        errorToast(
+          "Une erreur est survenue, la recette n'a pas pu etre supprimée",
+          cancelToast
+        )
       );
   };
   return (

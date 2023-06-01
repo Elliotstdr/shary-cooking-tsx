@@ -7,12 +7,10 @@ import { connect } from "react-redux";
 
 const SearchBar = (props) => {
   const usersData = useFetchGet("/users");
-  // const ingredientsData = useFetchGet("/ingredients");
 
   const [regime, setRegime] = useState(null);
   const [type, setType] = useState(null);
   const [user, setUser] = useState(null);
-  // const [ingredient, setIngredient] = useState(null);
 
   useEffect(() => {
     let tempRecipes = props.startData;
@@ -83,25 +81,11 @@ const SearchBar = (props) => {
         maxSelectedLabels={2}
         selectedItemsLabel={type?.length + " éléments choisis"}
       ></MultiSelect>
-      {/* <MultiSelect
-        showClear
-        value={ingredient}
-        onChange={(e) => {
-          setIngredient(e.value);
-        }}
-        options={ingredientsData.data}
-        optionLabel="label"
-        filter
-        placeholder="Ingrédient"
-        maxSelectedLabels={2}
-        selectedItemsLabel={ingredient?.length + " éléments choisis"}
-      ></MultiSelect> */}
     </div>
   );
 };
 
 SearchBar.propTypes = {
-  filteredRecipes: PropTypes.array,
   setFilteredRecipes: PropTypes.func,
   startData: PropTypes.array,
   secondaryTables: PropTypes.object,

@@ -2,6 +2,7 @@ import { FileUpload } from "primereact/fileupload";
 import React from "react";
 import PropTypes from "prop-types";
 import "./ImageUpload.scss";
+import { errorToast, successToast } from "../../Services/api";
 
 const ImageUpload = (props) => {
   const uploadOptions = {
@@ -22,12 +23,7 @@ const ImageUpload = (props) => {
     fileReader.onload = () => {
       props.setImage(fileReader.result);
       props.setImageName(file.name);
-      props.uploadToast.current.show({
-        severity: "success",
-        summary: "Succès : ",
-        detail: "L'image a bien été chargée",
-        life: 3000,
-      });
+      successToast("L'image a bien été chargée", props.uploadToast);
     };
     fileReader.readAsDataURL(file);
   };
@@ -40,12 +36,11 @@ const ImageUpload = (props) => {
       chooseLabel="Modifier l'image"
       onClear={() => {
         props.setImage(null);
-        props.cancelToast.current.show({
-          severity: "error",
-          summary: "Suppression : ",
-          detail: "Le fichier a bien été supprimé",
-          life: 3000,
-        });
+        errorToast(
+          "Le fichier a bien été supprimé",
+          props.cancelToast,
+          "Suppression"
+        );
       }}
       uploadOptions={uploadOptions}
       cancelOptions={cancelOptions}

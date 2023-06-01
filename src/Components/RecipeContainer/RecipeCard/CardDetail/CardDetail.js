@@ -1,6 +1,7 @@
 import React from "react";
 import { useFetchGet } from "../../../../Services/api";
 import Loader from "../../../../Utils/Loader/loader";
+import PropTypes from "prop-types";
 
 const CardDetail = (props) => {
   const recipeDetail = useFetchGet(`/recipes/${props.id}`);
@@ -48,6 +49,10 @@ const CardDetail = (props) => {
       )}
     </div>
   );
+};
+
+CardDetail.propType = {
+  id: PropTypes.number,
 };
 
 export default CardDetail;
