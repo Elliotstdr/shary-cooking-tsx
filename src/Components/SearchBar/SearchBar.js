@@ -5,6 +5,7 @@ import { useFetchGet } from "../../Services/api";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { InputText } from "primereact/inputtext";
+import { BsFilter } from "react-icons/bs";
 
 const SearchBar = (props) => {
   const usersData = useFetchGet("/users");
@@ -52,6 +53,7 @@ const SearchBar = (props) => {
 
   return (
     <div className="searchbar_container">
+      <BsFilter className="filter-icon"></BsFilter>
       <InputText
         placeholder="Tomates farcies, ..."
         value={keyword}

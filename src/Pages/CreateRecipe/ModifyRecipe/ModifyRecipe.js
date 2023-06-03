@@ -277,7 +277,7 @@ const ModifyRecipe = (props) => {
             nobutton
           ></IngredientsCreation>
         </div>
-        <button className="btn-bleu">{"Modifier ma recette"}</button>
+        <button className="bouton">{"Modifier ma recette"}</button>
       </form>
     </div>
   );

@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { updateAuth } from "../../Store/Actions/authActions";
 import PropTypes from "prop-types";
 import { errorToast, successToast } from "../../Services/api";
+import Footer from "../../Components/Footer/Footer";
 
 const Parameters = (props) => {
   const [showMDP, setShowMDP] = useState(false);
@@ -287,6 +288,7 @@ const Parameters = (props) => {
         <Divider></Divider>
         <Bouton>Modifier mes informations</Bouton>
       </form>
+      <Footer></Footer>
     </div>
   );
 };

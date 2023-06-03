@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import "./RecipeCard.scss";
-import carouselHome1 from "../../../assets/carouselHome1.webp";
+import default2 from "../../../assets/default2.jpg";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import PropTypes from "prop-types";
 import { GiKnifeFork } from "react-icons/gi";
@@ -110,7 +110,7 @@ const RecipeCard = (props) => {
             src={
               props.recipeItem.imageUrl
                 ? process.env.REACT_APP_BASE_URL_API + props.recipeItem.imageUrl
-                : carouselHome1
+                : default2
             }
             alt="Fond news"
           />
@@ -181,12 +181,7 @@ const RecipeCard = (props) => {
               <Bouton className={"btn-blanc"} btnAction={() => deleteRecipe()}>
                 Oui
               </Bouton>
-              <Bouton
-                className={"btn-bleu"}
-                btnAction={() => setWantToDelete(false)}
-              >
-                Non
-              </Bouton>
+              <Bouton btnAction={() => setWantToDelete(false)}>Non</Bouton>
             </div>
           </div>
         </Modal>

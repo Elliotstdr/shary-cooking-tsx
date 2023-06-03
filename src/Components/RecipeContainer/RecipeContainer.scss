@@ -4,18 +4,23 @@
   display: flex;
   flex-direction: column;
   &_searchbar {
-    margin-top: 5rem;
+    margin-top: 4rem;
   }
   &_cards {
-    padding: 5rem 8rem;
+    padding: 3rem 8rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 23rem));
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 23rem));
+    justify-content: center;
     gap: 1rem 1rem;
     grid-auto-rows: auto;
   }
+  &_searchbar {
+    display: flex;
+    justify-content: center;
+  }
   .p-paginator {
     margin-bottom: 2rem;
-    background-color: c.$fond-page;
+    background-color: transparent;
     &-page {
       color: c.$main-color !important;
       &.p-highlight,
@@ -23,6 +28,9 @@
         color: white !important;
         background-color: c.$main-color !important;
       }
+    }
+    &-element {
+      color: c.$main-color !important;
     }
   }
   &_loader {

@@ -10,6 +10,8 @@ import ShoppingListCard from "./ShoppingListCard/ShoppingListCard";
 import { connect } from "react-redux";
 import { updateRecipe } from "../../Store/Actions/recipeActions";
 import PropTypes from "prop-types";
+import Footer from "../../Components/Footer/Footer";
+import image from "../../assets/HCDarkOp.jpg";
 
 const ShoppingList = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
@@ -57,7 +59,6 @@ const ShoppingList = (props) => {
           <div className="shoppingList_container_export">
             <Bouton
               btnTexte={"Modifier ma liste de recettes"}
-              className={"btn-bleu"}
               btnAction={() => setVisibleRecipeContainer(true)}
             ></Bouton>
             <h2 className="shoppingList_container_export_title">
@@ -76,7 +77,6 @@ const ShoppingList = (props) => {
             </div>
             <Bouton
               btnTexte={"Créer ma liste de course"}
-              className={"btn-bleu"}
               btnAction={() => {
                 setStringShopping(
                   exportRecipe(props.recipe.chosenRecipes, ingredientData.data)
@@ -87,15 +87,19 @@ const ShoppingList = (props) => {
             ></Bouton>
           </div>
         ) : (
-          <div className="shoppingList_container_home">
+          <div
+            className="shoppingList_container_home"
+            style={{ backgroundImage: `url(${image})` }}
+          >
             <Bouton
-              className={"btn-bleu chooseBtn"}
+              className={"btn-blanc chooseBtn"}
               btnTexte={"Choisir mes recettes"}
               btnAction={() => setVisibleRecipeContainer(true)}
             ></Bouton>
           </div>
         )}
       </div>
+      <Footer></Footer>
       {visibleRecipeContainer && (
         <Modal
           visible={visibleRecipeContainer}
@@ -125,12 +129,7 @@ const ShoppingList = (props) => {
               onChange={(e) => setStringShopping(e.target.value)}
             ></InputTextarea>
             <button
-              className="btn-blanc"
-              style={{
-                backgroundColor: greenButton && "green",
-                borderColor: greenButton && "green",
-                color: greenButton && "white",
-              }}
+              className={`bouton ${greenButton && "copied"}`}
               onClick={() => {
                 navigator.clipboard.writeText(stringShopping);
                 setGreenButton(true);

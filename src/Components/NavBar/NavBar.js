@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./NavBar.scss";
-import neutralUser from "../../assets/neutralUser.png";
 import { GiKnifeFork } from "react-icons/gi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { updateAuth } from "../../Store/Actions/authActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { GiCook } from "react-icons/gi";
+import Bouton from "../../Utils/Bouton/Bouton";
 
 const NavBar = (props) => {
   const navigate = useNavigate();
@@ -35,22 +36,24 @@ const NavBar = (props) => {
           </li>
         </NavLink>
       </ul>
-      <button className="btn-bleu" onClick={() => navigate("/create")}>
+      <Bouton className="btn-blanc" btnAction={() => navigate("/create")}>
         <GiKnifeFork></GiKnifeFork>Créer une recette
-      </button>
-      <button className="btn-bleu" onClick={() => navigate("/shop")}>
+      </Bouton>
+      <Bouton className="btn-blanc" btnAction={() => navigate("/shop")}>
         <AiOutlineShoppingCart></AiOutlineShoppingCart>Faire ma liste de courses
-      </button>
+      </Bouton>
       <div className="navigation_parameters">
-        <img
-          src={
-            props.auth.userConnected.imageUrl
-              ? process.env.REACT_APP_BASE_URL_API +
-                props.auth.userConnected.imageUrl
-              : neutralUser
-          }
-          alt="ma pp"
-        ></img>
+        {props.auth.userConnected.imageUrl ? (
+          <img
+            src={
+              process.env.REACT_APP_BASE_URL_API +
+              props.auth.userConnected.imageUrl
+            }
+            alt="ma pp"
+          ></img>
+        ) : (
+          <GiCook className="cooker"></GiCook>
+        )}
         <div className="navigation_parameters_menu">
           <span onClick={() => navigate("/param")}>Mon profil</span>
           <span

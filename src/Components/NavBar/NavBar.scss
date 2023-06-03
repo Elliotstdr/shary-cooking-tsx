@@ -3,6 +3,7 @@
 .navigation {
   display: flex;
   justify-content: space-around;
+  box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.4);
   ul {
     display: flex;
     margin: 2rem;
@@ -17,7 +18,7 @@
         color: c.$main-color;
         transition: 0.2s;
         cursor: pointer;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
       }
     }
 
@@ -28,7 +29,7 @@
         content: "";
         height: 4px;
         width: 0;
-        background: c.$main-color;
+        background: c.$bandeau;
         position: absolute;
         border-radius: 10px;
         bottom: 0px;
@@ -55,6 +56,11 @@
       height: 3rem;
       border-radius: 50%;
     }
+    .cooker {
+      width: 3rem;
+      height: 3rem;
+      color: c.$main-color;
+    }
     &:hover {
       .navigation_parameters_menu {
         display: flex;
@@ -74,8 +80,7 @@
         padding: 0.5rem;
         font-size: 1.1rem;
         &:hover {
-          // background-color: c.$gris;
-          background: c.$beautifulBG;
+          background: c.$bandeau;
           color: white;
         }
       }

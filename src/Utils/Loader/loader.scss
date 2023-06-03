@@ -11,7 +11,7 @@
     height: 3.5rem;
     border-radius: 50%;
     display: inline-block;
-    border-top: 0.3rem solid c.$noir-rp;
+    border-top: 0.3rem solid c.$bandeau;
     border-right: 0.3rem solid transparent;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
@@ -25,7 +25,7 @@
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
-    border-left: 0.3rem solid c.$orange;
+    border-left: 0.3rem solid c.$main-color;
     border-bottom: 0.3rem solid transparent;
     animation: rotation 0.5s linear infinite reverse;
   }

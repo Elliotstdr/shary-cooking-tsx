@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const RecipeContainer = (props) => {
-  const rows = 9;
+  const rows = 12;
   const [first, setFirst] = useState(0);
   const ref = useRef(null);
   const recipesData = useFetchGet(props.dataToCall);

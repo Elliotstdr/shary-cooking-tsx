@@ -3,7 +3,7 @@ import "./StepsCreation.scss";
 import { InputTextarea } from "primereact/inputtextarea";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-
+import Bouton from "../../../Utils/Bouton/Bouton";
 const StepsCreation = (props) => {
   return (
     <>
@@ -44,9 +44,8 @@ const StepsCreation = (props) => {
         )}
       </div>
       {!props.nobutton && (
-        <button
-          className="btn-blanc"
-          onClick={(e) => {
+        <Bouton
+          btnAction={(e) => {
             e.preventDefault();
             props.setStepsList([
               ...props.stepsList,
@@ -60,7 +59,7 @@ const StepsCreation = (props) => {
         >
           <AiOutlinePlusCircle />
           Ajouter une étape
-        </button>
+        </Bouton>
       )}
     </>
   );

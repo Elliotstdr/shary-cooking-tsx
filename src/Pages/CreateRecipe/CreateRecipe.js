@@ -13,6 +13,7 @@ import ImageUpload from "../../Components/ImageUpload/ImageUpload";
 import { errorToast, successToast, useFetchGet } from "../../Services/api";
 import IngredientsCreation from "../../Components/FormElements/IngredientsCreation/IngredientsCreation";
 import StepsCreation from "../../Components/FormElements/StepsCreation/StepsCreation";
+import Footer from "../../Components/Footer/Footer";
 
 const CreateRecipe = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
@@ -309,8 +310,9 @@ const CreateRecipe = (props) => {
             errorIngredientMessage={errorIngredientMessage}
           ></IngredientsCreation>
         </div>
-        <button className="btn-bleu">{"Créer ma recette"}</button>
+        <button className="bouton">{"Créer ma recette"}</button>
       </form>
+      <Footer></Footer>
     </div>
   );
 };

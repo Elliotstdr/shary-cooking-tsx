@@ -1,70 +1,63 @@
 @use "src/Styles/_vars.scss" as c;
 
-.btn-blanc {
+.bouton {
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
   border: 2px solid c.$main-color;
-  background-color: transparent;
-  box-sizing: border-box;
-  border-radius: 30px;
-  min-width: fit-content;
-  height: 3rem;
-  color: c.$main-color;
-  transition: all 0.5s;
-  padding: 0rem 1.5rem;
-  font-weight: 700;
   display: flex;
+  align-items: center;
   justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  svg {
-    margin-right: 0.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-}
-.btn-blanc:hover {
-  cursor: pointer;
-  background-color: c.$main-color;
-  color: white;
-}
-
-@media screen and (max-width: c.$small) {
-  .btn-blanc {
-    font-size: small;
-  }
-}
-
-.btn-bleu {
-  background: c.$main-color;
-  // background: c.$beautifulBG;
-  border-radius: 30px;
-  color: white;
-  border: 1px solid c.$main-color;
-  width: fit-content;
-  height: 3rem;
-  transition: all 0.5s;
-  padding: 0rem 1.5rem;
-  font-weight: 700;
-  font-size: medium;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: row;
-  flex-wrap: wrap;
-  svg {
-    margin-right: 0.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-}
-.btn-bleu:hover {
-  cursor: pointer;
-  background-color: transparent !important;
+  padding: 0 1.5rem;
+  border-radius: 10rem;
   color: c.$main-color;
+  font-size: 1rem;
+  transition: all 0.3s;
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  height: 3rem;
+  min-width: fit-content;
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: c.$fond-page;
+    border-radius: 10rem;
+    z-index: -2;
+  }
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: c.$main-color;
+    transition: all 0.5s;
+    border-radius: 10rem;
+    z-index: -1;
+  }
+  &:hover {
+    color: c.$fond-page;
+    border: 2px solid c.$fond-page;
+    &:before {
+      width: 100%;
+    }
+  }
+  svg {
+    margin-right: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }
 
-@media screen and (max-width: c.$small) {
-  .btn-bleu {
-    font-size: small;
+@media (max-width: 500px) {
+  .bouton {
+    height: 2.5rem !important;
+    font-size: 14px !important;
   }
 }

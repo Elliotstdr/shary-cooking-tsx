@@ -5,6 +5,7 @@ import RecipeContainer from "../../Components/RecipeContainer/RecipeContainer";
 import { connect } from "react-redux";
 import { updateRecipe } from "../../Store/Actions/recipeActions";
 import PropTypes from "prop-types";
+import Footer from "../../Components/Footer/Footer";
 
 const Favorites = (props) => {
   useEffect(() => {
@@ -23,6 +24,7 @@ const Favorites = (props) => {
       <RecipeContainer
         dataToCall={`/favourites/user/${props.auth.userConnected.id}`}
       ></RecipeContainer>
+      <Footer></Footer>
     </div>
   );
 };

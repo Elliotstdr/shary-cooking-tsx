@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import "./Accueil.scss";
 import NavBar from "../../Components/NavBar/NavBar";
 import { useFetchGetConditional } from "../../Services/api";
+import Footer from "../../Components/Footer/Footer";
 
 const Accueil = (props) => {
   const typesData = useFetchGetConditional(
@@ -51,6 +52,7 @@ const Accueil = (props) => {
         <div>
           <NavBar></NavBar>
           <RecipeContainer dataToCall="/recipes"></RecipeContainer>
+          <Footer></Footer>
         </div>
       ) : (
         <Login></Login>

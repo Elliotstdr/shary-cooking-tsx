@@ -6,6 +6,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import Bouton from "../../../Utils/Bouton/Bouton";
 
 const IngredientsCreation = (props) => {
   const modifyIngredientList = (word, ingredient) => {
@@ -119,9 +120,8 @@ const IngredientsCreation = (props) => {
         )}
       </div>
       {!props.nobutton && (
-        <button
-          className="btn-blanc"
-          onClick={(e) => {
+        <Bouton
+          btnAction={(e) => {
             e.preventDefault();
             props.setIngredientList([
               ...props.ingredientList,
@@ -137,7 +137,7 @@ const IngredientsCreation = (props) => {
         >
           <AiOutlinePlusCircle />
           Ajouter une étape
-        </button>
+        </Bouton>
       )}
     </>
   );
