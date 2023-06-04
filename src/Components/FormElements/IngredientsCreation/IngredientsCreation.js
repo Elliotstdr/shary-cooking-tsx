@@ -115,9 +115,6 @@ const IngredientsCreation = (props) => {
             )}
           </div>
         ))}
-        {props.errorIngredientMessage && (
-          <small className="p-error">{props.errorIngredientMessage}</small>
-        )}
       </div>
       {!props.nobutton && (
         <Bouton

@@ -116,13 +116,7 @@ const ModalLogin = (props) => {
             {getFormErrorMessage("password")}
           </div>
           <div className="login__form__button">
-            <Bouton
-              btnAction={() => {
-                setIsLoging(true);
-              }}
-            >
-              {isloging ? <Loader /> : "Se connecter"}
-            </Bouton>
+            <Bouton>{isloging ? <Loader /> : "Se connecter"}</Bouton>
           </div>
         </form>
       </Modal>

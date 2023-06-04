@@ -27,8 +27,6 @@ const ModifyRecipe = (props) => {
   const [ingredientList, setIngredientList] = useState(
     props.recipe.ingredients
   );
-  const [errorStepMessage, setErrorStepMessage] = useState(null);
-  const [errorIngredientMessage, setErrorIngredientMessage] = useState(null);
 
   let defaultValues = {
     title: props.recipe.title,
@@ -49,29 +47,21 @@ const ModifyRecipe = (props) => {
     );
   };
 
-  const checkStepsIngredients = () => {
+  const checkSteps = () => {
     let response = true;
-    setErrorStepMessage(null);
-    setErrorIngredientMessage(null);
-
     stepsList.forEach((step) => {
       if (step.description === "") {
-        setErrorStepMessage(
-          "Une ou plusieurs étape n'est pas correctement remplie"
-        );
-        response = false;
+        response = "Une ou plusieurs étape n'est pas correctement remplie";
       }
     });
-    ingredientList.forEach((ingredient) => {
-      if (
-        ingredient.label === "" ||
-        ingredient.quantity === 0 ||
-        !ingredient.unit
-      ) {
-        setErrorIngredientMessage(
-          "Un ou plusieurs ingrédient n'est pas correctement rempli"
-        );
-        response = false;
+    return response;
+  };
+
+  const checkIngredients = () => {
+    let response = true;
+    ingredientList.forEach((ing) => {
+      if (ing.label === "" || ing.quantity === 0 || !ing.unit) {
+        response = "Un ou plusieurs ingrédient n'est pas correctement rempli";
       }
     });
     return response;
@@ -115,25 +105,23 @@ const ModifyRecipe = (props) => {
   const onSubmit = () => {
     const data = setFields();
 
-    if (checkStepsIngredients()) {
-      axios
-        .put(
-          `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipe.id}`,
-          data,
-          {
-            headers: {
-              accept: "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          if (image) {
-            postImage(res);
-          } else {
-            window.location.reload(false);
-          }
-        });
-    }
+    axios
+      .put(
+        `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipe.id}`,
+        data,
+        {
+          headers: {
+            accept: "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        if (image) {
+          postImage(res);
+        } else {
+          window.location.reload(false);
+        }
+      });
   };
 
   return (
@@ -254,28 +242,46 @@ const ModifyRecipe = (props) => {
         </div>
         <Divider></Divider>
         <div className="recipe__form__field">
-          <h4 htmlFor="type">Etapes</h4>
-          <StepsCreation
-            stepsList={stepsList}
-            setStepsList={setStepsList}
-            errorStepMessage={errorStepMessage}
-            nobutton
-          ></StepsCreation>
+          <h4 htmlFor="steps">Etapes</h4>
+          <Controller
+            name="steps"
+            control={control}
+            rules={{
+              validate: () => checkSteps(),
+            }}
+            render={({ field }) => (
+              <StepsCreation
+                stepsList={stepsList}
+                setStepsList={setStepsList}
+                nobutton
+              ></StepsCreation>
+            )}
+          />
+          {getFormErrorMessage("steps")}
         </div>
         <Divider></Divider>
         <div className="recipe__form__field">
-          <h4 htmlFor="type">Ingrédients</h4>
-          <IngredientsCreation
-            ingredientList={ingredientList}
-            setIngredientList={setIngredientList}
-            ingredientData={ingredientData.data}
-            autocompleteData={autocompleteData}
-            setAutocompleteData={setAutocompleteData}
-            activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}
-            errorIngredientMessage={errorIngredientMessage}
-            nobutton
-          ></IngredientsCreation>
+          <h4 htmlFor="ingredients">Ingrédients</h4>
+          <Controller
+            name="ingredients"
+            control={control}
+            rules={{
+              validate: () => checkIngredients(),
+            }}
+            render={({ field }) => (
+              <IngredientsCreation
+                ingredientList={ingredientList}
+                setIngredientList={setIngredientList}
+                ingredientData={ingredientData.data}
+                autocompleteData={autocompleteData}
+                setAutocompleteData={setAutocompleteData}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
+                nobutton
+              ></IngredientsCreation>
+            )}
+          />
+          {getFormErrorMessage("ingredients")}
         </div>
         <button className="bouton">{"Modifier ma recette"}</button>
       </form>

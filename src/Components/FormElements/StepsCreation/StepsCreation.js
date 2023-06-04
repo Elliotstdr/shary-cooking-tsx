@@ -39,9 +39,6 @@ const StepsCreation = (props) => {
             )}
           </div>
         ))}
-        {props.errorStepMessage && (
-          <small className="p-error">{props.errorStepMessage}</small>
-        )}
       </div>
       {!props.nobutton && (
         <Bouton
