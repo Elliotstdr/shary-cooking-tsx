@@ -92,7 +92,6 @@ const ShoppingList = (props) => {
             style={{ backgroundImage: `url(${image})` }}
           >
             <Bouton
-              className={"btn-blanc chooseBtn"}
               btnTexte={"Choisir mes recettes"}
               btnAction={() => setVisibleRecipeContainer(true)}
             ></Bouton>
@@ -122,6 +121,7 @@ const ShoppingList = (props) => {
           setVisible={setVisibleList}
           header={"Ma liste"}
           width={"40%"}
+          className={"modal_liste_courses_modal"}
         >
           <div className="modal_liste_courses">
             <InputTextarea

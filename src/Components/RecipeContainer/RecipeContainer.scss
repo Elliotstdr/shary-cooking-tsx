@@ -39,4 +39,50 @@
     align-items: center;
     justify-content: center;
   }
+  .p-accordion {
+    display: none;
+  }
+}
+
+@media (max-width: 950px) {
+  .recipeContainer {
+    .searchbar_container {
+      display: none;
+    }
+    .p-accordion {
+      display: block;
+      &-content {
+        padding: 0 1.25rem !important;
+        background-color: c.$fond-page !important;
+        border-radius: 10px !important;
+        border: unset !important;
+        .searchbar_container {
+          display: flex;
+          flex-direction: column;
+          padding: 0rem 1rem;
+          background-color: c.$fond-page;
+          border-radius: unset;
+          box-shadow: unset;
+          .filter-icon {
+            display: none;
+          }
+          .p-multiselect,
+          .p-inputtext {
+            margin: 0.5rem 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 950px) {
+  .recipeContainer {
+    &_cards {
+      padding: 2rem 1rem !important;
+    }
+    &_searchbar {
+      margin-top: 2rem;
+    }
+  }
 }

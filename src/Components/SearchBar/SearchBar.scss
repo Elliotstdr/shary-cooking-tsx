@@ -22,4 +22,24 @@
       top: 70%;
     }
   }
+  .p-accordion {
+    display: none;
+  }
+}
+
+@media (max-width: 1300px) {
+  .searchbar_container {
+    .p-multiselect,
+    .p-inputtext {
+      margin: 0;
+    }
+  }
+}
+@media (max-width: 1150px) {
+  .searchbar_container {
+    .p-multiselect,
+    .p-inputtext {
+      max-width: 10rem;
+    }
+  }
 }

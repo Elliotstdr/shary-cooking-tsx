@@ -7,6 +7,7 @@ import { Paginator } from "primereact/paginator";
 import Loader from "../../Utils/Loader/loader";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Accordion, AccordionTab } from "primereact/accordion";
 
 const RecipeContainer = (props) => {
   const rows = 12;
@@ -26,6 +27,19 @@ const RecipeContainer = (props) => {
           filteredRecipes={filteredRecipes}
           setFilteredRecipes={setFilteredRecipes}
         ></SearchBar>
+        <Accordion
+          activeIndex=""
+          expandIcon="pi pi-sliders-h"
+          collapseIcon="pi pi-sliders-h"
+        >
+          <AccordionTab header="Filtrer">
+            <SearchBar
+              startData={recipesData.data}
+              filteredRecipes={filteredRecipes}
+              setFilteredRecipes={setFilteredRecipes}
+            ></SearchBar>
+          </AccordionTab>
+        </Accordion>
       </div>
       <div className="recipeContainer_cards">
         {filteredRecipes ? (

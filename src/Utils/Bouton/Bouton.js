@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 
 const Bouton = (props) => {
   return (
-    <button className="bouton" onClick={props.btnAction}>
+    <button
+      className={props.className ? `bouton ${props.className}` : "bouton"}
+      onClick={props.btnAction}
+    >
       {props.children}
       {props.btnTexte}
     </button>

@@ -178,9 +178,7 @@ const RecipeCard = (props) => {
               Etes vous sur de vouloir supprimer cette recette ?
             </div>
             <div className="recipe_delete_modal_buttons">
-              <Bouton className={"btn-blanc"} btnAction={() => deleteRecipe()}>
-                Oui
-              </Bouton>
+              <Bouton btnAction={() => deleteRecipe()}>Oui</Bouton>
               <Bouton btnAction={() => setWantToDelete(false)}>Non</Bouton>
             </div>
           </div>
@@ -196,6 +194,7 @@ const RecipeCard = (props) => {
           visible={visibleModif}
           setVisible={setVisibleModif}
           header={"Modifier ma recette"}
+          className={"modify_recipe_modal"}
         >
           <ModifyRecipe recipe={props.recipeItem}></ModifyRecipe>
         </Modal>

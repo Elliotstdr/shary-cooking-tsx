@@ -84,3 +84,35 @@
     }
   }
 }
+
+@media (max-width: 700px) {
+  .choose_recipe {
+    .recipeCard {
+      width: 18rem;
+    }
+    .bouton {
+      margin-left: 22% !important;
+    }
+  }
+  .shoppingList_container {
+    justify-content: flex-start;
+    &_export {
+      margin: 0 0.5rem;
+      width: 100%;
+      &_recipes_recipe {
+        flex-direction: column;
+        img {
+          width: 100% !important;
+          height: unset !important;
+        }
+        .infos_top {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}
+
+.modal_liste_courses_modal {
+  width: 90% !important;
+}

@@ -71,7 +71,7 @@ const ModalLogin = (props) => {
   return (
     <>
       <Modal
-        header="Connexion"
+        header="Création de compte"
         visible={props.visible}
         setVisible={props.setVisible}
         className={"modal modal-login"}

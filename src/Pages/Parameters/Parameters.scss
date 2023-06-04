@@ -70,3 +70,14 @@
     }
   }
 }
+
+@media (max-width: 700px) {
+  .param__form {
+    margin: 2rem !important;
+  }
+}
+@media (max-width: 400px) {
+  .param__form {
+    margin: 2rem 1rem !important;
+  }
+}

@@ -55,3 +55,35 @@
 .p-dropdown-items {
   text-align: left;
 }
+
+@media (max-width: 900px) {
+  .recipe__form {
+    margin: 3rem 1rem;
+    &__group {
+      flex-direction: column;
+    }
+    .checkboxes {
+      flex-wrap: wrap;
+    }
+    .steps {
+      width: 90%;
+    }
+    .ingredients {
+      input,
+      .p-dropdown {
+        margin: 0.25rem !important;
+      }
+      .p-inputtext {
+        width: 4rem !important;
+      }
+      .ingredient_name {
+        .p-inputtext {
+          width: 10rem !important;
+        }
+      }
+    }
+    .p-divider.p-divider-horizontal {
+      margin: 0.25rem 0;
+    }
+  }
+}

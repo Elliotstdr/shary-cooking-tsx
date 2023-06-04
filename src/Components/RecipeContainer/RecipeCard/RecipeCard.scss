@@ -111,3 +111,42 @@
     }
   }
 }
+@media (max-width: 900px) {
+  .modify_recipe_modal {
+    max-width: 90%;
+    .p-dialog {
+      &-content {
+        padding: 0 0 2rem 0 !important;
+        .recipe__form {
+          margin: 1rem;
+          &__field {
+            align-items: flex-start;
+            .p-fileupload-buttonbar {
+              padding: 0.25rem !important;
+            }
+            .checkboxes {
+              flex-wrap: wrap;
+            }
+            .step {
+              width: 100%;
+            }
+            .ingredients {
+              input,
+              .p-dropdown {
+                margin: 0.5rem;
+              }
+              .p-inputtext {
+                width: 4rem;
+              }
+              .ingredient_name {
+                .p-inputtext {
+                  width: 6rem !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -9,3 +9,11 @@
   justify-content: space-evenly;
   align-items: center;
 }
+
+@media (max-width: 700px) {
+  .footer {
+    .desktop {
+      display: none;
+    }
+  }
+}
