@@ -4,7 +4,6 @@ import NavBar from "../../Components/NavBar/NavBar";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
-import { Checkbox } from "primereact/checkbox";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -14,6 +13,7 @@ import { errorToast, successToast, useFetchGet } from "../../Services/api";
 import IngredientsCreation from "../../Components/FormElements/IngredientsCreation/IngredientsCreation";
 import StepsCreation from "../../Components/FormElements/StepsCreation/StepsCreation";
 import Footer from "../../Components/Footer/Footer";
+import { RadioButton } from "primereact/radiobutton";
 
 const CreateRecipe = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
@@ -41,6 +41,12 @@ const CreateRecipe = (props) => {
       id: 1,
     },
   ]);
+  const regimeTooltips = [
+    "Contient tout type de nourriture",
+    "Régime sans viande ni poisson mais avec des produits d'origine animale",
+    "Régime sans viande, poisson ou produits d'origine animale",
+    "Régime végétarien à l'exception des produits de la mer",
+  ];
 
   let defaultValues = {
     title: "",
@@ -222,7 +228,7 @@ const CreateRecipe = (props) => {
                   {...field}
                   placeholder="3 personnes"
                   className="recipe__form__field-number"
-                  type="number"
+                  keyfilter="num"
                 />
               )}
             />
@@ -252,7 +258,7 @@ const CreateRecipe = (props) => {
           <div className="checkboxes">
             {props.secondaryTables.types.map((type, index) => (
               <div className="checkbox" key={index}>
-                <Checkbox
+                <RadioButton
                   checked={type.id === typeId}
                   onChange={() => setTypeId(type.id)}
                 />
@@ -266,9 +272,11 @@ const CreateRecipe = (props) => {
           <div className="checkboxes">
             {props.secondaryTables.regimes.map((regime, index) => (
               <div className="checkbox" key={index}>
-                <Checkbox
+                <RadioButton
                   checked={regime.id === regimeId}
                   onChange={() => setRegimeId(regime.id)}
+                  tooltip={regimeTooltips[index]}
+                  tooltipOptions={{ position: "bottom" }}
                 />
                 <label>{regime.label}</label>
               </div>

@@ -3,7 +3,7 @@ import "./ModifyRecipe.scss";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
-import { Checkbox } from "primereact/checkbox";
+import { RadioButton } from "primereact/radiobutton";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -187,7 +187,7 @@ const ModifyRecipe = (props) => {
                   {...field}
                   placeholder="3 personnes"
                   className="recipe__form__field-number"
-                  type="number"
+                  keyfilter="num"
                 />
               )}
             />
@@ -217,7 +217,7 @@ const ModifyRecipe = (props) => {
           <div className="checkboxes">
             {props.secondaryTables.types.map((type, index) => (
               <div className="checkbox" key={index}>
-                <Checkbox
+                <RadioButton
                   checked={type.id === typeId}
                   onChange={() => setTypeId(type.id)}
                 />
@@ -231,7 +231,7 @@ const ModifyRecipe = (props) => {
           <div className="checkboxes">
             {props.secondaryTables.regimes.map((regime, index) => (
               <div className="checkbox" key={index}>
-                <Checkbox
+                <RadioButton
                   checked={regime.id === regimeId}
                   onChange={() => setRegimeId(regime.id)}
                 />

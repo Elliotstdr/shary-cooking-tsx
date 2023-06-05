@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./ImageUpload.scss";
 import { errorToast, successToast } from "../../Services/api";
+import { Tooltip } from "primereact/tooltip";
 
 const ImageUpload = (props) => {
   const uploadOptions = {
@@ -28,24 +29,32 @@ const ImageUpload = (props) => {
     fileReader.readAsDataURL(file);
   };
   return (
-    <FileUpload
-      name={"image"}
-      className="upload_image"
-      customUpload={true}
-      uploadHandler={uploadHandler}
-      chooseLabel="Modifier l'image"
-      onClear={() => {
-        props.setImage(null);
-        errorToast(
-          "Le fichier a bien été supprimé",
-          props.cancelToast,
-          "Suppression"
-        );
-      }}
-      uploadOptions={uploadOptions}
-      cancelOptions={cancelOptions}
-      accept="image/*"
-    ></FileUpload>
+    <>
+      <FileUpload
+        name={"image"}
+        className="upload_image"
+        customUpload={true}
+        uploadHandler={uploadHandler}
+        chooseLabel="Modifier l'image"
+        onClear={() => {
+          props.setImage(null);
+          errorToast(
+            "Le fichier a bien été supprimé",
+            props.cancelToast,
+            "Suppression"
+          );
+        }}
+        uploadOptions={uploadOptions}
+        cancelOptions={cancelOptions}
+        accept="image/*"
+        tooltip="Une fois votre image sélectionnée, n'oubliez pas de valider votre sélection"
+        tooltipOptions={{ position: "bottom" }}
+      ></FileUpload>
+      <Tooltip target={".upload_image"}>
+        Une fois votre image sélectionnée, n'oubliez pas de valider votre
+        sélection
+      </Tooltip>
+    </>
   );
 };
 
