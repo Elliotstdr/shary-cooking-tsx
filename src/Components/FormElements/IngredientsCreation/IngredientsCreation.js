@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./IngredientsCreation.scss";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
@@ -7,8 +7,11 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Bouton from "../../../Utils/Bouton/Bouton";
+import { AutoComplete } from "primereact/autocomplete";
 
 const IngredientsCreation = (props) => {
+  const [value, setValue] = useState("");
+
   const modifyIngredientList = (word, ingredient) => {
     let tempArray = [...props.ingredientList];
     tempArray.forEach((element) => {
@@ -20,7 +23,7 @@ const IngredientsCreation = (props) => {
   };
   const findIngredient = (word) => {
     const filteredData = props.ingredientData.filter((element) =>
-      element.name.toLowerCase().includes(word.toLowerCase())
+      element.name.toLowerCase().includes(word.query.toLowerCase())
     );
     props.setAutocompleteData(filteredData);
   };
@@ -29,44 +32,22 @@ const IngredientsCreation = (props) => {
       <div className="ingredients">
         {props.ingredientList.map((ingredient, index) => (
           <div className="ingredient" key={index}>
-            <div className="ingredient_name">
-              <InputText
-                placeholder="Tomates, Boeuf, Pommes..."
-                className="recipe__form__field-ingredient"
-                value={ingredient.label}
-                onChange={(e) => {
-                  modifyIngredientList(e.target.value, ingredient);
-                  if (e.target.value.length > 2) {
-                    findIngredient(e.target.value);
-                  }
-                }}
+            <div className="ingredient_name" id="ingredient_name">
+              <AutoComplete
+                value={value}
+                suggestions={props.autocompleteData}
+                completeMethod={findIngredient}
+                field="name"
+                placeholder="Tomates, Boeuf, ..."
+                onChange={(e) => setValue(e.value)}
                 onClick={(e) => {
                   e.stopPropagation();
                   props.setActiveIndex(index);
                 }}
-              />
-              <div
-                className={`ingredient_name_autocomplete ${
-                  props.autocompleteData.length > 0 &&
-                  props.activeIndex === index
-                    ? "visible"
-                    : "hidden"
-                }`}
-              >
-                {props.autocompleteData
-                  .slice(0, 10)
-                  .sort((a, b) => a.name.length - b.name.length)
-                  .map((element, index) => (
-                    <span
-                      key={index}
-                      onClick={(e) => {
-                        modifyIngredientList(e.target.textContent, ingredient);
-                      }}
-                    >
-                      {element.name}
-                    </span>
-                  ))}
-              </div>
+                onSelect={(e) => modifyIngredientList(e.value.name, ingredient)}
+                tooltip="Privilégiez la sélection des ingrédients proposés pour une meilleure performance du site"
+                tooltipOptions={{ position: "top" }}
+              ></AutoComplete>
             </div>
             <Dropdown
               value={ingredient.unit}
@@ -88,8 +69,7 @@ const IngredientsCreation = (props) => {
               placeholder="3, 2.5..."
               className="recipe__form__field-ingredient"
               value={ingredient.quantity}
-              type="number"
-              step={0.5}
+              keyfilter="num"
               onChange={(e) => {
                 let tempArray = [...props.ingredientList];
                 tempArray.forEach((element) => {

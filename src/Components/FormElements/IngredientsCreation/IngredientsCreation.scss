@@ -19,33 +19,16 @@
         width: 1.5rem;
         align-self: center;
       }
-      &_name {
-        position: relative;
-        &_autocomplete {
-          z-index: 10001;
-          position: absolute;
-          display: flex;
-          flex-direction: column;
-          background-color: white;
-          border-radius: 10px;
-          top: 4rem;
-          left: 1rem;
-          width: 15rem;
-          text-align: left;
-          &.hidden {
-            display: none;
-          }
-          span {
-            padding: 0.5rem 0 0.5rem 0.5rem;
-            &:hover {
-              cursor: pointer;
-              border-radius: 5px;
-              background: c.$bandeau;
-              color: white;
-            }
-          }
-        }
-      }
+    }
+  }
+}
+
+.p-autocomplete-panel {
+  .p-autocomplete-items {
+    text-align: left;
+    .p-autocomplete-item:hover {
+      color: white !important;
+      background-color: c.$bandeau !important;
     }
   }
 }
