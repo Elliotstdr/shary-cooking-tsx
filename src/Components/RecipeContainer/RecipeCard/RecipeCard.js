@@ -185,7 +185,12 @@ const RecipeCard = (props) => {
         </Modal>
       )}
       {visibleDetail && (
-        <SlideIn header={"Detail de la recette"} setVisible={setVisibleDetail}>
+        <SlideIn
+          header={"Detail de la recette"}
+          setVisible={setVisibleDetail}
+          visible={visibleDetail}
+          width={"40rem"}
+        >
           <CardDetail id={props.recipeItem.id}></CardDetail>
         </SlideIn>
       )}
