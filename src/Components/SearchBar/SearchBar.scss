@@ -9,7 +9,14 @@
   align-items: center;
   justify-content: space-evenly;
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+  margin: 0 10%;
+  transition: all ease-in-out 0.5s;
+  overflow: hidden;
+  &.false {
+    width: 6rem;
+  }
   .filter-icon {
+    cursor: pointer;
     color: c.$bandeau;
     width: 2rem;
     height: 2rem;

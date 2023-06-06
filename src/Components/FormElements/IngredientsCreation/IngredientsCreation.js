@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./IngredientsCreation.scss";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
@@ -10,8 +10,6 @@ import Bouton from "../../../Utils/Bouton/Bouton";
 import { AutoComplete } from "primereact/autocomplete";
 
 const IngredientsCreation = (props) => {
-  const [value, setValue] = useState("");
-
   const modifyIngredientList = (word, ingredient) => {
     let tempArray = [...props.ingredientList];
     tempArray.forEach((element) => {
@@ -34,18 +32,20 @@ const IngredientsCreation = (props) => {
           <div className="ingredient" key={index}>
             <div className="ingredient_name" id="ingredient_name">
               <AutoComplete
-                value={value}
+                value={ingredient.label}
                 suggestions={props.autocompleteData}
                 completeMethod={findIngredient}
                 field="name"
                 placeholder="Tomates, Boeuf, ..."
-                onChange={(e) => setValue(e.value)}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  props.setActiveIndex(index);
-                }}
+                onChange={(e) =>
+                  modifyIngredientList(e.target.value, ingredient)
+                }
+                onClick={() => props.setActiveIndex(index)}
                 onSelect={(e) => modifyIngredientList(e.value.name, ingredient)}
-                tooltip="Privilégiez la sélection des ingrédients proposés pour une meilleure performance du site"
+                tooltip={
+                  index === 0 &&
+                  "Privilégiez la sélection des ingrédients proposés pour une meilleure performance du site"
+                }
                 tooltipOptions={{ position: "top" }}
               ></AutoComplete>
             </div>

@@ -9,7 +9,7 @@ import { BsFilter } from "react-icons/bs";
 
 const SearchBar = (props) => {
   const usersData = useFetchGet("/users");
-
+  const [visibleSearchBar, setVisibleSearchBar] = useState(true);
   const [regime, setRegime] = useState(null);
   const [type, setType] = useState(null);
   const [user, setUser] = useState(null);
@@ -52,52 +52,59 @@ const SearchBar = (props) => {
   }, [user, regime, type, keyword]);
 
   return (
-    <div className="searchbar_container">
-      <BsFilter className="filter-icon"></BsFilter>
-      <InputText
-        placeholder="Tomates farcies, ..."
-        value={keyword}
-        onChange={(e) => {
-          setKeyword(e.target.value);
-        }}
-      ></InputText>
-      <MultiSelect
-        showClear
-        value={user}
-        onChange={(e) => {
-          setUser(e.value);
-        }}
-        options={usersData.data}
-        optionLabel="name"
-        filter
-        placeholder="Créée par"
-        maxSelectedLabels={2}
-        selectedItemsLabel={user?.length + " éléments choisis"}
-      ></MultiSelect>
-      <MultiSelect
-        showClear
-        value={regime}
-        onChange={(e) => {
-          setRegime(e.value);
-        }}
-        options={props.secondaryTables.regimes}
-        optionLabel="label"
-        placeholder="Régime alimentaire"
-        maxSelectedLabels={2}
-        selectedItemsLabel={regime?.length + " éléments choisis"}
-      ></MultiSelect>
-      <MultiSelect
-        showClear
-        value={type}
-        onChange={(e) => {
-          setType(e.value);
-        }}
-        options={props.secondaryTables.types}
-        optionLabel="label"
-        placeholder="Type de plat"
-        maxSelectedLabels={2}
-        selectedItemsLabel={type?.length + " éléments choisis"}
-      ></MultiSelect>
+    <div className={`searchbar_container ${visibleSearchBar}`}>
+      <BsFilter
+        className="filter-icon"
+        onClick={() => setVisibleSearchBar(!visibleSearchBar)}
+      ></BsFilter>
+      {visibleSearchBar && (
+        <>
+          <InputText
+            placeholder="Tomates farcies, ..."
+            value={keyword}
+            onChange={(e) => {
+              setKeyword(e.target.value);
+            }}
+          ></InputText>
+          <MultiSelect
+            showClear
+            value={user}
+            onChange={(e) => {
+              setUser(e.value);
+            }}
+            options={usersData.data}
+            optionLabel="name"
+            filter
+            placeholder="Créée par"
+            maxSelectedLabels={2}
+            selectedItemsLabel={user?.length + " éléments choisis"}
+          ></MultiSelect>
+          <MultiSelect
+            showClear
+            value={regime}
+            onChange={(e) => {
+              setRegime(e.value);
+            }}
+            options={props.secondaryTables.regimes}
+            optionLabel="label"
+            placeholder="Régime alimentaire"
+            maxSelectedLabels={2}
+            selectedItemsLabel={regime?.length + " éléments choisis"}
+          ></MultiSelect>
+          <MultiSelect
+            showClear
+            value={type}
+            onChange={(e) => {
+              setType(e.value);
+            }}
+            options={props.secondaryTables.types}
+            optionLabel="label"
+            placeholder="Type de plat"
+            maxSelectedLabels={2}
+            selectedItemsLabel={type?.length + " éléments choisis"}
+          ></MultiSelect>
+        </>
+      )}
     </div>
   );
 };

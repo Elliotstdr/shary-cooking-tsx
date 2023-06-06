@@ -3,9 +3,6 @@
 .recipeContainer {
   display: flex;
   flex-direction: column;
-  &_searchbar {
-    margin-top: 4rem;
-  }
   &_cards {
     padding: 3rem 8rem;
     display: grid;
@@ -15,8 +12,8 @@
     grid-auto-rows: auto;
   }
   &_searchbar {
+    margin-top: 4rem;
     display: flex;
-    justify-content: center;
   }
   .p-paginator {
     margin-bottom: 2rem;
@@ -49,26 +46,30 @@
     .searchbar_container {
       display: none;
     }
-    .p-accordion {
-      display: block;
-      &-content {
-        padding: 0 1.25rem !important;
-        background-color: c.$fond-page !important;
-        border-radius: 10px !important;
-        border: unset !important;
-        .searchbar_container {
-          display: flex;
-          flex-direction: column;
-          padding: 0rem 1rem;
-          background-color: c.$fond-page;
-          border-radius: unset;
-          box-shadow: unset;
-          .filter-icon {
-            display: none;
-          }
-          .p-multiselect,
-          .p-inputtext {
-            margin: 0.5rem 0;
+    &_searchbar {
+      justify-content: center;
+      .p-accordion {
+        display: block;
+        &-content {
+          padding: 0 1.25rem !important;
+          background-color: c.$fond-page !important;
+          border-radius: 10px !important;
+          border: unset !important;
+          .searchbar_container {
+            display: flex;
+            flex-direction: column;
+            padding: 0rem 1rem;
+            background-color: c.$fond-page;
+            border-radius: unset;
+            box-shadow: unset;
+            overflow: unset;
+            .filter-icon {
+              display: none;
+            }
+            .p-multiselect,
+            .p-inputtext {
+              margin: 0.5rem 0;
+            }
           }
         }
       }

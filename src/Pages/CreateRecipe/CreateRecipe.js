@@ -44,8 +44,8 @@ const CreateRecipe = (props) => {
   const regimeTooltips = [
     "Contient tout type de nourriture",
     "Régime sans viande ni poisson mais avec des produits d'origine animale",
-    "Régime sans viande, poisson ou produits d'origine animale",
     "Régime végétarien à l'exception des produits de la mer",
+    "Régime sans viande, poisson ou produits d'origine animale",
   ];
 
   let defaultValues = {

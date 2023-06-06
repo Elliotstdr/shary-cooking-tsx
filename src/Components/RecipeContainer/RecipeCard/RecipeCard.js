@@ -59,6 +59,27 @@ const RecipeCard = (props) => {
         )
       );
   };
+
+  const shoppingAction = () => {
+    if (props.recipe.shopping) {
+      if (
+        props.recipe.chosenRecipes.length === 0 ||
+        !props.recipe.chosenRecipes.some(
+          (recipe) => recipe.id === props.recipeItem.id
+        )
+      ) {
+        props.handleUpdateRecipes({
+          chosenRecipes: [...props.recipe.chosenRecipes, props.recipeItem],
+        });
+      } else {
+        props.handleUpdateRecipes({
+          chosenRecipes: props.recipe.chosenRecipes.filter(
+            (recipe) => recipe.id !== props.recipeItem.id
+          ),
+        });
+      }
+    }
+  };
   return (
     <div
       className={`recipeCard cardHover ${
@@ -70,24 +91,7 @@ const RecipeCard = (props) => {
       }`}
       style={{ minHeight: "95.5%" }}
       onClick={() => {
-        if (props.recipe.shopping) {
-          if (
-            props.recipe.chosenRecipes.length === 0 ||
-            !props.recipe.chosenRecipes.some(
-              (recipe) => recipe.id === props.recipeItem.id
-            )
-          ) {
-            props.handleUpdateRecipes({
-              chosenRecipes: [...props.recipe.chosenRecipes, props.recipeItem],
-            });
-          } else {
-            props.handleUpdateRecipes({
-              chosenRecipes: props.recipe.chosenRecipes.filter(
-                (recipe) => recipe.id !== props.recipeItem.id
-              ),
-            });
-          }
-        }
+        shoppingAction();
       }}
     >
       <Toast ref={uploadToast}></Toast>
