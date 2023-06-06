@@ -78,9 +78,7 @@
     &.copied {
       border-color: green;
       color: white;
-      &::after {
-        background-color: green;
-      }
+      background-color: green;
     }
   }
 }

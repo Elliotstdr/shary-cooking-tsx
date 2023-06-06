@@ -18,40 +18,51 @@
   font-weight: 700;
   height: 3rem;
   min-width: fit-content;
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: c.$fond-page;
-    border-radius: 10rem;
-    z-index: -2;
-  }
-  &:before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0%;
-    height: 100%;
-    background-color: c.$main-color;
-    transition: all 0.5s;
-    border-radius: 10rem;
-    z-index: -1;
-  }
   &:hover {
     color: c.$fond-page;
     border: 2px solid c.$fond-page;
     &:before {
-      width: 100%;
+      width: 100% !important;
     }
   }
   svg {
     margin-right: 0.5rem;
     width: 1.5rem;
     height: 1.5rem;
+  }
+  &.slide {
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: c.$fond-page;
+      border-radius: 10rem;
+      z-index: -2;
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background-color: c.$main-color;
+      transition: all 0.5s;
+      border-radius: 10rem;
+      z-index: -1;
+    }
+  }
+  &.normal {
+    background-color: transparent;
+    border: 2px solid c.$main-color;
+    transition: all 0.5s;
+    &:hover {
+      background-color: c.$main-color;
+      color: white;
+    }
   }
 }
 

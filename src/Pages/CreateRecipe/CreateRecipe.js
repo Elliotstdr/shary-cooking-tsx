@@ -324,7 +324,7 @@ const CreateRecipe = (props) => {
           />
           {getFormErrorMessage("ingredients")}
         </div>
-        <button className="bouton">{"Créer ma recette"}</button>
+        <button className="bouton slide">{"Créer ma recette"}</button>
       </form>
       <Footer></Footer>
     </div>

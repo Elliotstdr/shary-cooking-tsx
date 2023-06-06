@@ -182,8 +182,12 @@ const RecipeCard = (props) => {
               Etes vous sur de vouloir supprimer cette recette ?
             </div>
             <div className="recipe_delete_modal_buttons">
-              <Bouton btnAction={() => deleteRecipe()}>Oui</Bouton>
-              <Bouton btnAction={() => setWantToDelete(false)}>Non</Bouton>
+              <Bouton type={"normal"} btnAction={() => deleteRecipe()}>
+                Oui
+              </Bouton>
+              <Bouton type={"normal"} btnAction={() => setWantToDelete(false)}>
+                Non
+              </Bouton>
             </div>
           </div>
         </Modal>

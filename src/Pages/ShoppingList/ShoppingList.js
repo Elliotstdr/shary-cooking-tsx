@@ -58,6 +58,7 @@ const ShoppingList = (props) => {
         {visibleExport ? (
           <div className="shoppingList_container_export">
             <Bouton
+              type={"normal"}
               btnTexte={"Modifier ma liste de recettes"}
               btnAction={() => setVisibleRecipeContainer(true)}
             ></Bouton>
@@ -76,6 +77,7 @@ const ShoppingList = (props) => {
               ))}
             </div>
             <Bouton
+              type={"normal"}
               btnTexte={"Créer ma liste de course"}
               btnAction={() => {
                 setStringShopping(
@@ -108,6 +110,7 @@ const ShoppingList = (props) => {
         >
           <>
             <Bouton
+              type={"normal"}
               btnTexte={"Valider ma sélection"}
               btnAction={() => setVisibleRecipeContainer(false)}
             ></Bouton>
@@ -129,7 +132,7 @@ const ShoppingList = (props) => {
               onChange={(e) => setStringShopping(e.target.value)}
             ></InputTextarea>
             <button
-              className={`bouton ${greenButton && "copied"}`}
+              className={`bouton normal ${greenButton && "copied"}`}
               onClick={() => {
                 navigator.clipboard.writeText(stringShopping);
                 setGreenButton(true);

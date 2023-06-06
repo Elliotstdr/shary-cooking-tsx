@@ -283,7 +283,7 @@ const ModifyRecipe = (props) => {
           />
           {getFormErrorMessage("ingredients")}
         </div>
-        <button className="bouton">{"Modifier ma recette"}</button>
+        <button className="bouton slide">{"Modifier ma recette"}</button>
       </form>
     </div>
   );

@@ -195,6 +195,7 @@ const Parameters = (props) => {
           {getFormErrorMessage("email")}
         </div>
         <Bouton
+          type={"normal"}
           btnAction={(e) => {
             e.preventDefault();
             setShowMDP(!showMDP);
