@@ -12,6 +12,12 @@
     }
   }
   &-content {
-    margin-top: 2rem;
+    padding: 0 0 1.25rem 0 !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .p-sidebar {
+    width: 95% !important;
   }
 }
