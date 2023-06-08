@@ -8,6 +8,9 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  span {
+    cursor: pointer;
+  }
 }
 
 @media (max-width: 700px) {

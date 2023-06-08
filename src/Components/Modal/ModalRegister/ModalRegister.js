@@ -204,6 +204,10 @@ const ModalLogin = (props) => {
                   placeholder={"Clé secrète"}
                   className={"login__form__field-secretKey"}
                   feedback={false}
+                  tooltip={
+                    "Cette clé doit vous être fournie par le créateur du site."
+                  }
+                  tooltipOptions={{ position: "top" }}
                 />
               )}
             />
