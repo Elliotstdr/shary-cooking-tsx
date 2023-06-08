@@ -28,10 +28,11 @@ const RecipeCard = (props) => {
   const cancelToast = useRef(null);
   const uploadToast = useRef(null);
 
-  const addToFavorites = () => {
+  const addToFavorites = (actionType) => {
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipeItem.id}/users/${props.auth.userConnected.id}`,
+        { action: actionType },
         {
           headers: {
             accept: "application/json",
@@ -39,7 +40,12 @@ const RecipeCard = (props) => {
         }
       )
       .then(() => {
-        setIsFavorite(true);
+        if (actionType === "add") {
+          setIsFavorite(true);
+        }
+        if (actionType === "delete") {
+          setIsFavorite(false);
+        }
       });
   };
 
@@ -125,7 +131,17 @@ const RecipeCard = (props) => {
         onClick={() => !props.recipe.shopping && setVisibleDetail(true)}
       >
         <div className="recipeCard__corps__author">
-          Créé par {props.recipeItem.postedByUser.name}
+          {props.recipeItem.postedByUser.imageUrl && (
+            <img
+              src={
+                process.env.REACT_APP_BASE_URL_API +
+                props.recipeItem.postedByUser.imageUrl
+              }
+              alt="ma pp"
+              className="creatorPP"
+            ></img>
+          )}
+          <span>Créé par {props.recipeItem.postedByUser.name}</span>
         </div>
         <div className="recipeCard__corps__title">{props.recipeItem.title}</div>
         <div className="recipeCard__corps__regime">
@@ -153,9 +169,11 @@ const RecipeCard = (props) => {
           props.recipeItem.savedByUsers?.some(
             (user) => user.id === props.auth.userConnected.id
           ) ? (
-            <AiFillStar onClick={() => addToFavorites()}></AiFillStar>
+            <AiFillStar onClick={() => addToFavorites("delete")}></AiFillStar>
           ) : (
-            <AiOutlineStar onClick={() => addToFavorites()}></AiOutlineStar>
+            <AiOutlineStar
+              onClick={() => addToFavorites("add")}
+            ></AiOutlineStar>
           )}
         </div>
         {props.recipe.editable && (
@@ -197,7 +215,7 @@ const RecipeCard = (props) => {
           header={"Detail de la recette"}
           setVisible={setVisibleDetail}
           visible={visibleDetail}
-          width={"40rem"}
+          width={"70%"}
         >
           <CardDetail id={props.recipeItem.id}></CardDetail>
         </SlideIn>
