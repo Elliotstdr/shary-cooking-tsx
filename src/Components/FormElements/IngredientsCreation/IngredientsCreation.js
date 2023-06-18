@@ -32,6 +32,7 @@ const IngredientsCreation = (props) => {
           <div className="ingredient" key={index}>
             <div className="ingredient_name" id="ingredient_name">
               <AutoComplete
+                className="recipe__form__field-ingname"
                 value={ingredient.label}
                 suggestions={props.autocompleteData}
                 completeMethod={findIngredient}
@@ -49,25 +50,9 @@ const IngredientsCreation = (props) => {
                 tooltipOptions={{ position: "top" }}
               ></AutoComplete>
             </div>
-            <Dropdown
-              value={ingredient.unit}
-              options={props.secondaryTables.units}
-              optionLabel="label"
-              placeholder="kg, unité..."
-              className="recipe__form__field-ingredient"
-              onChange={(e) => {
-                let tempArray = [...props.ingredientList];
-                tempArray.forEach((element) => {
-                  if (element.id === ingredient.id) {
-                    element.unit = e.target.value;
-                  }
-                });
-                props.setIngredientList(tempArray);
-              }}
-            ></Dropdown>
             <InputText
               placeholder="3, 2.5..."
-              className="recipe__form__field-ingredient"
+              className="recipe__form__field-quantity"
               value={ingredient.quantity}
               keyfilter="num"
               onChange={(e) => {
@@ -80,6 +65,22 @@ const IngredientsCreation = (props) => {
                 props.setIngredientList(tempArray);
               }}
             />
+            <Dropdown
+              value={ingredient.unit}
+              options={props.secondaryTables.units}
+              optionLabel="label"
+              placeholder="kg, unité..."
+              className="recipe__form__field-unit"
+              onChange={(e) => {
+                let tempArray = [...props.ingredientList];
+                tempArray.forEach((element) => {
+                  if (element.id === ingredient.id) {
+                    element.unit = e.target.value;
+                  }
+                });
+                props.setIngredientList(tempArray);
+              }}
+            ></Dropdown>
             {ingredient.id !== 1 && !props.nobutton && (
               <RiDeleteBin6Line
                 className="bin"
@@ -98,6 +99,7 @@ const IngredientsCreation = (props) => {
       </div>
       {!props.nobutton && (
         <Bouton
+          type={"normal"}
           btnAction={(e) => {
             e.preventDefault();
             props.setIngredientList([
@@ -113,7 +115,7 @@ const IngredientsCreation = (props) => {
           }}
         >
           <AiOutlinePlusCircle />
-          Ajouter une étape
+          Ajouter un ingrédient
         </Bouton>
       )}
     </>

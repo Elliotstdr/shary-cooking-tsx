@@ -11,14 +11,15 @@ import { CiEdit } from "react-icons/ci";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import CardDetail from "./CardDetail/CardDetail";
 import Modal from "../../Modal/Modal";
-import ModifyRecipe from "../../../Pages/CreateRecipe/ModifyRecipe/ModifyRecipe";
 import axios from "axios";
 import { connect } from "react-redux";
 import Bouton from "../../../Utils/Bouton/Bouton";
 import { Toast } from "primereact/toast";
 import SlideIn from "../../../Utils/SlideIn/SlideIn";
 import { updateRecipe } from "../../../Store/Actions/recipeActions";
-import { errorToast } from "../../../Services/api";
+import { errorToast, timeToString } from "../../../Services/api";
+import { GiCook } from "react-icons/gi";
+import CreateRecipe from "../../../Pages/CreateRecipe/CreateRecipe";
 
 const RecipeCard = (props) => {
   const [visibleDetail, setVisibleDetail] = useState(false);
@@ -131,7 +132,7 @@ const RecipeCard = (props) => {
         onClick={() => !props.recipe.shopping && setVisibleDetail(true)}
       >
         <div className="recipeCard__corps__author">
-          {props.recipeItem.postedByUser.imageUrl && (
+          {props.recipeItem.postedByUser.imageUrl ? (
             <img
               src={
                 process.env.REACT_APP_BASE_URL_API +
@@ -140,8 +141,10 @@ const RecipeCard = (props) => {
               alt="ma pp"
               className="creatorPP"
             ></img>
+          ) : (
+            <GiCook className="cooker"></GiCook>
           )}
-          <span>Créé par {props.recipeItem.postedByUser.name}</span>
+          <span>Créée par {props.recipeItem.postedByUser.name}</span>
         </div>
         <div className="recipeCard__corps__title">{props.recipeItem.title}</div>
         <div className="recipeCard__corps__regime">
@@ -159,7 +162,7 @@ const RecipeCard = (props) => {
         <div className="recipeCard__corps__time">
           <span>
             <BiTimer></BiTimer>
-            {props.recipeItem.time}
+            {timeToString(props.recipeItem.time)}
           </span>
         </div>
       </div>
@@ -227,7 +230,7 @@ const RecipeCard = (props) => {
           header={"Modifier ma recette"}
           className={"modify_recipe_modal"}
         >
-          <ModifyRecipe recipe={props.recipeItem}></ModifyRecipe>
+          <CreateRecipe recipe={props.recipeItem}></CreateRecipe>
         </Modal>
       )}
     </div>

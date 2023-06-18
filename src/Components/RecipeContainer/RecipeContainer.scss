@@ -46,7 +46,11 @@
     .searchbar_container {
       display: none;
     }
+    &_cards {
+      padding: 2rem 1rem !important;
+    }
     &_searchbar {
+      margin-top: 2rem;
       justify-content: center;
       .p-accordion {
         display: block;
@@ -73,17 +77,6 @@
           }
         }
       }
-    }
-  }
-}
-
-@media (max-width: 950px) {
-  .recipeContainer {
-    &_cards {
-      padding: 2rem 1rem !important;
-    }
-    &_searchbar {
-      margin-top: 2rem;
     }
   }
 }

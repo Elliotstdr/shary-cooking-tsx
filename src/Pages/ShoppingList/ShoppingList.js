@@ -128,6 +128,7 @@ const ShoppingList = (props) => {
         >
           <div className="modal_liste_courses">
             <InputTextarea
+              autoResize
               value={stringShopping}
               onChange={(e) => setStringShopping(e.target.value)}
             ></InputTextarea>

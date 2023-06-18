@@ -1,6 +1,6 @@
 import React from "react";
 import "./CardDetail.scss";
-import { useFetchGet } from "../../../../Services/api";
+import { timeToString, useFetchGet } from "../../../../Services/api";
 import Loader from "../../../../Utils/Loader/loader";
 import PropTypes from "prop-types";
 import default2 from "../../../../assets/default2.jpg";
@@ -46,7 +46,7 @@ const CardDetail = (props) => {
           </div>
           <div className="cardDetail_container_group">
             <div className="cardDetail_container_time">
-              <BiTimer></BiTimer> {recipeDetail.data.time}
+              <BiTimer></BiTimer> {timeToString(recipeDetail.data.time)}
             </div>
             <div className="cardDetail_container_number">
               <BsPeople></BsPeople> {recipeDetail.data.number} personnes
@@ -59,12 +59,14 @@ const CardDetail = (props) => {
             </div>
           </div>
           <ul className="cardDetail_container_ingredients">
-            <h2 className="ingredient_title">Ingrédients :</h2>
+            <h2 className="ingredient_title">Ingrédients</h2>
             {recipeDetail.data.ingredients
               .sort((a, b) => a.type - b.type)
               .map((ingredient, index) => (
                 <li className="cardDetail_container_ingredient" key={index}>
-                  {ingredient.quantity} {ingredient.unit.label} de{" "}
+                  {ingredient.unit.label !== "unité"
+                    ? ingredient.quantity + " " + ingredient.unit.label + " de "
+                    : ingredient.quantity + " "}
                   <strong>{ingredient.label}</strong>
                 </li>
               ))}
@@ -72,7 +74,7 @@ const CardDetail = (props) => {
           {recipeDetail.data.steps
             .sort((a, b) => a.stepIndex - b.stepIndex)
             .map((step, index) => (
-              <div className="cardDetail_container_block">
+              <div className="cardDetail_container_block" key={index}>
                 <div className="cardDetail_container_block_index">
                   {index + 1}
                 </div>

@@ -81,6 +81,9 @@
       background-color: green;
     }
   }
+  .p-inputtextarea {
+    resize: vertical;
+  }
 }
 
 @media (max-width: 700px) {

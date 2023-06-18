@@ -38,6 +38,7 @@ const Parameters = (props) => {
     formState: { errors },
     handleSubmit,
     getValues,
+    setValue,
   } = useForm({ defaultValues });
 
   const getFormErrorMessage = (name) => {
@@ -105,6 +106,17 @@ const Parameters = (props) => {
         } else {
           successToast("Votre profil a bien été mis à jour", uploadToast);
         }
+        setShowMDP(false);
+        setValue("oldPassword", "");
+        setValue("password", "");
+        setValue("confirmPassword", "");
+        let tempArray = { ...props.auth.userConnected };
+        tempArray.email = data.email;
+        tempArray.name = data.name;
+        tempArray.lastname = data.lastname;
+        props.handleAuth({
+          userConnected: tempArray,
+        });
       })
       .catch(() =>
         errorToast(

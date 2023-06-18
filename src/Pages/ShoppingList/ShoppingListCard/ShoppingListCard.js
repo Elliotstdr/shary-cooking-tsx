@@ -3,22 +3,25 @@ import "./ShoppingListCard.scss";
 import { GiKnifeFork } from "react-icons/gi";
 import { BsPeople } from "react-icons/bs";
 import { BiTimer } from "react-icons/bi";
-import carouselHome1 from "../../../assets/carouselHome1.webp";
+import default2 from "../../../assets/default2.jpg";
 import { Dropdown } from "primereact/dropdown";
 import PropTypes from "prop-types";
+import { timeToString } from "../../../Services/api";
 
 const ShoppingListCard = (props) => {
   return (
     <div className="shoppingList_container_export_recipes_recipe">
-      <img
-        src={
-          props.recipe.imageUrl
-            ? process.env.REACT_APP_BASE_URL_API + props.recipe.imageUrl
-            : carouselHome1
-        }
-        alt="Fond news"
-        className="image"
-      />
+      <div className="shoppingList_card_image">
+        <img
+          src={
+            props.recipe.imageUrl
+              ? process.env.REACT_APP_BASE_URL_API + props.recipe.imageUrl
+              : default2
+          }
+          alt="Fond news"
+          className="image"
+        />
+      </div>
       <div className="infos">
         <div className="infos_top">
           <div className="infos_top_title">{props.recipe.title}</div>
@@ -43,7 +46,7 @@ const ShoppingListCard = (props) => {
             <div className="infos_bottom_left_time">
               <span>
                 <BiTimer></BiTimer>
-                {props.recipe.time}
+                {timeToString(props.recipe.time)}
               </span>
             </div>
           </div>

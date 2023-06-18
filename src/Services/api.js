@@ -50,37 +50,6 @@ export const useFetchGetConditional = (url, reduxData) => {
   return { data, error, loaded };
 };
 
-export const fetchGet = async (url) => {
-  const data = await axios
-    .get(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
-      headers: {
-        accept: "application/json",
-      },
-    })
-    .then(() => {})
-    .catch((error) => console.log(error));
-  return data;
-};
-
-export const FetchPost = (
-  url,
-  data,
-  thenFunction = null,
-  catchFunction = null
-) => {
-  axios
-    .post(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, data, {
-      headers: {
-        accept: "application/json",
-      },
-    })
-    .then((response) => {
-      thenFunction && thenFunction(response);
-    })
-    .catch((error) => catchFunction && catchFunction(error));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-};
-
 export const exportRecipe = (chosenRecipes, data) => {
   let ingredientList = [];
   let finalList = [];
@@ -145,13 +114,16 @@ export const exportRecipe = (chosenRecipes, data) => {
     finalList
       .sort((a, b) => a.type.localeCompare(b.type))
       .forEach((element) => {
-        let elementString =
-          element.quantity +
-          " " +
-          element.unit.label +
-          " de " +
-          element.label +
-          " \n";
+        let elementString = "";
+        element.unit.label !== "unité"
+          ? (elementString =
+              element.quantity +
+              " " +
+              element.unit.label +
+              " de " +
+              element.label +
+              " \n")
+          : (elementString = element.quantity + " ");
         shoppingList += elementString;
       });
   }
@@ -175,4 +147,26 @@ export const errorToast = (message, ref, summary = "Erreur") => {
     detail: message,
     life: 3000,
   });
+};
+
+export const timeToString = (time) => {
+  const splittedTime = time.split(":");
+  const hours = Number(splittedTime[0]);
+  const minutes = Number(splittedTime[1]);
+
+  if (hours === 1) {
+    if (minutes === 0) {
+      return hours + " heure";
+    } else {
+      return hours + "h" + minutes;
+    }
+  } else if (hours > 1) {
+    if (minutes === 0) {
+      return hours + " heures";
+    } else {
+      return hours + "h" + minutes;
+    }
+  } else {
+    return minutes + " minutes";
+  }
 };

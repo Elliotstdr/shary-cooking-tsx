@@ -11,6 +11,7 @@ const StepsCreation = (props) => {
         {props.stepsList.map((step, index) => (
           <div className="step" key={index}>
             <InputTextarea
+              autoResize
               placeholder="Description de l'étape"
               className="recipe__form__field-step"
               value={step.description}
@@ -42,6 +43,7 @@ const StepsCreation = (props) => {
       </div>
       {!props.nobutton && (
         <Bouton
+          type={"normal"}
           btnAction={(e) => {
             e.preventDefault();
             props.setStepsList([

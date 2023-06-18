@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./NavBar.scss";
 import { GiKnifeFork } from "react-icons/gi";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { updateAuth } from "../../Store/Actions/authActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -35,6 +34,14 @@ const NavBar = (props) => {
         >
           <li>
             <strong>Mes recettes</strong>
+          </li>
+        </NavLink>
+        <NavLink
+          to="/shop"
+          className={(nav) => (nav.isActive ? "nav-active" : "")}
+        >
+          <li>
+            <strong>Ma liste de courses</strong>
           </li>
         </NavLink>
       </ul>
@@ -82,9 +89,6 @@ const NavBar = (props) => {
       </Accordion>
       <Bouton className="first" btnAction={() => navigate("/create")}>
         <GiKnifeFork></GiKnifeFork>Créer une recette
-      </Bouton>
-      <Bouton className="second" btnAction={() => navigate("/shop")}>
-        <AiOutlineShoppingCart></AiOutlineShoppingCart>Ma liste de courses
       </Bouton>
       <div className="navigation_parameters">
         {props.auth.userConnected.imageUrl ? (
