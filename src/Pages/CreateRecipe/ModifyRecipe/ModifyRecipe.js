@@ -23,11 +23,14 @@ const ModifyRecipe = (props) => {
   const uploadToast = useRef(null);
   const [typeId, setTypeId] = useState(props.recipe.type.id);
   const [regimeId, setRegimeId] = useState(props.recipe.regime.id);
-  const [stepsList, setStepsList] = useState(props.recipe.steps);
+  const [stepsList, setStepsList] = useState(
+    props.recipe.steps.map((step) => {
+      return { description: step.description, stepIndex: step.stepIndex };
+    })
+  );
   const [ingredientList, setIngredientList] = useState(
     props.recipe.ingredients
   );
-
   let defaultValues = {
     title: props.recipe.title,
     number: props.recipe.number,
@@ -206,6 +209,7 @@ const ModifyRecipe = (props) => {
                   {...field}
                   placeholder="30 minutes"
                   className="recipe__form__field-time"
+                  type="time"
                 />
               )}
             />
@@ -242,25 +246,6 @@ const ModifyRecipe = (props) => {
         </div>
         <Divider></Divider>
         <div className="recipe__form__field">
-          <h4 htmlFor="steps">Etapes</h4>
-          <Controller
-            name="steps"
-            control={control}
-            rules={{
-              validate: () => checkSteps(),
-            }}
-            render={({ field }) => (
-              <StepsCreation
-                stepsList={stepsList}
-                setStepsList={setStepsList}
-                nobutton
-              ></StepsCreation>
-            )}
-          />
-          {getFormErrorMessage("steps")}
-        </div>
-        <Divider></Divider>
-        <div className="recipe__form__field">
           <h4 htmlFor="ingredients">Ingrédients</h4>
           <Controller
             name="ingredients"
@@ -277,12 +262,32 @@ const ModifyRecipe = (props) => {
                 setAutocompleteData={setAutocompleteData}
                 activeIndex={activeIndex}
                 setActiveIndex={setActiveIndex}
-                nobutton
+                // nobutton
               ></IngredientsCreation>
             )}
           />
           {getFormErrorMessage("ingredients")}
         </div>
+        <Divider></Divider>
+        <div className="recipe__form__field">
+          <h4 htmlFor="steps">Etapes</h4>
+          <Controller
+            name="steps"
+            control={control}
+            rules={{
+              validate: () => checkSteps(),
+            }}
+            render={({ field }) => (
+              <StepsCreation
+                stepsList={stepsList}
+                setStepsList={setStepsList}
+                // nobutton
+              ></StepsCreation>
+            )}
+          />
+          {getFormErrorMessage("steps")}
+        </div>
+        <Divider></Divider>
         <button className="bouton slide">{"Modifier ma recette"}</button>
       </form>
     </div>

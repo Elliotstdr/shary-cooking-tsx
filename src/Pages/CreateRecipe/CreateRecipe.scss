@@ -19,8 +19,12 @@
     h4 {
       margin-bottom: 0.5rem;
     }
-    input {
-      max-width: 20rem;
+    &-ingname input {
+      width: 15rem;
+    }
+    &-quantity,
+    &-unit {
+      width: 10rem;
     }
     .checkboxes {
       display: flex;

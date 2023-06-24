@@ -1,29 +1,41 @@
 @use "src/Styles/_vars.scss" as c;
 
 .searchbar_container {
-  width: 80%;
-  padding: 2rem 1rem;
+  width: 72%;
+  padding: 1rem;
   background-color: white;
   border-radius: 50px;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
-  margin: 0 10%;
-  transition: all ease-in-out 0.5s;
-  overflow: hidden;
-  &.false {
-    width: 6rem;
+  margin: 0 14%;
+  .filters {
+    display: flex;
+    flex-direction: column;
+    .group {
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-evenly;
+      &.false {
+        display: none;
+      }
+      &.true {
+        justify-content: unset;
+      }
+    }
   }
-  .filter-icon {
+  .more {
     cursor: pointer;
     color: c.$bandeau;
+    margin-left: 2rem;
     width: 2rem;
     height: 2rem;
   }
   .p-multiselect,
-  .p-inputtext {
+  .p-inputtext,
+  .p-dropdown {
     margin: 0 1rem;
+    width: 12rem;
     .p-multiselect-clear-icon {
       right: 1.5rem;
       top: 70%;
@@ -34,19 +46,57 @@
   }
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1380px) {
   .searchbar_container {
     .p-multiselect,
-    .p-inputtext {
-      margin: 0;
+    .p-inputtext,
+    .p-dropdown {
+      margin: 0.5rem;
+    }
+    .more {
+      margin-left: 1rem;
     }
   }
 }
-@media (max-width: 1150px) {
+@media (max-width: 1250px) {
   .searchbar_container {
     .p-multiselect,
-    .p-inputtext {
-      max-width: 10rem;
+    .p-inputtext,
+    .p-dropdown {
+      width: 10rem !important;
+    }
+  }
+}
+@media (max-width: 1080px) {
+  .searchbar_container {
+    .p-multiselect,
+    .p-inputtext,
+    .p-dropdown {
+      width: 8rem !important;
+    }
+  }
+}
+@media (max-width: 950px) {
+  .searchbar_container {
+    .p-multiselect,
+    .p-inputtext,
+    .p-dropdown {
+      margin: 0;
+      width: 12rem !important;
+    }
+    .filters {
+      flex-direction: column;
+      .group {
+        margin: 0.5rem 0;
+        flex-direction: column;
+        &.true {
+          margin: 0;
+          margin-bottom: 1rem;
+        }
+        .p-dropdown-label {
+          margin: 0;
+        }
+      }
     }
   }
 }

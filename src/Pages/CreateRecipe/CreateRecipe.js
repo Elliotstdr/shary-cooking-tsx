@@ -23,24 +23,40 @@ const CreateRecipe = (props) => {
   const [imageName, setImageName] = useState("");
   const cancelToast = useRef(null);
   const uploadToast = useRef(null);
-  const [typeId, setTypeId] = useState(props.secondaryTables.types[0]?.id);
-  const [regimeId, setRegimeId] = useState(
-    props.secondaryTables.regimes[0]?.id
+  const ref = useRef(null);
+  const [typeId, setTypeId] = useState(
+    props.recipe ? props.recipe.type.id : props.secondaryTables.types[0]?.id
   );
-  const [stepsList, setStepsList] = useState([
-    {
-      description: "",
-      stepIndex: 1,
-    },
-  ]);
-  const [ingredientList, setIngredientList] = useState([
-    {
-      unit: null,
-      quantity: 0,
-      label: "",
-      id: 1,
-    },
-  ]);
+  const [regimeId, setRegimeId] = useState(
+    props.recipe ? props.recipe.regime.id : props.secondaryTables.regimes[0]?.id
+  );
+  const [stepsList, setStepsList] = useState(
+    props.recipe
+      ? props.recipe.steps.map((step) => {
+          return {
+            description: step.description,
+            stepIndex: step.stepIndex,
+          };
+        })
+      : [
+          {
+            description: "",
+            stepIndex: 1,
+          },
+        ]
+  );
+  const [ingredientList, setIngredientList] = useState(
+    props.recipe
+      ? props.recipe.ingredients
+      : [
+          {
+            unit: null,
+            quantity: 0,
+            label: "",
+            id: 1,
+          },
+        ]
+  );
   const regimeTooltips = [
     "Contient tout type de nourriture",
     "Régime sans viande ni poisson mais avec des produits d'origine animale",
@@ -48,12 +64,18 @@ const CreateRecipe = (props) => {
     "Régime sans viande, poisson ou produits d'origine animale",
   ];
 
-  let defaultValues = {
-    title: "",
-    number: 0,
-    time: "",
-    image: null,
-  };
+  let defaultValues = props.recipe
+    ? {
+        title: props.recipe.title,
+        number: props.recipe.number,
+        time: props.recipe.time,
+      }
+    : {
+        title: "",
+        number: 0,
+        time: "",
+        image: null,
+      };
 
   const {
     control,
@@ -116,10 +138,14 @@ const CreateRecipe = (props) => {
         { file: image, fileName: imageName }
       )
       .then(() => {
-        reset();
-        resetForm();
-        setImage(null);
-        setImageName("");
+        if (props.recipe) {
+          window.location.reload(false);
+        } else {
+          reset();
+          resetForm();
+          setImage(null);
+          setImageName("");
+        }
       })
       .catch(() =>
         errorToast(
@@ -137,10 +163,30 @@ const CreateRecipe = (props) => {
     data.postedByUser = `/api/users/${props.auth.userConnected.id}`;
     data.steps = stepsList;
     data.ingredients = ingredientList;
+    if (props.recipe) {
+      data.id = props.recipe.id;
+      data.ingredients.forEach((ingredient) => {
+        ingredient.quantity = Number(ingredient.quantity);
+        delete ingredient.id;
+      });
+    }
     return data;
   };
 
   const onSubmit = () => {
+    window.scroll({
+      top: ref.current?.offsetTop,
+      behavior: "smooth",
+    });
+
+    if (props.recipe) {
+      putRecipeFunction();
+    } else {
+      createRecipeFunction();
+    }
+  };
+
+  const createRecipeFunction = () => {
     const data = setFields();
 
     axios
@@ -165,14 +211,38 @@ const CreateRecipe = (props) => {
       );
   };
 
+  const putRecipeFunction = () => {
+    const data = setFields();
+
+    axios
+      .put(
+        `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipe.id}`,
+        data,
+        {
+          headers: {
+            accept: "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        if (image) {
+          postImage(res);
+        } else {
+          window.location.reload(false);
+        }
+      });
+  };
+
   return (
     <div
+      className={props.recipe && "modify_recipe"}
       onClick={() => {
         setAutocompleteData([]);
         setActiveIndex(-1);
       }}
+      ref={ref}
     >
-      <NavBar></NavBar>
+      {!props.recipe && <NavBar></NavBar>}
       <form className="recipe__form" onSubmit={handleSubmit(onSubmit)}>
         <Toast ref={uploadToast} />
         <Toast ref={cancelToast} />
@@ -247,6 +317,7 @@ const CreateRecipe = (props) => {
                   {...field}
                   placeholder="30 minutes"
                   className="recipe__form__field-time"
+                  type="time"
                 />
               )}
             />
@@ -285,24 +356,6 @@ const CreateRecipe = (props) => {
         </div>
         <Divider></Divider>
         <div className="recipe__form__field">
-          <h4 htmlFor="steps">Etapes</h4>
-          <Controller
-            name="steps"
-            control={control}
-            rules={{
-              validate: () => checkSteps(),
-            }}
-            render={({ field }) => (
-              <StepsCreation
-                stepsList={stepsList}
-                setStepsList={setStepsList}
-              ></StepsCreation>
-            )}
-          />
-          {getFormErrorMessage("steps")}
-        </div>
-        <Divider></Divider>
-        <div className="recipe__form__field">
           <h4 htmlFor="ingredients">Ingrédients</h4>
           <Controller
             name="ingredients"
@@ -324,9 +377,30 @@ const CreateRecipe = (props) => {
           />
           {getFormErrorMessage("ingredients")}
         </div>
-        <button className="bouton slide">{"Créer ma recette"}</button>
+        <Divider></Divider>
+        <div className="recipe__form__field">
+          <h4 htmlFor="steps">Etapes</h4>
+          <Controller
+            name="steps"
+            control={control}
+            rules={{
+              validate: () => checkSteps(),
+            }}
+            render={({ field }) => (
+              <StepsCreation
+                stepsList={stepsList}
+                setStepsList={setStepsList}
+              ></StepsCreation>
+            )}
+          />
+          {getFormErrorMessage("steps")}
+        </div>
+        <Divider></Divider>
+        <button className="bouton slide">
+          {props.recipe ? "Modifier ma recette" : "Créer ma recette"}
+        </button>
       </form>
-      <Footer></Footer>
+      {!props.recipe && <Footer></Footer>}
     </div>
   );
 };
