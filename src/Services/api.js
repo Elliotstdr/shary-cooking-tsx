@@ -123,7 +123,7 @@ export const exportRecipe = (chosenRecipes, data) => {
               " de " +
               element.label +
               " \n")
-          : (elementString = element.quantity + " ");
+          : (elementString = element.quantity + " " + element.label + " \n");
         shoppingList += elementString;
       });
   }
