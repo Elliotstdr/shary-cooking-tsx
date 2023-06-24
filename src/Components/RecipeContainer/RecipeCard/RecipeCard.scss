@@ -12,6 +12,7 @@
   }
 }
 .recipeCard {
+  min-height: 95.5%;
   border-radius: 0.33rem;
   margin-bottom: 2rem;
   width: 20rem;
@@ -121,6 +122,9 @@
   }
 }
 @media (max-width: 900px) {
+  .recipeCard {
+    min-height: unset;
+  }
   .modify_recipe_modal {
     max-width: 90%;
     .p-dialog {

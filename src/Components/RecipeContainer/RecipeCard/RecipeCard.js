@@ -96,7 +96,6 @@ const RecipeCard = (props) => {
         ) &&
         "chosen"
       }`}
-      style={{ minHeight: "95.5%" }}
       onClick={() => {
         shoppingAction();
       }}
