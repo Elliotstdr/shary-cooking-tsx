@@ -219,7 +219,11 @@ const RecipeCard = (props) => {
           visible={visibleDetail}
           width={"70%"}
         >
-          <CardDetail id={props.recipeItem.id}></CardDetail>
+          <CardDetail
+            id={props.recipeItem.id}
+            setVisible={setVisibleDetail}
+            setVisibleModif={setVisibleModif}
+          ></CardDetail>
         </SlideIn>
       )}
       {visibleModif && (

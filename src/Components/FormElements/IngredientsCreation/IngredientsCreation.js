@@ -107,7 +107,7 @@ const IngredientsCreation = (props) => {
               {
                 unit: null,
                 label: "",
-                quantity: 0,
+                quantity: "",
                 id:
                   props.ingredientList[props.ingredientList.length - 1].id + 1,
               },

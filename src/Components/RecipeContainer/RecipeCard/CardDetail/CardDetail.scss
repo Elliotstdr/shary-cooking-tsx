@@ -21,7 +21,12 @@
     }
   }
   &_title {
+    display: flex;
+    align-items: center;
     font-size: 3rem;
+    .recipeCard__bottom__edit {
+      margin-left: 2rem;
+    }
   }
   &_group {
     display: flex;
@@ -113,6 +118,20 @@
       flex-direction: column;
       align-self: flex-start;
       margin-left: 2rem;
+    }
+    &_title {
+      font-size: 2rem;
+      flex-direction: column;
+      .recipeCard__bottom__edit {
+        margin-left: 0;
+        margin-top: 1rem;
+      }
+    }
+    &_ingredients {
+      padding: 1rem;
+    }
+    &_block_step {
+      width: 90%;
     }
   }
 }

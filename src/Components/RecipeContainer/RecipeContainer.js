@@ -43,11 +43,17 @@ const RecipeContainer = (props) => {
       </div>
       <div className="recipeContainer_cards">
         {filteredRecipes ? (
-          filteredRecipes
-            .slice(first, first + rows)
-            .map((recipe, index) => (
-              <RecipeCard key={index} recipeItem={recipe}></RecipeCard>
-            ))
+          filteredRecipes.length > 0 ? (
+            filteredRecipes
+              .slice(first, first + rows)
+              .map((recipe, index) => (
+                <RecipeCard key={index} recipeItem={recipe}></RecipeCard>
+              ))
+          ) : (
+            <span className="noCard">
+              Je n'ai aucune recette à vous afficher malheureusement ...
+            </span>
+          )
         ) : (
           <div className="recipeContainer_loader">
             <Loader></Loader>

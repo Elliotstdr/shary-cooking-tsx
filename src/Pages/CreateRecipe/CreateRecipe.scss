@@ -70,7 +70,7 @@
       flex-wrap: wrap;
     }
     .steps {
-      width: 90%;
+      width: 90% !important;
     }
     .ingredients {
       input,
@@ -82,8 +82,11 @@
       }
       .ingredient_name {
         .p-inputtext {
-          width: 10rem !important;
+          width: 8rem !important;
         }
+      }
+      .recipe__form__field-unit {
+        width: 8rem !important;
       }
     }
     .p-divider.p-divider-horizontal {

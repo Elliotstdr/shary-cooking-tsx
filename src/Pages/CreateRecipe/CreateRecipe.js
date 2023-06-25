@@ -51,7 +51,7 @@ const CreateRecipe = (props) => {
       : [
           {
             unit: null,
-            quantity: 0,
+            quantity: "",
             label: "",
             id: 1,
           },
@@ -104,7 +104,12 @@ const CreateRecipe = (props) => {
   const checkIngredients = () => {
     let response = true;
     ingredientList.forEach((ing) => {
-      if (ing.label === "" || ing.quantity === 0 || !ing.unit) {
+      if (
+        ing.label === "" ||
+        ing.quantity === 0 ||
+        ing.quantity === "" ||
+        !ing.unit
+      ) {
         response = "Un ou plusieurs ingrédient n'est pas correctement rempli";
       }
     });
@@ -123,7 +128,7 @@ const CreateRecipe = (props) => {
     setIngredientList([
       {
         unit: null,
-        quantity: 0,
+        quantity: "",
         label: "",
         id: 1,
       },

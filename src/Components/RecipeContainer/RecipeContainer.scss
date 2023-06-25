@@ -10,6 +10,11 @@
     justify-content: center;
     gap: 1rem 1rem;
     grid-auto-rows: auto;
+    .noCard {
+      font-size: 1.2rem;
+      line-height: 2rem;
+      margin: 6rem 0;
+    }
   }
   &_searchbar {
     margin-top: 4rem;

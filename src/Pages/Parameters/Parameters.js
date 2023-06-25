@@ -134,6 +134,17 @@ const Parameters = (props) => {
         <Toast ref={cancelToast} />
         <div className="param__form__field">
           <h4 htmlFor="image">Photo :</h4>
+          {props.auth.userConnected.imageUrl && (
+            <div className="param_profile_picture">
+              <img
+                src={
+                  process.env.REACT_APP_BASE_URL_API +
+                  props.auth.userConnected.imageUrl
+                }
+                alt="Fond news"
+              />
+            </div>
+          )}
           <Controller
             name="image"
             control={control}

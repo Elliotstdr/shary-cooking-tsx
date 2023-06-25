@@ -47,8 +47,8 @@ const ImageUpload = (props) => {
         uploadOptions={uploadOptions}
         cancelOptions={cancelOptions}
         accept="image/*"
-        tooltip="Une fois votre image sélectionnée, n'oubliez pas de valider votre sélection"
-        tooltipOptions={{ position: "bottom" }}
+        // tooltip="Une fois votre image sélectionnée, n'oubliez pas de valider votre sélection"
+        // tooltipOptions={{ position: "bottom" }}
       ></FileUpload>
       <Tooltip target={".upload_image"}>
         Une fois votre image sélectionnée, n'oubliez pas de valider votre
