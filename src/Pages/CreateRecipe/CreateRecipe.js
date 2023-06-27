@@ -55,7 +55,10 @@ const CreateRecipe = (props) => {
   );
   const [ingredientList, setIngredientList] = useState(
     props.recipe
-      ? props.recipe.ingredients
+      ? props.recipe.ingredients.map((ingredient, index) => {
+          ingredient.id = index + 1;
+          return ingredient;
+        })
       : [
           {
             unit: null,
