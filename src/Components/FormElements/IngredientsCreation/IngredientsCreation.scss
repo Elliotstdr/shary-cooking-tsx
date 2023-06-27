@@ -11,13 +11,17 @@
         margin: 1rem;
       }
       .bin {
-        position: absolute;
+        // position: absolute;
         cursor: pointer;
-        right: -3rem;
+        // right: -3rem;
         color: c.$main-color;
         height: 1.5rem;
         width: 1.5rem;
         align-self: center;
+      }
+      .move_ing {
+        align-self: center;
+        font-size: 1.5rem;
       }
     }
   }

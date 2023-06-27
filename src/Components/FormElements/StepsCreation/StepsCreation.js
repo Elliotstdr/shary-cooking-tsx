@@ -25,7 +25,7 @@ const StepsCreation = (props) => {
                 props.setStepsList(tempArray);
               }}
             />
-            {step.stepIndex !== 1 && !props.nobutton && (
+            {step.stepIndex !== 1 && (
               <RiDeleteBin6Line
                 className="bin"
                 onClick={(e) => {
@@ -41,25 +41,23 @@ const StepsCreation = (props) => {
           </div>
         ))}
       </div>
-      {!props.nobutton && (
-        <Bouton
-          type={"normal"}
-          btnAction={(e) => {
-            e.preventDefault();
-            props.setStepsList([
-              ...props.stepsList,
-              {
-                description: "",
-                stepIndex:
-                  props.stepsList[props.stepsList.length - 1].stepIndex + 1,
-              },
-            ]);
-          }}
-        >
-          <AiOutlinePlusCircle />
-          Ajouter une étape
-        </Bouton>
-      )}
+      <Bouton
+        type={"normal"}
+        btnAction={(e) => {
+          e.preventDefault();
+          props.setStepsList([
+            ...props.stepsList,
+            {
+              description: "",
+              stepIndex:
+                props.stepsList[props.stepsList.length - 1].stepIndex + 1,
+            },
+          ]);
+        }}
+      >
+        <AiOutlinePlusCircle />
+        Ajouter une étape
+      </Bouton>
     </>
   );
 };

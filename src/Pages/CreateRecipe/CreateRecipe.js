@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import "./CreateRecipe.scss";
 import NavBar from "../../Components/NavBar/NavBar";
 import { Controller, useForm } from "react-hook-form";
@@ -14,6 +14,14 @@ import IngredientsCreation from "../../Components/FormElements/IngredientsCreati
 import StepsCreation from "../../Components/FormElements/StepsCreation/StepsCreation";
 import Footer from "../../Components/Footer/Footer";
 import { RadioButton } from "primereact/radiobutton";
+import Bouton from "../../Utils/Bouton/Bouton";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 const CreateRecipe = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
@@ -168,12 +176,12 @@ const CreateRecipe = (props) => {
     data.postedByUser = `/api/users/${props.auth.userConnected.id}`;
     data.steps = stepsList;
     data.ingredients = ingredientList;
+    data.ingredients.forEach((ingredient) => {
+      ingredient.quantity = Number(ingredient.quantity);
+      delete ingredient.id;
+    });
     if (props.recipe) {
       data.id = props.recipe.id;
-      data.ingredients.forEach((ingredient) => {
-        ingredient.quantity = Number(ingredient.quantity);
-        delete ingredient.id;
-      });
     }
     return data;
   };
@@ -193,7 +201,7 @@ const CreateRecipe = (props) => {
 
   const createRecipeFunction = () => {
     const data = setFields();
-
+    console.log(data);
     axios
       .post(`${process.env.REACT_APP_BASE_URL_API}/api/recipes`, data, {
         headers: {
@@ -236,6 +244,28 @@ const CreateRecipe = (props) => {
           window.location.reload(false);
         }
       });
+  };
+
+  const itemIds = useMemo(
+    () => ingredientList.map((item) => item.id),
+    [ingredientList]
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setIngredientList((ingredientList) => {
+        const oldIndex = ingredientList.findIndex(
+          (item) => item.id === active.id
+        );
+        const newIndex = ingredientList.findIndex(
+          (item) => item.id === over.id
+        );
+
+        return arrayMove(ingredientList, oldIndex, newIndex);
+      });
+    }
   };
 
   return (
@@ -369,15 +399,67 @@ const CreateRecipe = (props) => {
               validate: () => checkIngredients(),
             }}
             render={({ field }) => (
-              <IngredientsCreation
-                ingredientList={ingredientList}
-                setIngredientList={setIngredientList}
-                ingredientData={ingredientData.data}
-                autocompleteData={autocompleteData}
-                setAutocompleteData={setAutocompleteData}
-                activeIndex={activeIndex}
-                setActiveIndex={setActiveIndex}
-              ></IngredientsCreation>
+              <>
+                <div className="ingredients">
+                  <IngredientsCreation
+                    key={ingredientList[0].id}
+                    id={ingredientList[0].id}
+                    ingredient={ingredientList[0]}
+                    ingredientList={ingredientList}
+                    setIngredientList={setIngredientList}
+                    ingredientData={ingredientData.data}
+                    autocompleteData={autocompleteData}
+                    setAutocompleteData={setAutocompleteData}
+                    activeIndex={activeIndex}
+                    setActiveIndex={setActiveIndex}
+                  ></IngredientsCreation>
+                  <DndContext
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                  >
+                    <SortableContext
+                      items={itemIds}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {ingredientList.map(
+                        (ingredient) =>
+                          ingredient.id !== 1 && (
+                            <IngredientsCreation
+                              key={ingredient.id}
+                              id={ingredient.id}
+                              ingredient={ingredient}
+                              ingredientList={ingredientList}
+                              setIngredientList={setIngredientList}
+                              ingredientData={ingredientData.data}
+                              autocompleteData={autocompleteData}
+                              setAutocompleteData={setAutocompleteData}
+                              activeIndex={activeIndex}
+                              setActiveIndex={setActiveIndex}
+                            ></IngredientsCreation>
+                          )
+                      )}
+                    </SortableContext>
+                  </DndContext>
+                </div>
+                <Bouton
+                  type={"normal"}
+                  btnAction={(e) => {
+                    e.preventDefault();
+                    setIngredientList([
+                      ...ingredientList,
+                      {
+                        unit: null,
+                        label: "",
+                        quantity: "",
+                        id: ingredientList[ingredientList.length - 1].id + 1,
+                      },
+                    ]);
+                  }}
+                >
+                  <AiOutlinePlusCircle />
+                  Ajouter un ingrédient
+                </Bouton>
+              </>
             )}
           />
           {getFormErrorMessage("ingredients")}

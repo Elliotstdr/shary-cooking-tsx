@@ -1,14 +1,14 @@
 @use "src/Styles/_vars.scss" as c;
 
 .searchbar_container {
-  width: 72%;
+  width: 63rem;
   padding: 1rem;
   background-color: white;
   border-radius: 50px;
   display: flex;
   align-items: center;
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
-  margin: 0 14%;
+  margin: 0 auto;
   .filters {
     display: flex;
     flex-direction: column;
@@ -46,33 +46,12 @@
   }
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 1050px) {
   .searchbar_container {
     .p-multiselect,
     .p-inputtext,
     .p-dropdown {
       margin: 0.5rem;
-    }
-    .more {
-      margin-left: 1rem;
-    }
-  }
-}
-@media (max-width: 1250px) {
-  .searchbar_container {
-    .p-multiselect,
-    .p-inputtext,
-    .p-dropdown {
-      width: 10rem !important;
-    }
-  }
-}
-@media (max-width: 1080px) {
-  .searchbar_container {
-    .p-multiselect,
-    .p-inputtext,
-    .p-dropdown {
-      width: 8rem !important;
     }
   }
 }
