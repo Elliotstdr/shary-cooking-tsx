@@ -14,8 +14,10 @@ import { updateAuth } from "../../Store/Actions/authActions";
 import PropTypes from "prop-types";
 import { errorToast, successToast } from "../../Services/api";
 import Footer from "../../Components/Footer/Footer";
+import Loader from "../../Utils/Loader/loader";
 
 const Parameters = (props) => {
+  const [isModifying, setIsModifying] = useState(false);
   const [showMDP, setShowMDP] = useState(false);
   const [isEqualPassword, setIsEqualPassword] = useState(false);
   const [image, setImage] = useState(null);
@@ -74,6 +76,7 @@ const Parameters = (props) => {
         props.handleAuth({
           userConnected: tempUser,
         });
+        setIsModifying(false);
         successToast("Votre profil a bien été mis à jour", uploadToast);
       })
       .catch(() =>
@@ -85,6 +88,7 @@ const Parameters = (props) => {
   };
 
   const onSubmit = () => {
+    setIsModifying(true);
     const data = setFields();
 
     axios
@@ -105,6 +109,7 @@ const Parameters = (props) => {
           putPicture();
         } else {
           successToast("Votre profil a bien été mis à jour", uploadToast);
+          setIsModifying(false);
         }
         setShowMDP(false);
         setValue("oldPassword", "");
@@ -310,7 +315,11 @@ const Parameters = (props) => {
           </div>
         )}
         <Divider></Divider>
-        <Bouton>Modifier mes informations</Bouton>
+        {isModifying ? (
+          <Loader></Loader>
+        ) : (
+          <Bouton>Modifier mes informations</Bouton>
+        )}
       </form>
       <Footer></Footer>
     </div>

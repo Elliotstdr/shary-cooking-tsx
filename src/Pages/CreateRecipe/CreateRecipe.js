@@ -22,9 +22,11 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import Loader from "../../Utils/Loader/loader";
 
 const CreateRecipe = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
+  const [isCreating, setIsCreating] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [autocompleteData, setAutocompleteData] = useState([]);
   const [image, setImage] = useState(null);
@@ -161,6 +163,7 @@ const CreateRecipe = (props) => {
           resetForm();
           setImage(null);
           setImageName("");
+          setIsCreating(false);
         }
       })
       .catch(() =>
@@ -190,6 +193,7 @@ const CreateRecipe = (props) => {
   };
 
   const onSubmit = () => {
+    setIsCreating(true);
     window.scroll({
       top: ref.current?.offsetTop,
       behavior: "smooth",
@@ -217,6 +221,7 @@ const CreateRecipe = (props) => {
         } else {
           resetForm();
           reset();
+          setIsCreating(false);
         }
       })
       .catch(() =>
@@ -486,9 +491,13 @@ const CreateRecipe = (props) => {
           {getFormErrorMessage("steps")}
         </div>
         <Divider></Divider>
-        <button className="bouton slide">
-          {props.recipe ? "Modifier ma recette" : "Créer ma recette"}
-        </button>
+        {isCreating ? (
+          <Loader></Loader>
+        ) : (
+          <button className="bouton slide">
+            {props.recipe ? "Modifier ma recette" : "Créer ma recette"}
+          </button>
+        )}
       </form>
       {!props.recipe && <Footer></Footer>}
     </div>

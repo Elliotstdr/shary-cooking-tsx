@@ -214,7 +214,7 @@ const ModalLogin = (props) => {
             {getFormErrorMessage("secretKey")}
           </div>
           <div className="login__form__button">
-            <Bouton>{isloging ? <Loader /> : "Créer un compte"}</Bouton>
+            {isloging ? <Loader /> : <Bouton>Créer un compte</Bouton>}
           </div>
         </form>
       </Modal>

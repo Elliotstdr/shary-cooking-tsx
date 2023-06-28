@@ -116,7 +116,7 @@ const ModalLogin = (props) => {
             {getFormErrorMessage("password")}
           </div>
           <div className="login__form__button">
-            <Bouton>{isloging ? <Loader /> : "Se connecter"}</Bouton>
+            {isloging ? <Loader /> : <Bouton>Se connecter</Bouton>}
           </div>
         </form>
       </Modal>
