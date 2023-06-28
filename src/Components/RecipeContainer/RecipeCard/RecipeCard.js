@@ -123,6 +123,7 @@ const RecipeCard = (props) => {
                 : default2
             }
             alt="Fond news"
+            loading="lazy"
           />
         </div>
       </div>

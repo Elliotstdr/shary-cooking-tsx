@@ -55,7 +55,7 @@
   &__corps {
     display: flex;
     flex-direction: column;
-    height: 12rem;
+    height: 14.5rem;
     padding: 1rem 1rem 0 1rem;
     align-items: flex-start;
     &__author {
@@ -74,9 +74,10 @@
       cursor: pointer;
       align-self: center;
       color: c.$main-color;
-      padding: 1rem 0.5rem;
+      padding: 1.5rem 0.5rem;
       font-size: 1.5rem;
       min-height: 5rem;
+      overflow: hidden;
     }
     &__time,
     &__number,
