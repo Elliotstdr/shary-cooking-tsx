@@ -42,12 +42,14 @@ const CreateRecipe = (props) => {
   );
   const [stepsList, setStepsList] = useState(
     props.recipe
-      ? props.recipe.steps.map((step) => {
-          return {
-            description: step.description,
-            stepIndex: step.stepIndex,
-          };
-        })
+      ? props.recipe.steps
+          .sort((a, b) => a.stepIndex - b.stepIndex)
+          .map((step) => {
+            return {
+              description: step.description,
+              stepIndex: step.stepIndex,
+            };
+          })
       : [
           {
             description: "",

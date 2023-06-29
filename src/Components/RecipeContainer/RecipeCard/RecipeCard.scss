@@ -74,9 +74,11 @@
       cursor: pointer;
       align-self: center;
       color: c.$main-color;
-      padding: 1.5rem 0.5rem;
+      margin: 1.5rem 0.5rem;
       font-size: 1.5rem;
-      min-height: 5rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
       overflow: hidden;
     }
     &__time,
