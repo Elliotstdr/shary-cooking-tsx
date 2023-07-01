@@ -11,17 +11,15 @@ import { timeToString } from "../../../Services/api";
 const ShoppingListCard = (props) => {
   return (
     <div className="shoppingList_container_export_recipes_recipe">
-      <div className="shoppingList_card_image">
-        <img
-          src={
-            props.recipe.imageUrl
-              ? process.env.REACT_APP_BASE_URL_API + props.recipe.imageUrl
-              : default2
-          }
-          alt="Fond news"
-          className="image"
-        />
-      </div>
+      <img
+        src={
+          props.recipe.imageUrl
+            ? process.env.REACT_APP_BASE_URL_API + props.recipe.imageUrl
+            : default2
+        }
+        alt="Fond news"
+        className="image"
+      />
       <div className="infos">
         <div className="infos_top">
           <div className="infos_top_title">{props.recipe.title}</div>

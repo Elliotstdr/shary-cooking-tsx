@@ -18,16 +18,20 @@
     }
   }
   &_home {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-radius: 10px;
     width: 40rem;
     height: 25rem;
     margin: 5rem 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    img {
+      position: absolute;
+      border-radius: 10px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
     .bouton {
       color: white !important;
       font-size: 1.2rem;
@@ -86,6 +90,40 @@
   }
 }
 
+@media (max-width: 950px) {
+  .shoppingList_container {
+    justify-content: flex-start;
+    &_export {
+      margin: 0 0.5rem;
+      width: 100%;
+      &_recipes {
+        align-items: center;
+        &_recipe {
+          width: 20rem;
+          flex-direction: column;
+          height: unset !important;
+          img {
+            border-radius: 10px 10px 0 0 !important;
+            width: 100% !important;
+            height: 16rem !important;
+          }
+          .infos {
+            padding: 1.5rem !important;
+            &_top {
+              margin: 0.5rem 0 2rem 0;
+              flex-direction: column;
+              &_title {
+                -webkit-line-clamp: 2 !important;
+                margin-bottom: 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 @media (max-width: 700px) {
   .choose_recipe {
     .recipeCard {
@@ -93,23 +131,6 @@
     }
     .bouton {
       margin-left: 22% !important;
-    }
-  }
-  .shoppingList_container {
-    justify-content: flex-start;
-    &_export {
-      margin: 0 0.5rem;
-      width: 100%;
-      &_recipes_recipe {
-        flex-direction: column;
-        img {
-          width: 100% !important;
-          height: unset !important;
-        }
-        .infos_top {
-          flex-direction: column;
-        }
-      }
     }
   }
   .modal_liste_courses_modal {

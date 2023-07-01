@@ -1,16 +1,18 @@
 @use "src/Styles/_vars.scss" as c;
 
 .login_container {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+  }
   &_box {
     box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
     background-color: c.$fond-page;
@@ -20,6 +22,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 100;
     &_title {
       color: c.$main-color;
       margin-bottom: 3rem;

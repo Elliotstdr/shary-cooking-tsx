@@ -89,10 +89,8 @@ const ShoppingList = (props) => {
             ></Bouton>
           </div>
         ) : (
-          <div
-            className="shoppingList_container_home"
-            style={{ backgroundImage: `url(${image})` }}
-          >
+          <div className="shoppingList_container_home">
+            <img src={image} alt="background shopping" />
             <Bouton
               btnTexte={"Choisir mes recettes"}
               btnAction={() => setVisibleRecipeContainer(true)}

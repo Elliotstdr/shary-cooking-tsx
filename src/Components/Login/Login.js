@@ -10,10 +10,8 @@ const Login = () => {
   const [visibleModalRegister, setVisibleModalRegister] = useState(false);
 
   return (
-    <div
-      className="login_container"
-      style={{ backgroundImage: `url(${image})` }}
-    >
+    <div className="login_container">
+      <img src={image} alt="background home" />
       <div className="login_container_box">
         <div className="login_container_box_title">
           <h1>Bienvenue sur Shary Cooking !</h1>

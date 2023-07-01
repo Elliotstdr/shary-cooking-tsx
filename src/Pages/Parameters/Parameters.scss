@@ -83,6 +83,24 @@
       }
     }
   }
+  .equal {
+    border: 1px solid green;
+    border-radius: 6px;
+    input:hover,
+    input:focus {
+      border: 1px solid green;
+      box-shadow: none;
+    }
+  }
+  .nonequal {
+    border: 1px solid red;
+    border-radius: 6px;
+    input:hover,
+    input:focus {
+      border: 1px solid red;
+      box-shadow: none;
+    }
+  }
 }
 
 @media (max-width: 700px) {
