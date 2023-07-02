@@ -5,9 +5,7 @@ import RecipeContainer from "../../Components/RecipeContainer/RecipeContainer";
 import Login from "../../Components/Login/Login";
 import PropTypes from "prop-types";
 import "./Accueil.scss";
-import NavBar from "../../Components/NavBar/NavBar";
 import { useFetchGetConditional } from "../../Services/api";
-import Footer from "../../Components/Footer/Footer";
 
 const Accueil = (props) => {
   const typesData = useFetchGetConditional(
@@ -49,11 +47,7 @@ const Accueil = (props) => {
   return (
     <div className="accueil_container">
       {props.auth.isConnected ? (
-        <div>
-          <NavBar></NavBar>
-          <RecipeContainer dataToCall="/recipes"></RecipeContainer>
-          <Footer></Footer>
-        </div>
+        <RecipeContainer dataToCall="/recipes"></RecipeContainer>
       ) : (
         <Login></Login>
       )}

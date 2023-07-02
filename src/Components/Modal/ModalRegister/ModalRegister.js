@@ -69,156 +69,154 @@ const ModalLogin = (props) => {
   };
 
   return (
-    <>
-      <Modal
-        header="Création de compte"
-        visible={props.visible}
-        setVisible={props.setVisible}
-        className={"modal modal-login"}
-        width={"30rem"}
-      >
-        <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
-          <Toast ref={cancelToast}></Toast>
-          <div className="login__form__field">
-            <h4>Prénom</h4>
-            <Controller
-              name="name"
-              control={control}
-              rules={{
-                required: "Le prénom est obligatoire",
-              }}
-              render={({ field }) => (
-                <InputText
-                  {...field}
-                  placeholder="Prénom"
-                  className="login__form__field-name"
-                />
-              )}
-            />
-            {getFormErrorMessage("name")}
-          </div>
-          <div className="login__form__field">
-            <h4>Nom</h4>
-            <Controller
-              name="lastname"
-              control={control}
-              rules={{
-                required: "Le nom est obligatoire",
-              }}
-              render={({ field }) => (
-                <InputText
-                  {...field}
-                  placeholder="Nom"
-                  className="login__form__field-lastname"
-                />
-              )}
-            />
-            {getFormErrorMessage("lastname")}
-          </div>
-          <div className="login__form__field">
-            <h4 htmlFor="email">Adresse email</h4>
-            <Controller
-              name="email"
-              control={control}
-              rules={{
-                required: "L'email est obligatoire",
-              }}
-              render={({ field }) => (
-                <InputText
-                  {...field}
-                  placeholder="Adresse email"
-                  className="login__form__field-email"
-                  type="email"
-                />
-              )}
-            />
-            {getFormErrorMessage("email")}
-          </div>
-          <div className="login__form__field">
-            <h4 htmlFor="password">Mot de passe</h4>
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                required: "Le mot de passe est obligatoire",
-                minLength: {
-                  value: 4,
-                  message: "Le mot de passe doit faire au moins 4 caractères",
-                },
-              }}
-              render={({ field }) => (
-                <Password
-                  {...field}
-                  placeholder={"Mot de passe"}
-                  className="login__form__field-password"
-                  feedback={true}
-                />
-              )}
-            />
-            {getFormErrorMessage("password")}
-          </div>
-          <div className="login__form__field">
-            <h4 htmlFor="password">Confirmer le mot de passe</h4>
-            <Controller
-              name="confirmpassword"
-              control={control}
-              rules={{
-                required: "Le mot de passe est obligatoire",
-                validate: (value) => {
-                  return value === getValues("password");
-                },
-              }}
-              render={({ field }) => (
-                <Password
-                  {...field}
-                  placeholder={"Mot de passe"}
-                  className={
-                    isEqualPassword
-                      ? "login__form__field-confirmpassword equal"
-                      : "login__form__field-confirmpassword nonequal"
-                  }
-                  feedback={false}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                    setIsEqualPassword(
-                      getValues("password").length > 0 &&
-                        e.target.value === getValues("password")
-                    );
-                  }}
-                />
-              )}
-            />
-            {getFormErrorMessage("confirmpassword")}
-          </div>
-          <div className="login__form__field">
-            <h4 htmlFor="password">{"Clé secrète"}</h4>
-            <Controller
-              name="secretKey"
-              control={control}
-              rules={{
-                required: "La clé secrète est obligatoire",
-              }}
-              render={({ field }) => (
-                <Password
-                  {...field}
-                  placeholder={"Clé secrète"}
-                  className={"login__form__field-secretKey"}
-                  feedback={false}
-                  tooltip={
-                    "Cette clé doit vous être fournie par le créateur du site."
-                  }
-                  tooltipOptions={{ position: "top" }}
-                />
-              )}
-            />
-            {getFormErrorMessage("secretKey")}
-          </div>
-          <div className="login__form__button">
-            {isloging ? <Loader /> : <Bouton>Créer un compte</Bouton>}
-          </div>
-        </form>
-      </Modal>
-    </>
+    <Modal
+      header="Création de compte"
+      visible={props.visible}
+      setVisible={props.setVisible}
+      className={"modal modal-login"}
+      width={"30rem"}
+    >
+      <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
+        <Toast ref={cancelToast}></Toast>
+        <div className="login__form__field">
+          <h4>Prénom</h4>
+          <Controller
+            name="name"
+            control={control}
+            rules={{
+              required: "Le prénom est obligatoire",
+            }}
+            render={({ field }) => (
+              <InputText
+                {...field}
+                placeholder="Prénom"
+                className="login__form__field-name"
+              />
+            )}
+          />
+          {getFormErrorMessage("name")}
+        </div>
+        <div className="login__form__field">
+          <h4>Nom</h4>
+          <Controller
+            name="lastname"
+            control={control}
+            rules={{
+              required: "Le nom est obligatoire",
+            }}
+            render={({ field }) => (
+              <InputText
+                {...field}
+                placeholder="Nom"
+                className="login__form__field-lastname"
+              />
+            )}
+          />
+          {getFormErrorMessage("lastname")}
+        </div>
+        <div className="login__form__field">
+          <h4 htmlFor="email">Adresse email</h4>
+          <Controller
+            name="email"
+            control={control}
+            rules={{
+              required: "L'email est obligatoire",
+            }}
+            render={({ field }) => (
+              <InputText
+                {...field}
+                placeholder="Adresse email"
+                className="login__form__field-email"
+                type="email"
+              />
+            )}
+          />
+          {getFormErrorMessage("email")}
+        </div>
+        <div className="login__form__field">
+          <h4 htmlFor="password">Mot de passe</h4>
+          <Controller
+            name="password"
+            control={control}
+            rules={{
+              required: "Le mot de passe est obligatoire",
+              minLength: {
+                value: 4,
+                message: "Le mot de passe doit faire au moins 4 caractères",
+              },
+            }}
+            render={({ field }) => (
+              <Password
+                {...field}
+                placeholder={"Mot de passe"}
+                className="login__form__field-password"
+                feedback={true}
+              />
+            )}
+          />
+          {getFormErrorMessage("password")}
+        </div>
+        <div className="login__form__field">
+          <h4 htmlFor="password">Confirmer le mot de passe</h4>
+          <Controller
+            name="confirmpassword"
+            control={control}
+            rules={{
+              required: "Le mot de passe est obligatoire",
+              validate: (value) => {
+                return value === getValues("password");
+              },
+            }}
+            render={({ field }) => (
+              <Password
+                {...field}
+                placeholder={"Mot de passe"}
+                className={
+                  isEqualPassword
+                    ? "login__form__field-confirmpassword equal"
+                    : "login__form__field-confirmpassword nonequal"
+                }
+                feedback={false}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                  setIsEqualPassword(
+                    getValues("password").length > 0 &&
+                      e.target.value === getValues("password")
+                  );
+                }}
+              />
+            )}
+          />
+          {getFormErrorMessage("confirmpassword")}
+        </div>
+        <div className="login__form__field">
+          <h4 htmlFor="password">{"Clé secrète"}</h4>
+          <Controller
+            name="secretKey"
+            control={control}
+            rules={{
+              required: "La clé secrète est obligatoire",
+            }}
+            render={({ field }) => (
+              <Password
+                {...field}
+                placeholder={"Clé secrète"}
+                className={"login__form__field-secretKey"}
+                feedback={false}
+                tooltip={
+                  "Cette clé doit vous être fournie par le créateur du site."
+                }
+                tooltipOptions={{ position: "top" }}
+              />
+            )}
+          />
+          {getFormErrorMessage("secretKey")}
+        </div>
+        <div className="login__form__button">
+          {isloging ? <Loader /> : <Bouton>Créer un compte</Bouton>}
+        </div>
+      </form>
+    </Modal>
   );
 };
 

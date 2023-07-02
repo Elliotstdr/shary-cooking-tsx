@@ -67,60 +67,58 @@ const ModalLogin = (props) => {
   };
 
   return (
-    <>
-      <Modal
-        header="Connexion"
-        visible={props.visible}
-        setVisible={props.setVisible}
-        className={"modal modal-login"}
-        width={"20rem"}
-      >
-        <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
-          <Toast ref={cancelToast}></Toast>
-          <div className="login__form__field">
-            <h4 htmlFor="email">Adresse email</h4>
-            <Controller
-              name="email"
-              control={control}
-              rules={{
-                required: "L'email est obligatoire",
-              }}
-              render={({ field }) => (
-                <InputText
-                  {...field}
-                  placeholder="Adresse email"
-                  className="login__form__field-email"
-                  type="email"
-                />
-              )}
-            />
-            {getFormErrorMessage("email")}
-          </div>
-          <div className="login__form__field">
-            <h4 htmlFor="password">Mot de passe</h4>
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                required: "Le mot de passe est obligatoire",
-              }}
-              render={({ field }) => (
-                <Password
-                  {...field}
-                  placeholder={"Mot de passe"}
-                  className="login__form__field-password"
-                  feedback={false}
-                />
-              )}
-            />
-            {getFormErrorMessage("password")}
-          </div>
-          <div className="login__form__button">
-            {isloging ? <Loader /> : <Bouton>Se connecter</Bouton>}
-          </div>
-        </form>
-      </Modal>
-    </>
+    <Modal
+      header="Connexion"
+      visible={props.visible}
+      setVisible={props.setVisible}
+      className={"modal modal-login"}
+      width={"20rem"}
+    >
+      <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
+        <Toast ref={cancelToast}></Toast>
+        <div className="login__form__field">
+          <h4 htmlFor="email">Adresse email</h4>
+          <Controller
+            name="email"
+            control={control}
+            rules={{
+              required: "L'email est obligatoire",
+            }}
+            render={({ field }) => (
+              <InputText
+                {...field}
+                placeholder="Adresse email"
+                className="login__form__field-email"
+                type="email"
+              />
+            )}
+          />
+          {getFormErrorMessage("email")}
+        </div>
+        <div className="login__form__field">
+          <h4 htmlFor="password">Mot de passe</h4>
+          <Controller
+            name="password"
+            control={control}
+            rules={{
+              required: "Le mot de passe est obligatoire",
+            }}
+            render={({ field }) => (
+              <Password
+                {...field}
+                placeholder={"Mot de passe"}
+                className="login__form__field-password"
+                feedback={false}
+              />
+            )}
+          />
+          {getFormErrorMessage("password")}
+        </div>
+        <div className="login__form__button">
+          {isloging ? <Loader /> : <Bouton>Se connecter</Bouton>}
+        </div>
+      </form>
+    </Modal>
   );
 };
 

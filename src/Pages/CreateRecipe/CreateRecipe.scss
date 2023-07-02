@@ -60,6 +60,18 @@
   text-align: left;
 }
 
+.modify_recipe {
+  .recipe__form {
+    margin-top: 0;
+    button {
+      align-self: center;
+    }
+    .steps {
+      width: 60%;
+    }
+  }
+}
+
 @media (max-width: 900px) {
   .recipe__form {
     margin: 3rem 1rem;

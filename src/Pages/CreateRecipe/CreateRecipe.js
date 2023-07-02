@@ -1,6 +1,5 @@
 import React, { useRef, useState, useMemo } from "react";
 import "./CreateRecipe.scss";
-import NavBar from "../../Components/NavBar/NavBar";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
@@ -12,7 +11,6 @@ import ImageUpload from "../../Components/ImageUpload/ImageUpload";
 import { errorToast, successToast, useFetchGet } from "../../Services/api";
 import IngredientsCreation from "../../Components/FormElements/IngredientsCreation/IngredientsCreation";
 import StepsCreation from "../../Components/FormElements/StepsCreation/StepsCreation";
-import Footer from "../../Components/Footer/Footer";
 import { RadioButton } from "primereact/radiobutton";
 import Bouton from "../../Utils/Bouton/Bouton";
 import { AiOutlinePlusCircle } from "react-icons/ai";
@@ -287,7 +285,6 @@ const CreateRecipe = (props) => {
       }}
       ref={ref}
     >
-      {!props.recipe && <NavBar></NavBar>}
       <form className="recipe__form" onSubmit={handleSubmit(onSubmit)}>
         <Toast ref={uploadToast} />
         <Toast ref={cancelToast} />
@@ -501,7 +498,6 @@ const CreateRecipe = (props) => {
           </button>
         )}
       </form>
-      {!props.recipe && <Footer></Footer>}
     </div>
   );
 };

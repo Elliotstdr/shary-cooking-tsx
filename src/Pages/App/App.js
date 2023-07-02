@@ -7,11 +7,15 @@ import Parameters from "../Parameters/Parameters";
 import MyRecipes from "../MyRecipes/MyRecipes";
 import CreateRecipe from "../CreateRecipe/CreateRecipe";
 import { connect } from "react-redux";
+import NavBar from "../../Components/NavBar/NavBar";
+import Footer from "../../Components/Footer/Footer";
 
 function App(props) {
   return (
     <div className="App" id="app">
       <BrowserRouter>
+        {props.auth.isConnected && <NavBar></NavBar>}
+
         <Routes>
           <Route path="/" element={<Accueil />}></Route>
           {props.auth.isConnected && (
@@ -24,6 +28,7 @@ function App(props) {
             </>
           )}
         </Routes>
+        {props.auth.isConnected && <Footer></Footer>}
       </BrowserRouter>
     </div>
   );
