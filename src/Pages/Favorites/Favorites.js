@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Favorites.scss";
 import NavBar from "../../Components/NavBar/NavBar";
 import RecipeContainer from "../../Components/RecipeContainer/RecipeContainer";
@@ -8,16 +8,6 @@ import PropTypes from "prop-types";
 import Footer from "../../Components/Footer/Footer";
 
 const Favorites = (props) => {
-  useEffect(() => {
-    props.handleUpdateRecipes({
-      favorite: true,
-    });
-    return () =>
-      props.handleUpdateRecipes({
-        favorite: false,
-      });
-    // eslint-disable-next-line
-  }, []);
   return (
     <div>
       <NavBar></NavBar>

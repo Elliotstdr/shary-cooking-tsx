@@ -25,7 +25,11 @@ const RecipeCard = (props) => {
   const [visibleDetail, setVisibleDetail] = useState(false);
   const [visibleModif, setVisibleModif] = useState(false);
   const [wantToDelete, setWantToDelete] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(props.recipe.favorite);
+  const [isFavorite, setIsFavorite] = useState(
+    props.recipeItem.savedByUsers?.some(
+      (user) => user.id === props.auth.userConnected.id
+    )
+  );
   const cancelToast = useRef(null);
   const uploadToast = useRef(null);
 
@@ -41,12 +45,7 @@ const RecipeCard = (props) => {
         }
       )
       .then(() => {
-        if (actionType === "add") {
-          setIsFavorite(true);
-        }
-        if (actionType === "delete") {
-          setIsFavorite(false);
-        }
+        setIsFavorite(!isFavorite);
       });
   };
 
@@ -168,10 +167,7 @@ const RecipeCard = (props) => {
       </div>
       <div className="recipeCard__bottom">
         <div className="recipeCard__bottom__fav">
-          {isFavorite ||
-          props.recipeItem.savedByUsers?.some(
-            (user) => user.id === props.auth.userConnected.id
-          ) ? (
+          {isFavorite ? (
             <AiFillStar onClick={() => addToFavorites("delete")}></AiFillStar>
           ) : (
             <AiOutlineStar

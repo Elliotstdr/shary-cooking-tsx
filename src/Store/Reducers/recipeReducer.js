@@ -2,7 +2,6 @@ import { UPDATE_RECIPE } from "../Actions/recipeActions.js";
 const INITIAL_STATE = {
   chosenRecipes: [],
   editable: false,
-  favorite: false,
   shopping: false,
 };
 
