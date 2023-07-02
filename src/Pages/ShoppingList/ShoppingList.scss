@@ -16,6 +16,17 @@
     .bouton {
       align-self: center;
     }
+    &_top {
+      display: flex;
+      justify-content: center;
+      .bouton {
+        height: 2rem;
+        margin-left: 1rem;
+        svg {
+          font-weight: bold;
+        }
+      }
+    }
   }
   &_home {
     width: 40rem;
@@ -48,6 +59,7 @@
 .choose_recipe {
   width: 100% !important;
   .p-dialog-content {
+    padding-bottom: 4rem !important;
     background-color: c.$fond-page !important;
     .bouton {
       margin-top: 3rem;
@@ -135,5 +147,8 @@
   }
   .modal_liste_courses_modal {
     width: 90% !important;
+  }
+  .shoppingList_container_export_top {
+    flex-direction: column;
   }
 }

@@ -12,6 +12,7 @@ import { updateRecipe } from "../../Store/Actions/recipeActions";
 import PropTypes from "prop-types";
 import Footer from "../../Components/Footer/Footer";
 import image from "../../assets/HCDarkOp.jpg";
+import { BiEditAlt } from "react-icons/bi";
 
 const ShoppingList = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
@@ -57,14 +58,18 @@ const ShoppingList = (props) => {
       <div className="shoppingList_container">
         {visibleExport ? (
           <div className="shoppingList_container_export">
-            <Bouton
-              type={"normal"}
-              btnTexte={"Modifier ma liste de recettes"}
-              btnAction={() => setVisibleRecipeContainer(true)}
-            ></Bouton>
-            <h2 className="shoppingList_container_export_title">
-              Mes recettes pour la liste de course
-            </h2>
+            <div className="shoppingList_container_export_top">
+              <h2 className="shoppingList_container_export_top_title">
+                Mes recettes pour la liste de course
+              </h2>
+              <Bouton
+                type={"normal"}
+                btnTexte={"Modifier"}
+                btnAction={() => setVisibleRecipeContainer(true)}
+              >
+                <BiEditAlt></BiEditAlt>
+              </Bouton>
+            </div>
             <div className="shoppingList_container_export_recipes">
               {props.recipe.chosenRecipes.map((recipe, index) => (
                 <ShoppingListCard
@@ -113,6 +118,11 @@ const ShoppingList = (props) => {
               btnAction={() => setVisibleRecipeContainer(false)}
             ></Bouton>
             <RecipeContainer dataToCall="/recipes"></RecipeContainer>
+            <Bouton
+              type={"normal"}
+              btnTexte={"Valider ma sélection"}
+              btnAction={() => setVisibleRecipeContainer(false)}
+            ></Bouton>
           </>
         </Modal>
       )}
