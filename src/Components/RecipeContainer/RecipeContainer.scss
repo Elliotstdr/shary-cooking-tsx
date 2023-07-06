@@ -46,7 +46,7 @@
   }
 }
 
-@media (max-width: 950px) {
+@media (max-width: 1020px) {
   .recipeContainer {
     .searchbar_container {
       display: none;
@@ -65,6 +65,7 @@
           border-radius: 10px !important;
           border: unset !important;
           .searchbar_container {
+            width: unset;
             display: flex;
             flex-direction: column;
             padding: 0rem 1rem;
@@ -83,5 +84,13 @@
         }
       }
     }
+  }
+}
+
+@media (max-width: 850px) {
+  .recipeContainer_cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }

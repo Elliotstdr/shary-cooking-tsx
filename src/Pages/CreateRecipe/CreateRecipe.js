@@ -21,6 +21,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import Loader from "../../Utils/Loader/loader";
+import NavBar from "../../Components/NavBar/NavBar";
+import Footer from "../../Components/Footer/Footer";
 
 const CreateRecipe = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
@@ -285,6 +287,7 @@ const CreateRecipe = (props) => {
       }}
       ref={ref}
     >
+      {!props.recipe && <NavBar></NavBar>}
       <form className="recipe__form" onSubmit={handleSubmit(onSubmit)}>
         <Toast ref={uploadToast} />
         <Toast ref={cancelToast} />
@@ -498,6 +501,7 @@ const CreateRecipe = (props) => {
           </button>
         )}
       </form>
+      {!props.recipe && <Footer></Footer>}
     </div>
   );
 };

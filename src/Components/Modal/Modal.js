@@ -13,7 +13,6 @@ const Modal = (props) => {
       appendTo={document.getElementById("app")}
       header={props.header}
       visible={props.visible}
-      breakpoints={{ "960px": "75vw" }}
       style={{
         width: props.width ? props.width : "fit-content",
         height: props.height ? props.height : "fit-content",

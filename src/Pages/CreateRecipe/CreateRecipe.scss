@@ -26,6 +26,9 @@
     &-unit {
       width: 10rem;
     }
+    &-time {
+      min-width: 5rem;
+    }
     .checkboxes {
       display: flex;
       .checkbox {
@@ -77,6 +80,9 @@
     margin: 3rem 1rem;
     &__group {
       flex-direction: column;
+      .recipe__form__field {
+        margin-right: 0 !important;
+      }
     }
     .checkboxes {
       flex-wrap: wrap;
@@ -98,7 +104,7 @@
         }
       }
       .recipe__form__field-unit {
-        width: 7rem !important;
+        width: 6rem !important;
       }
     }
     .p-divider.p-divider-horizontal {
