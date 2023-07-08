@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 import "./CreateRecipe.scss";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
@@ -25,6 +25,9 @@ import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
 
 const CreateRecipe = (props) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const ingredientData = useFetchGet("/ingredient_datas");
   const [isCreating, setIsCreating] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);

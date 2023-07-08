@@ -1,6 +1,7 @@
 import "./App.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Accueil from "../Accueil/Accueil";
+import AllRecipes from "../AllRecipes/AllRecipes";
 import Favorites from "../Favorites/Favorites";
 import ShoppingList from "../ShoppingList/ShoppingList";
 import Parameters from "../Parameters/Parameters";
@@ -16,6 +17,7 @@ function App(props) {
           <Route path="/" element={<Accueil />}></Route>
           {props.auth.isConnected && (
             <>
+              <Route path="/all" element={<AllRecipes />}></Route>
               <Route path="/fav" element={<Favorites />}></Route>
               <Route path="/shop" element={<ShoppingList />}></Route>
               <Route path="/param" element={<Parameters />}></Route>

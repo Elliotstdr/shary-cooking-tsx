@@ -21,6 +21,14 @@ const NavBar = (props) => {
           </li>
         </NavLink>
         <NavLink
+          to="/all"
+          className={(nav) => (nav.isActive ? "nav-active" : "")}
+        >
+          <li>
+            <strong>Galerie</strong>
+          </li>
+        </NavLink>
+        <NavLink
           to="/fav"
           className={(nav) => (nav.isActive ? "nav-active" : "")}
         >
@@ -58,6 +66,14 @@ const NavBar = (props) => {
             >
               <li>
                 <strong>Accueil</strong>
+              </li>
+            </NavLink>
+            <NavLink
+              to="/all"
+              className={(nav) => (nav.isActive ? "nav-active" : "")}
+            >
+              <li>
+                <strong>Gallerie</strong>
               </li>
             </NavLink>
             <NavLink

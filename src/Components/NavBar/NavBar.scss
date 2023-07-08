@@ -1,6 +1,7 @@
 @use "src/Styles/_vars.scss" as c;
 
 .navigation {
+  font-family: "Dilgante Rocks", sans-serif;
   display: flex;
   justify-content: space-around;
   box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.4);
@@ -45,6 +46,7 @@
     }
   }
   button {
+    font-family: "Dilgante Rocks", sans-serif;
     margin-top: 2rem;
   }
   &_parameters {
@@ -106,6 +108,15 @@
   color: c.$main-color !important;
 }
 
+@media (max-width: 1220px) {
+  .navigation ul {
+    margin: 2rem 1rem;
+    a {
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+
 @media (max-width: 1100px) {
   .navigation {
     ul {
@@ -135,10 +146,25 @@
   }
 }
 
+@media (min-width: 950px) and (max-width: 1020px) {
+  .navigation {
+    button {
+      padding: 0 0.5rem;
+    }
+    ul {
+      padding-left: 0.5rem;
+    }
+  }
+}
+
 @media (max-width: 950px) {
   .navigation {
+    align-items: center;
     .menu.desktop {
       display: none;
+    }
+    .bouton.first {
+      margin-top: 0;
     }
     .bouton.second {
       display: none;
