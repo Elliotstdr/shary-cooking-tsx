@@ -181,6 +181,7 @@ const CreateRecipe = (props) => {
 
   const setFields = () => {
     let data = getValues();
+    data.createdAt = new Date();
     data.number = Number(data.number);
     data.type = `/api/types/${typeId}`;
     data.regime = `/api/regimes/${regimeId}`;

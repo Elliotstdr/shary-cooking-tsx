@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Login from "../../Components/Login/Login";
 import PropTypes from "prop-types";
 import "./Accueil.scss";
-import { useFetchGetConditional } from "../../Services/api";
+import { useFetchGet, useFetchGetConditional } from "../../Services/api";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
 import image from "../../assets/accueilHC.jpg";
@@ -12,8 +12,11 @@ import image2 from "../../assets/accueil_second.jpg";
 import image3 from "../../assets/accueil_third.jpg";
 import Bouton from "../../Utils/Bouton/Bouton";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../Utils/Loader/loader";
+import RecipeCard from "../../Components/RecipeContainer/RecipeCard/RecipeCard";
 
 const Accueil = (props) => {
+  const recipesData = useFetchGet("/recipes");
   const navigate = useNavigate();
 
   const typesData = useFetchGetConditional(
@@ -78,6 +81,23 @@ const Accueil = (props) => {
                 ></Bouton>
               </div>
               <img src={image2} alt="accueil" />
+            </div>
+            <div className="fourth block">
+              <h1>Les recettes au top !</h1>
+              <div className="fourth_recipes">
+                {recipesData.loaded ? (
+                  recipesData.data
+                    .sort(
+                      (a, b) => b.savedByUsers.length - a.savedByUsers.length
+                    )
+                    .slice(0, 3)
+                    .map((recipe, index) => (
+                      <RecipeCard key={index} recipeItem={recipe}></RecipeCard>
+                    ))
+                ) : (
+                  <Loader></Loader>
+                )}
+              </div>
             </div>
             <div className="third block">
               <img src={image3} alt="accueil" />

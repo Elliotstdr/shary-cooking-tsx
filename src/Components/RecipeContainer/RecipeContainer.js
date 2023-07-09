@@ -45,6 +45,7 @@ const RecipeContainer = (props) => {
         {filteredRecipes ? (
           filteredRecipes.length > 0 ? (
             filteredRecipes
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .slice(first, first + rows)
               .map((recipe, index) => (
                 <RecipeCard key={index} recipeItem={recipe}></RecipeCard>

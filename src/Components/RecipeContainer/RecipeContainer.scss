@@ -6,10 +6,9 @@
   &_cards {
     padding: 3rem 8rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 23rem));
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 20rem));
     justify-content: center;
-    gap: 1rem 1rem;
-    grid-auto-rows: auto;
+    gap: 0rem 3rem;
     .noCard {
       font-size: 1.2rem;
       line-height: 2rem;
@@ -84,13 +83,5 @@
         }
       }
     }
-  }
-}
-
-@media (max-width: 850px) {
-  .recipeContainer_cards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 }
