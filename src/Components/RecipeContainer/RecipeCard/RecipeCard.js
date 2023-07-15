@@ -41,6 +41,7 @@ const RecipeCard = (props) => {
         {
           headers: {
             accept: "application/json",
+            Authorization: `Bearer ${props.auth.token}`,
           },
         }
       )
@@ -52,7 +53,13 @@ const RecipeCard = (props) => {
   const deleteRecipe = () => {
     axios
       .delete(
-        `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipeItem.id}`
+        `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipeItem.id}`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${props.auth.token}`,
+          },
+        }
       )
       .then(() => {
         setWantToDelete(false);

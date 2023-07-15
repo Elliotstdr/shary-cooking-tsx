@@ -1,7 +1,10 @@
 import { UPDATE_AUTH } from "../Actions/authActions.js";
 const INITIAL_STATE = {
   isConnected: false,
+  token: null,
   userConnected: {},
+  logTime: null,
+  newLogTime: null,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {

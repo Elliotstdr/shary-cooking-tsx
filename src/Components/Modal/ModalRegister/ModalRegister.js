@@ -50,17 +50,32 @@ const ModalLogin = (props) => {
     setIsLoging(true);
     const data = getValues();
     axios
-      .post(`${process.env.REACT_APP_BASE_URL_API}/api/users`, data, {
-        headers: {
-          accept: "application/json",
-        },
-      })
+      .post(
+        `${process.env.REACT_APP_BASE_URL_API}/api/users/createAccount`,
+        data,
+        {
+          headers: {
+            accept: "application/json",
+          },
+        }
+      )
       .then((res) => {
-        setIsLoging(false);
-        props.handleAuth({
-          isConnected: true,
-          userConnected: res.data,
-        });
+        const dataForToken = {
+          email: data.email,
+          password: data.password,
+        };
+        axios
+          .post(`${process.env.REACT_APP_BASE_URL_API}/auth`, dataForToken)
+          .then((token) => {
+            setIsLoging(false);
+            props.handleAuth({
+              isConnected: true,
+              userConnected: res.data,
+              token: token.data.token,
+              logTime: new Date().getTime(),
+              newLogTime: new Date().getTime(),
+            });
+          });
       })
       .catch((error) => {
         setIsLoging(false);

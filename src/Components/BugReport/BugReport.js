@@ -42,7 +42,6 @@ const BugReport = (props) => {
   const onSubmit = () => {
     setSending(true);
     let data = getValues();
-    console.log(props);
     data.firstname = props.auth.userConnected.name;
     data.lastname = props.auth.userConnected.lastname;
     if (image) {
@@ -50,7 +49,16 @@ const BugReport = (props) => {
     }
 
     axios
-      .post(`${process.env.REACT_APP_BASE_URL_API}/api/users/sendReport`, data)
+      .post(
+        `${process.env.REACT_APP_BASE_URL_API}/api/users/sendReport`,
+        data,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${props.auth.token}`,
+          },
+        }
+      )
       .then(() => {
         setSuccessView(true);
       })

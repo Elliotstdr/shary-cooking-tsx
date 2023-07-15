@@ -158,7 +158,13 @@ const CreateRecipe = (props) => {
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL_API}/api/recipes/postImage/${res.data.id}`,
-        { file: image, fileName: imageName }
+        { file: image, fileName: imageName },
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${props.auth.token}`,
+          },
+        }
       )
       .then(() => {
         if (props.recipe) {
@@ -214,11 +220,11 @@ const CreateRecipe = (props) => {
 
   const createRecipeFunction = () => {
     const data = setFields();
-    console.log(data);
     axios
       .post(`${process.env.REACT_APP_BASE_URL_API}/api/recipes`, data, {
         headers: {
           accept: "application/json",
+          Authorization: `Bearer ${props.auth.token}`,
         },
       })
       .then((res) => {
@@ -248,6 +254,7 @@ const CreateRecipe = (props) => {
         {
           headers: {
             accept: "application/json",
+            Authorization: `Bearer ${props.auth.token}`,
           },
         }
       )

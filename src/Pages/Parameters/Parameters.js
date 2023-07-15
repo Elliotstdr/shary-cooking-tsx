@@ -64,14 +64,20 @@ const Parameters = (props) => {
     return data;
   };
 
-  const putPicture = () => {
+  const putPicture = (token, newUser) => {
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL_API}/api/users/postImage/${props.auth.userConnected.id}`,
-        { file: image, fileName: imageName }
+        { file: image, fileName: imageName },
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${token ? token : props.auth.token}`,
+          },
+        }
       )
       .then((res) => {
-        let tempUser = props.auth.userConnected;
+        let tempUser = { ...newUser };
         tempUser.imageUrl = res.data;
         props.handleAuth({
           userConnected: tempUser,
@@ -98,18 +104,15 @@ const Parameters = (props) => {
         {
           headers: {
             accept: "application/json",
+            Authorization: `Bearer ${props.auth.token}`,
           },
         }
       )
-      .then(() => {
-        if (
-          image &&
-          `/media/${imageName}` !== props.auth.userConnected.imageUrl
-        ) {
-          putPicture();
-        } else {
-          successToast("Votre profil a bien été mis à jour", uploadToast);
-          setIsModifying(false);
+      .then((res) => {
+        if (res.data[1]) {
+          props.handleAuth({
+            token: res.data[1],
+          });
         }
         setShowMDP(false);
         setValue("oldPassword", "");
@@ -119,9 +122,18 @@ const Parameters = (props) => {
         tempArray.email = data.email;
         tempArray.name = data.name;
         tempArray.lastname = data.lastname;
-        props.handleAuth({
-          userConnected: tempArray,
-        });
+        if (
+          image &&
+          `/media/${imageName}` !== props.auth.userConnected.imageUrl
+        ) {
+          putPicture(res.data[1], tempArray);
+        } else {
+          props.handleAuth({
+            userConnected: tempArray,
+          });
+          successToast("Votre profil a bien été mis à jour", uploadToast);
+          setIsModifying(false);
+        }
       })
       .catch(() =>
         errorToast(

@@ -130,7 +130,10 @@ const NavBar = (props) => {
             onClick={() => {
               props.handleAuth({
                 isConnected: false,
+                token: null,
                 userConnected: {},
+                logTime: null,
+                newLogTime: null,
               });
               navigate("/");
             }}

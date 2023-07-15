@@ -13,7 +13,7 @@ import { CiEdit } from "react-icons/ci";
 import { connect } from "react-redux";
 
 const CardDetail = (props) => {
-  const recipeDetail = useFetchGet(`/recipes/${props.id}`);
+  const recipeDetail = useFetchGet(`/recipes/${props.id}`, props.auth.token);
 
   return (
     <div className="cardDetail_container">

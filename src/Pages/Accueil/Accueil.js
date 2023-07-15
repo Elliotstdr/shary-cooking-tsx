@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { updateSecondaryTables } from "../../Store/Actions/secondaryTables";
 import { connect } from "react-redux";
 import Login from "../../Components/Login/Login";
@@ -16,8 +16,16 @@ import Loader from "../../Utils/Loader/loader";
 import RecipeCard from "../../Components/RecipeContainer/RecipeCard/RecipeCard";
 
 const Accueil = (props) => {
-  const recipesData = useFetchGet("/recipes");
+  const [recipeUrl, setRecipeUrl] = useState(null);
   const navigate = useNavigate();
+
+  const recipesData = useFetchGet(recipeUrl, props.auth.token);
+
+  useEffect(() => {
+    if (props.auth.isConnected) {
+      setRecipeUrl("/recipes");
+    }
+  }, [props.auth.isConnected]);
 
   const typesData = useFetchGetConditional(
     "/types",
@@ -85,7 +93,7 @@ const Accueil = (props) => {
             <div className="fourth block">
               <h1>Les recettes au top !</h1>
               <div className="fourth_recipes">
-                {recipesData.loaded ? (
+                {recipesData.loaded && recipesData.data ? (
                   recipesData.data
                     .sort(
                       (a, b) => b.savedByUsers.length - a.savedByUsers.length

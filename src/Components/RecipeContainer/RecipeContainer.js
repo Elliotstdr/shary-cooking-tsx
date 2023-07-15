@@ -13,7 +13,7 @@ const RecipeContainer = (props) => {
   const rows = 12;
   const [first, setFirst] = useState(0);
   const ref = useRef(null);
-  const recipesData = useFetchGet(props.dataToCall);
+  const recipesData = useFetchGet(props.dataToCall, props.auth.token);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
 
   useEffect(() => {
@@ -81,7 +81,10 @@ const RecipeContainer = (props) => {
 
 RecipeContainer.propType = {
   dataToCall: PropTypes.string,
+  auth: PropTypes.object,
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
 export default connect(mapStateToProps)(RecipeContainer);

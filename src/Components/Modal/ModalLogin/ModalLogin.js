@@ -44,25 +44,32 @@ const ModalLogin = (props) => {
     setIsLoging(true);
     const data = getValues();
     axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL_API}/api/users/loginCheck`,
-        data,
-        {
-          headers: {
-            accept: "application/json",
-          },
-        }
-      )
-      .then((res) => {
-        setIsLoging(false);
-        props.handleAuth({
-          isConnected: true,
-          userConnected: res.data,
-        });
+      .post(`${process.env.REACT_APP_BASE_URL_API}/auth`, data)
+      .then((token) => {
+        axios
+          .get(
+            `${process.env.REACT_APP_BASE_URL_API}/api/users?email=${data.email}`,
+            {
+              headers: {
+                accept: "application/json",
+                Authorization: `Bearer ${token.data.token}`,
+              },
+            }
+          )
+          .then((res) => {
+            setIsLoging(false);
+            props.handleAuth({
+              isConnected: true,
+              token: token.data.token,
+              userConnected: res.data[0],
+              logTime: new Date().getTime(),
+              newLogTime: new Date().getTime(),
+            });
+          });
       })
-      .catch((error) => {
+      .catch(() => {
         setIsLoging(false);
-        errorToast(error.response.data.detail, cancelToast);
+        errorToast("L'authentification a échoué", cancelToast);
       });
   };
 

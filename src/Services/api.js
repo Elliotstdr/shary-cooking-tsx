@@ -1,29 +1,35 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export const useFetchGet = (url) => {
+export const useFetchGet = (url, token = null) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
-        headers: {
-          accept: "application/json",
-        },
-      })
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => setError(error.message))
-      .finally(() => setLoaded(true));
+    url &&
+      axios
+        .get(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
+          headers: token
+            ? {
+                accept: "application/json",
+                Authorization: `Bearer ${token}`,
+              }
+            : {
+                accept: "application/json",
+              },
+        })
+        .then((response) => {
+          setData(response.data);
+        })
+        .catch((error) => setError(error.message))
+        .finally(() => setLoaded(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [url]);
   return { data, error, loaded };
 };
 
-export const useFetchGetConditional = (url, reduxData) => {
+export const useFetchGetConditional = (url, reduxData, token = null) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
@@ -32,9 +38,14 @@ export const useFetchGetConditional = (url, reduxData) => {
     if (!reduxData || reduxData.length === 0) {
       axios
         .get(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
-          headers: {
-            accept: "application/json",
-          },
+          headers: token
+            ? {
+                accept: "application/json",
+                Authorization: `Bearer ${token}`,
+              }
+            : {
+                accept: "application/json",
+              },
         })
         .then((response) => {
           setData(response.data);

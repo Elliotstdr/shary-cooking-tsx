@@ -10,7 +10,7 @@ import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 
 const SearchBar = (props) => {
   const ingredientData = useFetchGet("/ingredient_datas");
-  const usersData = useFetchGet("/users");
+  const usersData = useFetchGet("/users", props.auth.token);
   const [moreVisible, setMoreVisible] = useState(false);
   const [regime, setRegime] = useState(null);
   const [type, setType] = useState(null);
@@ -214,10 +214,12 @@ SearchBar.propTypes = {
   setFilteredRecipes: PropTypes.func,
   startData: PropTypes.array,
   secondaryTables: PropTypes.object,
+  auth: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   secondaryTables: state.secondaryTables,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps)(SearchBar);
