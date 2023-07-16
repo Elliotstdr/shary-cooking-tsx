@@ -4,10 +4,12 @@ import "./Login.scss";
 import ModalLogin from "../Modal/ModalLogin/ModalLogin";
 import ModalRegister from "../Modal/ModalRegister/ModalRegister";
 import image from "../../assets/accueilHC.jpg";
+import ModalForgotPassword from "../Modal/ModalForgotPassword/ModalForgotPassword";
 
 const Login = () => {
   const [visibleModalLogin, setVisibleModalLogin] = useState(false);
   const [visibleModalRegister, setVisibleModalRegister] = useState(false);
+  const [visibleModalForgot, setVisibleModalForgot] = useState(false);
 
   return (
     <div className="login_container">
@@ -32,6 +34,7 @@ const Login = () => {
         <ModalLogin
           visible={visibleModalLogin}
           setVisible={setVisibleModalLogin}
+          setVisibleForgot={setVisibleModalForgot}
           header={"Se connecter"}
         ></ModalLogin>
       )}
@@ -41,6 +44,12 @@ const Login = () => {
           setVisible={setVisibleModalRegister}
           header={"Créer un compte"}
         ></ModalRegister>
+      )}
+      {visibleModalForgot && (
+        <ModalForgotPassword
+          visible={visibleModalForgot}
+          setVisible={setVisibleModalForgot}
+        ></ModalForgotPassword>
       )}
     </div>
   );

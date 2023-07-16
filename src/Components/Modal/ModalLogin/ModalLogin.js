@@ -121,6 +121,15 @@ const ModalLogin = (props) => {
           />
           {getFormErrorMessage("password")}
         </div>
+        <div
+          className="forgot_password"
+          onClick={() => {
+            props.setVisible(false);
+            props.setVisibleForgot(true);
+          }}
+        >
+          Mot de passe oublié ?
+        </div>
         <div className="login__form__button">
           {isloging ? <Loader /> : <Bouton>Se connecter</Bouton>}
         </div>
@@ -134,6 +143,7 @@ ModalLogin.propTypes = {
   handleAuth: PropTypes.func,
   visible: PropTypes.bool,
   setVisible: PropTypes.func,
+  setVisibleForgot: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

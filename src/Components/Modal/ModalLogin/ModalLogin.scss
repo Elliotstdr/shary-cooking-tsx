@@ -45,5 +45,12 @@
         box-shadow: none;
       }
     }
+    .forgot_password {
+      cursor: pointer;
+      text-decoration: underline;
+      text-align: right;
+      font-size: 0.8rem;
+      padding: 0.5rem;
+    }
   }
 }
