@@ -275,7 +275,7 @@ const CreateRecipe = (props) => {
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
-    if (active.id !== over.id) {
+    if (over && active.id !== over.id) {
       setIngredientList((ingredientList) => {
         const oldIndex = ingredientList.findIndex(
           (item) => item.id === active.id
