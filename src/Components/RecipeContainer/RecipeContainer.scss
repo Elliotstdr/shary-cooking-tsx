@@ -45,6 +45,17 @@
   }
 }
 
+.shopping_list_checkboxes {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    margin-right: 1rem;
+    margin-left: 0.25rem;
+  }
+}
+
 @media (max-width: 1020px) {
   .recipeContainer {
     .searchbar_container {

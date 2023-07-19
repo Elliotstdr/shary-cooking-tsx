@@ -117,7 +117,7 @@ const ShoppingList = (props) => {
               btnTexte={"Valider ma sélection"}
               btnAction={() => setVisibleRecipeContainer(false)}
             ></Bouton>
-            <RecipeContainer dataToCall="/recipes"></RecipeContainer>
+            <RecipeContainer dataToCall="/recipes" checkboxes></RecipeContainer>
             <Bouton
               type={"normal"}
               btnTexte={"Valider ma sélection"}

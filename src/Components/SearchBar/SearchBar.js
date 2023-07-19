@@ -63,7 +63,7 @@ const SearchBar = (props) => {
       props.setFilteredRecipes(tempRecipes);
     }
     // eslint-disable-next-line
-  }, [user, regime, type, keyword, time, ingredient]);
+  }, [user, regime, type, keyword, time, ingredient, props.startData]);
 
   const timeList = [
     {

@@ -8,6 +8,7 @@ import Loader from "../../Utils/Loader/loader";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Accordion, AccordionTab } from "primereact/accordion";
+import { Checkbox } from "primereact/checkbox";
 
 const RecipeContainer = (props) => {
   const rows = 12;
@@ -15,15 +16,56 @@ const RecipeContainer = (props) => {
   const ref = useRef(null);
   const recipesData = useFetchGet(props.dataToCall, props.auth.token);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
+  const [boxFavorites, setBoxFavorites] = useState(false);
+  const [boxMine, setBoxMine] = useState(false);
+  const [startData, setStartData] = useState([]);
 
   useEffect(() => {
-    recipesData.loaded && setFilteredRecipes(recipesData.data);
+    if (recipesData.loaded) {
+      setFilteredRecipes(recipesData.data);
+      setStartData(recipesData.data);
+    }
   }, [recipesData.loaded, recipesData.data]);
+
+  useEffect(() => {
+    if (recipesData.loaded && recipesData.data) {
+      let tempArray = [...recipesData.data];
+      if (boxFavorites) {
+        tempArray = tempArray.filter((recipe) =>
+          recipe.savedByUsers.some(
+            (element) => element.id === props.auth.userConnected.id
+          )
+        );
+      }
+      if (boxMine) {
+        tempArray = tempArray.filter(
+          (recipe) => recipe.postedByUser.id === props.auth.userConnected.id
+        );
+      }
+      setStartData(tempArray);
+    }
+    // eslint-disable-next-line
+  }, [boxFavorites, boxMine]);
+
   return (
     <div className="recipeContainer" ref={ref}>
+      {props.checkboxes && (
+        <div className="shopping_list_checkboxes">
+          <Checkbox
+            onChange={(e) => setBoxFavorites(e.checked)}
+            checked={boxFavorites}
+          ></Checkbox>
+          <span>Favoris</span>
+          <Checkbox
+            onChange={(e) => setBoxMine(e.checked)}
+            checked={boxMine}
+          ></Checkbox>
+          <span>Mes recettes</span>
+        </div>
+      )}
       <div className="recipeContainer_searchbar">
         <SearchBar
-          startData={recipesData.data}
+          startData={startData}
           filteredRecipes={filteredRecipes}
           setFilteredRecipes={setFilteredRecipes}
         ></SearchBar>
@@ -34,7 +76,7 @@ const RecipeContainer = (props) => {
         >
           <AccordionTab header="Filtrer">
             <SearchBar
-              startData={recipesData.data}
+              startData={startData}
               filteredRecipes={filteredRecipes}
               setFilteredRecipes={setFilteredRecipes}
             ></SearchBar>
@@ -42,7 +84,7 @@ const RecipeContainer = (props) => {
         </Accordion>
       </div>
       <div className="recipeContainer_cards">
-        {filteredRecipes ? (
+        {recipesData.loaded ? (
           filteredRecipes.length > 0 ? (
             filteredRecipes
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))

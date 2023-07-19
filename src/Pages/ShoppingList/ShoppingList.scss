@@ -61,9 +61,15 @@
   .p-dialog-content {
     padding-bottom: 4rem !important;
     background-color: c.$fond-page !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .recipeContainer {
+      width: 100%;
+    }
     .bouton {
       margin-top: 3rem;
-      margin-left: 45%;
+      padding: 1.5rem;
       &::after {
         background-color: c.$fond-page;
       }
@@ -140,9 +146,6 @@
   .choose_recipe {
     .recipeCard {
       width: 18rem;
-    }
-    .bouton {
-      margin-left: 22% !important;
     }
   }
   .modal_liste_courses_modal {
