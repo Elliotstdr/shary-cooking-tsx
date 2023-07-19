@@ -19,10 +19,13 @@ function App(props) {
   }, []);
 
   const updateStorage = () => {
-    const hour = 0.99 * 3600 * 1000;
+    const hour = 3600 * 1000;
     const now = new Date().getTime();
     if (props.auth.isConnected) {
-      if (now - props.auth.newLogTime > hour) {
+      if (
+        now - props.auth.newLogTime > hour ||
+        now - props.auth.logTime > 2 * hour
+      ) {
         window.location.href = "/";
         props.handleAuth({
           isConnected: false,
@@ -32,7 +35,7 @@ function App(props) {
           userConnected: {},
         });
       } else {
-        if (now - props.auth.logTime > 2 * hour) {
+        if (now - props.auth.logTime > hour) {
           axios
             .post(
               `${process.env.REACT_APP_BASE_URL_API}/api/users/loginCheck`,
