@@ -21,7 +21,6 @@ const Parameters = (props) => {
   const [showMDP, setShowMDP] = useState(false);
   const [isEqualPassword, setIsEqualPassword] = useState(false);
   const [image, setImage] = useState(null);
-  const [imageName, setImageName] = useState("");
   const cancelToast = useRef(null);
   const uploadToast = useRef(null);
 
@@ -61,36 +60,11 @@ const Parameters = (props) => {
     }
     delete data.confirmPassword;
 
-    return data;
-  };
+    if (image) {
+      data.image = image;
+    }
 
-  const putPicture = (token, newUser) => {
-    axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL_API}/api/users/postImage/${props.auth.userConnected.id}`,
-        { file: image, fileName: imageName },
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${token ? token : props.auth.token}`,
-          },
-        }
-      )
-      .then((res) => {
-        let tempUser = { ...newUser };
-        tempUser.imageUrl = res.data;
-        props.handleAuth({
-          userConnected: tempUser,
-        });
-        setIsModifying(false);
-        successToast("Votre profil a bien été mis à jour", uploadToast);
-      })
-      .catch(() =>
-        errorToast(
-          "Une erreur est survenue lors de l'upload de l'image",
-          cancelToast
-        )
-      );
+    return data;
   };
 
   const onSubmit = () => {
@@ -122,18 +96,12 @@ const Parameters = (props) => {
         tempArray.email = data.email;
         tempArray.name = data.name;
         tempArray.lastname = data.lastname;
-        if (
-          image &&
-          `/media/${imageName}` !== props.auth.userConnected.imageUrl
-        ) {
-          putPicture(res.data[1], tempArray);
-        } else {
-          props.handleAuth({
-            userConnected: tempArray,
-          });
-          successToast("Votre profil a bien été mis à jour", uploadToast);
-          setIsModifying(false);
-        }
+        tempArray.imageUrl = res.data[0];
+        props.handleAuth({
+          userConnected: tempArray,
+        });
+        successToast("Votre profil a bien été mis à jour", uploadToast);
+        setIsModifying(false);
       })
       .catch(() =>
         errorToast(
@@ -169,8 +137,8 @@ const Parameters = (props) => {
               <ImageUpload
                 uploadToast={uploadToast}
                 cancelToast={cancelToast}
+                image={image}
                 setImage={setImage}
-                setImageName={setImageName}
               ></ImageUpload>
             )}
           />

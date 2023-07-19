@@ -33,7 +33,6 @@ const CreateRecipe = (props) => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [autocompleteData, setAutocompleteData] = useState([]);
   const [image, setImage] = useState(null);
-  const [imageName, setImageName] = useState("");
   const cancelToast = useRef(null);
   const uploadToast = useRef(null);
   const ref = useRef(null);
@@ -154,37 +153,6 @@ const CreateRecipe = (props) => {
     successToast("Votre recette a bien été créée", uploadToast);
   };
 
-  const postImage = (res) => {
-    axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL_API}/api/recipes/postImage/${res.data.id}`,
-        { file: image, fileName: imageName },
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${props.auth.token}`,
-          },
-        }
-      )
-      .then(() => {
-        if (props.recipe) {
-          window.location.reload(false);
-        } else {
-          reset();
-          resetForm();
-          setImage(null);
-          setImageName("");
-          setIsCreating(false);
-        }
-      })
-      .catch(() =>
-        errorToast(
-          "Une erreur est survenue lors de l'upload de l'image",
-          cancelToast
-        )
-      );
-  };
-
   const setFields = () => {
     let data = getValues();
     data.createdAt = new Date();
@@ -200,6 +168,9 @@ const CreateRecipe = (props) => {
     });
     if (props.recipe) {
       data.id = props.recipe.id;
+    }
+    if (image) {
+      data.image = image;
     }
     return data;
   };
@@ -227,14 +198,11 @@ const CreateRecipe = (props) => {
           Authorization: `Bearer ${props.auth.token}`,
         },
       })
-      .then((res) => {
-        if (image) {
-          postImage(res);
-        } else {
-          resetForm();
-          reset();
-          setIsCreating(false);
-        }
+      .then(() => {
+        setImage(null);
+        resetForm();
+        reset();
+        setIsCreating(false);
       })
       .catch(() =>
         errorToast(
@@ -259,11 +227,7 @@ const CreateRecipe = (props) => {
         }
       )
       .then((res) => {
-        if (image) {
-          postImage(res);
-        } else {
-          window.location.reload(false);
-        }
+        window.location.reload(false);
       });
   };
 
@@ -311,8 +275,8 @@ const CreateRecipe = (props) => {
               <ImageUpload
                 uploadToast={uploadToast}
                 cancelToast={cancelToast}
+                image={image}
                 setImage={setImage}
-                setImageName={setImageName}
               ></ImageUpload>
             )}
           />

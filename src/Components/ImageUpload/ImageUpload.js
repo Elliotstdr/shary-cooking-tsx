@@ -11,7 +11,6 @@ const ImageUpload = (props) => {
 
     fileReader.onload = () => {
       props.setImage(fileReader.result);
-      props.setImageName && props.setImageName(file.name);
       successToast("L'image a bien été chargée", props.uploadToast);
     };
     fileReader.readAsDataURL(file);
