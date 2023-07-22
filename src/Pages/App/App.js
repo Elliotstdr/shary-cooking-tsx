@@ -9,56 +9,68 @@ import MyRecipes from "../MyRecipes/MyRecipes";
 import CreateRecipe from "../CreateRecipe/CreateRecipe";
 import { connect } from "react-redux";
 import { updateAuth } from "../../Store/Actions/authActions";
-import { useEffect } from "react";
 import axios from "axios";
+import { useEffect, useRef } from "react";
 
-function App(props) {
+const App = (props) => {
+  const interval = useRef(0);
+  const timer = 60 * 1000; // 1 minute
   useEffect(() => {
-    updateStorage();
-    // eslint-disable-next-line
-  }, []);
-
-  const updateStorage = () => {
-    const hour = 3600 * 1000;
-    const now = new Date().getTime();
     if (props.auth.isConnected) {
-      if (
-        now - props.auth.newLogTime > hour ||
-        now - props.auth.logTime > 2 * hour
-      ) {
-        window.location.href = "/";
-        props.handleAuth({
-          isConnected: false,
-          logTime: null,
-          newLogTime: null,
-          token: null,
-          userConnected: {},
+      interval.current = setInterval(() => {
+        checkToken();
+      }, timer); // Commence toutes les minutes l'écoute si connecté
+    } else {
+      clearInterval(interval.current);
+      interval.current = 0; // Stoppe l'écoute si déco
+    }
+    return () => {
+      clearInterval(interval.current);
+      interval.current = 0;
+    }; // Stoppe l'écoute si quitte la page
+
+    // eslint-disable-next-line
+  }, [props.auth.isConnected, props.auth.token]);
+
+  const checkToken = () => {
+    const decodedPayload = atob(props.auth.token.split(".")[1]);
+    const payloadObject = JSON.parse(decodedPayload);
+    if (payloadObject.exp * 1000 - new Date().getTime() < 0) {
+      // Si le token expire on logout
+      logOut();
+    } else if (payloadObject.exp * 1000 - new Date().getTime() < 5 * timer) {
+      // Si le token expire dans moins de 5 minutes on le refresh
+      axios
+        .post(
+          `${process.env.REACT_APP_BASE_URL_API}/api/users/loginCheck`,
+          { email: props.auth.userConnected.email },
+          {
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${props.auth.token}`,
+            },
+          }
+        )
+        .then((token) => {
+          props.handleAuth({
+            token: token.data,
+          });
         });
+    }
+  };
+
+  const checkActivity = () => {
+    if (props.auth.isConnected) {
+      // Si la dernière action de l'utilisateur était il y a plus d'une heure on logout
+      if (new Date().getTime() - props.auth.newLogTime > 60 * 60 * 1000) {
+        logOut();
       } else {
-        if (now - props.auth.logTime > hour) {
-          axios
-            .post(
-              `${process.env.REACT_APP_BASE_URL_API}/api/users/loginCheck`,
-              { email: props.auth.userConnected.email },
-              {
-                headers: {
-                  accept: "application/json",
-                  Authorization: `Bearer ${props.auth.token}`,
-                },
-              }
-            )
-            .then((token) => {
-              props.handleAuth({
-                logTime: now,
-                token: token.data,
-              });
-            });
-        }
+        // Sinon on met à jour l'heure de sa dernière action
         props.handleAuth({
-          newLogTime: now,
+          newLogTime: new Date().getTime(),
         });
       }
-    } else {
+    } else if (props.auth.logTime || props.auth.newLogTime) {
       props.handleAuth({
         logTime: null,
         newLogTime: null,
@@ -66,8 +78,29 @@ function App(props) {
     }
   };
 
+  // Fonction de logout
+  const logOut = () => {
+    window.location.href = "/";
+    props.handleAuth({
+      isConnected: false,
+      logTime: null,
+      newLogTime: null,
+      token: null,
+      userConnected: {},
+    });
+  };
+
+  // Au (re)chargement de la page on check l'activité du user et l'état de son token s'il est connecté
+  useEffect(() => {
+    checkActivity();
+    if (props.auth.isConnected) {
+      checkToken();
+    }
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <div className="App" id="app" onClick={() => updateStorage()}>
+    <div className="App" id="app" onClick={() => checkActivity()}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Accueil />}></Route>
@@ -85,7 +118,7 @@ function App(props) {
       </BrowserRouter>
     </div>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
