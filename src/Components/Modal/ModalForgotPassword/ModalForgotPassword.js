@@ -37,7 +37,7 @@ const ModalForgotPassword = (props) => {
   const onSubmit = () => {
     const data = getValues();
 
-    if (isSendingMail && data.email !== "" && data.secretKey !== "") {
+    if (isSendingMail && data.email !== "") {
       setIsLoging(true);
       const sendMailData = {
         email: data.email,
@@ -130,29 +130,13 @@ const ModalForgotPassword = (props) => {
                 )}
               />
             </div>
-            <div className="login__form__field">
-              <h4 htmlFor="secretKey">{"Clé secrète"}</h4>
-              <Controller
-                name="secretKey"
-                control={control}
-                render={({ field }) => (
-                  <Password
-                    {...field}
-                    placeholder={"Clé secrète"}
-                    className={"login__form__field-secretKey"}
-                    feedback={false}
-                    autoComplete="new-password"
-                    tooltip={
-                      "Cette clé doit vous être fournie par le créateur du site."
-                    }
-                    tooltipOptions={{ position: "top" }}
-                  />
-                )}
-              />
-            </div>
             {error && <small className="p-error">{error}</small>}
+            <h5>
+              Renseignez l'email de votre compte, un email avec la clé de
+              réinitialisation de votre mot de passe va vous être envoyé
+            </h5>
             <div className="login__form__button">
-              {isloging ? <Loader /> : <Bouton>Réinitialiser</Bouton>}
+              {isloging ? <Loader /> : <Bouton>Envoyer</Bouton>}
             </div>
           </>
         ) : (
