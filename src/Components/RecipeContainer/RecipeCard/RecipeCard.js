@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "./RecipeCard.scss";
 import default2 from "../../../assets/default2.jpg";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -14,7 +14,6 @@ import Modal from "../../Modal/Modal";
 import axios from "axios";
 import { connect } from "react-redux";
 import Bouton from "../../../Utils/Bouton/Bouton";
-import { Toast } from "primereact/toast";
 import SlideIn from "../../../Utils/SlideIn/SlideIn";
 import { updateRecipe } from "../../../Store/Actions/recipeActions";
 import { errorToast, timeToString } from "../../../Services/api";
@@ -30,8 +29,6 @@ const RecipeCard = (props) => {
       (user) => user.id === props.auth.userConnected.id
     )
   );
-  const cancelToast = useRef(null);
-  const uploadToast = useRef(null);
 
   const addToFavorites = (actionType) => {
     axios
@@ -68,7 +65,7 @@ const RecipeCard = (props) => {
       .catch(() =>
         errorToast(
           "Une erreur est survenue, la recette n'a pas pu etre supprimée",
-          cancelToast
+          props.auth.toast
         )
       );
   };
@@ -106,8 +103,6 @@ const RecipeCard = (props) => {
         shoppingAction();
       }}
     >
-      <Toast ref={uploadToast}></Toast>
-      <Toast ref={cancelToast}></Toast>
       {props.recipe.chosenRecipes?.length > 0 &&
         props.recipe.chosenRecipes.some(
           (recipe) => recipe.id === props.recipeItem.id

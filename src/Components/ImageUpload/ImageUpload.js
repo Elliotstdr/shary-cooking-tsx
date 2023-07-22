@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./ImageUpload.scss";
 import { successToast } from "../../Services/api";
+import { connect } from "react-redux";
 
 const ImageUpload = (props) => {
   const uploadHandler = ({ files }) => {
@@ -11,7 +12,7 @@ const ImageUpload = (props) => {
 
     fileReader.onload = () => {
       props.setImage(fileReader.result);
-      successToast("L'image a bien été chargée", props.uploadToast);
+      successToast("L'image a bien été chargée", props.auth.toast);
     };
     fileReader.readAsDataURL(file);
   };
@@ -30,10 +31,12 @@ const ImageUpload = (props) => {
 };
 
 ImageUpload.propType = {
-  uploadToast: PropTypes.object,
-  cancelToast: PropTypes.object,
   setImage: PropTypes.func,
   image: PropTypes.object,
 };
 
-export default ImageUpload;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(ImageUpload);

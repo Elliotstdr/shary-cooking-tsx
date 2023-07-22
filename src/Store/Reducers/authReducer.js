@@ -3,8 +3,8 @@ const INITIAL_STATE = {
   isConnected: false,
   token: null,
   userConnected: {},
-  logTime: null,
   newLogTime: null,
+  toast: null,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {

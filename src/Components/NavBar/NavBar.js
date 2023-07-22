@@ -132,7 +132,6 @@ const NavBar = (props) => {
                 isConnected: false,
                 token: null,
                 userConnected: {},
-                logTime: null,
                 newLogTime: null,
               });
               navigate("/");

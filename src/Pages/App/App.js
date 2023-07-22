@@ -11,8 +11,10 @@ import { connect } from "react-redux";
 import { updateAuth } from "../../Store/Actions/authActions";
 import axios from "axios";
 import { useEffect, useRef } from "react";
+import { Toast } from "primereact/toast";
 
 const App = (props) => {
+  const toast = useRef(null);
   const interval = useRef(0);
   const timer = 60 * 1000; // 1 minute
   useEffect(() => {
@@ -70,9 +72,8 @@ const App = (props) => {
           newLogTime: new Date().getTime(),
         });
       }
-    } else if (props.auth.logTime || props.auth.newLogTime) {
+    } else if (props.auth.newLogTime) {
       props.handleAuth({
-        logTime: null,
         newLogTime: null,
       });
     }
@@ -83,7 +84,6 @@ const App = (props) => {
     window.location.href = "/";
     props.handleAuth({
       isConnected: false,
-      logTime: null,
       newLogTime: null,
       token: null,
       userConnected: {},
@@ -96,12 +96,16 @@ const App = (props) => {
     if (props.auth.isConnected) {
       checkToken();
     }
+    props.handleAuth({
+      toast: toast,
+    });
     // eslint-disable-next-line
   }, []);
 
   return (
     <div className="App" id="app" onClick={() => checkActivity()}>
       <BrowserRouter>
+        <Toast ref={toast}></Toast>
         <Routes>
           <Route path="/" element={<Accueil />}></Route>
           {props.auth.isConnected && (

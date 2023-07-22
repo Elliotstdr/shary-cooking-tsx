@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import Modal from "../Modal";
 import { connect } from "react-redux";
@@ -11,11 +11,9 @@ import Loader from "../../../Utils/Loader/loader";
 import { useState } from "react";
 import Bouton from "../../../Utils/Bouton/Bouton";
 import axios from "axios";
-import { Toast } from "primereact/toast";
 import { errorToast, successToast } from "../../../Services/api";
 
 const ModalForgotPassword = (props) => {
-  const toast = useRef(null);
   const [error, setError] = useState(null);
   const [isloging, setIsLoging] = useState(false);
   const [isSendingMail, setIsSendingMail] = useState(true);
@@ -74,11 +72,11 @@ const ModalForgotPassword = (props) => {
         reset();
         setIsLoging(false);
         setIsSendingMail(false);
-        successToast(res.data, toast);
+        successToast(res.data, props.auth.toast);
       })
       .catch((error) => {
         setIsLoging(false);
-        errorToast(error.response.data["hydra:description"], toast);
+        errorToast(error.response.data["hydra:description"], props.auth.toast);
       });
   };
 
@@ -97,13 +95,12 @@ const ModalForgotPassword = (props) => {
           isConnected: true,
           token: res.data[1],
           userConnected: res.data[0],
-          logTime: new Date().getTime(),
           newLogTime: new Date().getTime(),
         });
       })
       .catch((error) => {
         setIsLoging(false);
-        errorToast(error.response.data["hydra:description"], toast);
+        errorToast(error.response.data["hydra:description"], props.auth.toast);
       });
   };
 
@@ -116,7 +113,6 @@ const ModalForgotPassword = (props) => {
       width={"20rem"}
     >
       <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
-        <Toast ref={toast}></Toast>
         {isSendingMail ? (
           <>
             <div className="login__form__field">

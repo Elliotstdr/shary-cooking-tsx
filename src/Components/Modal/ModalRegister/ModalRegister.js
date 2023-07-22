@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import Modal from "../Modal";
 import { connect } from "react-redux";
@@ -11,11 +11,9 @@ import Loader from "../../../Utils/Loader/loader";
 import { useState } from "react";
 import Bouton from "../../../Utils/Bouton/Bouton";
 import axios from "axios";
-import { Toast } from "primereact/toast";
 import { errorToast } from "../../../Services/api";
 
 const ModalLogin = (props) => {
-  const cancelToast = useRef(null);
   const [isloging, setIsLoging] = useState(false);
   const [isEqualPassword, setIsEqualPassword] = useState(false);
 
@@ -72,14 +70,13 @@ const ModalLogin = (props) => {
               isConnected: true,
               userConnected: res.data,
               token: token.data.token,
-              logTime: new Date().getTime(),
               newLogTime: new Date().getTime(),
             });
           });
       })
       .catch((error) => {
         setIsLoging(false);
-        errorToast(error.response.data.detail, cancelToast);
+        errorToast(error.response.data.detail, props.auth.toast);
       });
   };
 
@@ -92,7 +89,6 @@ const ModalLogin = (props) => {
       width={"30rem"}
     >
       <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
-        <Toast ref={cancelToast}></Toast>
         <div className="login__form__field">
           <h4>Prénom</h4>
           <Controller

@@ -6,7 +6,6 @@ import { Divider } from "primereact/divider";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { Toast } from "primereact/toast";
 import ImageUpload from "../../Components/ImageUpload/ImageUpload";
 import { errorToast, successToast, useFetchGet } from "../../Services/api";
 import IngredientsCreation from "../../Components/FormElements/IngredientsCreation/IngredientsCreation";
@@ -33,8 +32,6 @@ const CreateRecipe = (props) => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [autocompleteData, setAutocompleteData] = useState([]);
   const [image, setImage] = useState(null);
-  const cancelToast = useRef(null);
-  const uploadToast = useRef(null);
   const ref = useRef(null);
   const [typeId, setTypeId] = useState(
     props.recipe ? props.recipe.type.id : props.secondaryTables.types[0]?.id
@@ -150,7 +147,7 @@ const CreateRecipe = (props) => {
         id: 1,
       },
     ]);
-    successToast("Votre recette a bien été créée", uploadToast);
+    successToast("Votre recette a bien été créée", props.auth.toast);
   };
 
   const setFields = () => {
@@ -207,7 +204,7 @@ const CreateRecipe = (props) => {
       .catch(() =>
         errorToast(
           "Une erreur est survenue lors de la création de votre recette",
-          cancelToast
+          props.auth.toast
         )
       );
   };
@@ -264,20 +261,13 @@ const CreateRecipe = (props) => {
     >
       {!props.recipe && <NavBar></NavBar>}
       <form className="recipe__form" onSubmit={handleSubmit(onSubmit)}>
-        <Toast ref={uploadToast} />
-        <Toast ref={cancelToast} />
         <div className="recipe__form__field">
           <h4 htmlFor="image">Photo :</h4>
           <Controller
             name="image"
             control={control}
             render={({ field }) => (
-              <ImageUpload
-                uploadToast={uploadToast}
-                cancelToast={cancelToast}
-                image={image}
-                setImage={setImage}
-              ></ImageUpload>
+              <ImageUpload image={image} setImage={setImage}></ImageUpload>
             )}
           />
           {getFormErrorMessage("image")}

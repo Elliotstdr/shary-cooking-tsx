@@ -1,11 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "./Parameters.scss";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import Bouton from "../../Utils/Bouton/Bouton";
 import { Password } from "primereact/password";
 import { Divider } from "primereact/divider";
-import { Toast } from "primereact/toast";
 import ImageUpload from "../../Components/ImageUpload/ImageUpload";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -21,8 +20,6 @@ const Parameters = (props) => {
   const [showMDP, setShowMDP] = useState(false);
   const [isEqualPassword, setIsEqualPassword] = useState(false);
   const [image, setImage] = useState(null);
-  const cancelToast = useRef(null);
-  const uploadToast = useRef(null);
 
   const defaultValues = {
     name: props.auth.userConnected.name,
@@ -100,13 +97,13 @@ const Parameters = (props) => {
         props.handleAuth({
           userConnected: tempArray,
         });
-        successToast("Votre profil a bien été mis à jour", uploadToast);
+        successToast("Votre profil a bien été mis à jour", props.auth.toast);
         setIsModifying(false);
       })
       .catch(() =>
         errorToast(
           "Une erreur est survenue lors de la modification de votre profil",
-          cancelToast
+          props.auth.toast
         )
       );
   };
@@ -115,8 +112,6 @@ const Parameters = (props) => {
     <div className="parameters">
       <NavBar></NavBar>
       <form className="param__form" onSubmit={handleSubmit(onSubmit)}>
-        <Toast ref={uploadToast} />
-        <Toast ref={cancelToast} />
         <div className="param__form__field">
           <h4 htmlFor="image">Photo :</h4>
           {props.auth.userConnected.imageUrl && (
@@ -134,12 +129,7 @@ const Parameters = (props) => {
             name="image"
             control={control}
             render={({ field }) => (
-              <ImageUpload
-                uploadToast={uploadToast}
-                cancelToast={cancelToast}
-                image={image}
-                setImage={setImage}
-              ></ImageUpload>
+              <ImageUpload image={image} setImage={setImage}></ImageUpload>
             )}
           />
           {getFormErrorMessage("image")}

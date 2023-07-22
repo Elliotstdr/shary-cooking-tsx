@@ -1,9 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "./BugReport.scss";
 import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
 import { Controller, useForm } from "react-hook-form";
-import { Toast } from "primereact/toast";
 import { InputTextarea } from "primereact/inputtextarea";
 import Loader from "../../Utils/Loader/loader";
 import Bouton from "../../Utils/Bouton/Bouton";
@@ -15,7 +14,6 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { connect } from "react-redux";
 
 const BugReport = (props) => {
-  const toast = useRef(null);
   const [sending, setSending] = useState(false);
   const [image, setImage] = useState(null);
   const [successView, setSuccessView] = useState(false);
@@ -63,7 +61,10 @@ const BugReport = (props) => {
         setSuccessView(true);
       })
       .catch(() =>
-        errorToast("Une erreur est survenue lors de l'envoi du mail", toast)
+        errorToast(
+          "Une erreur est survenue lors de l'envoi du mail",
+          props.auth.toast
+        )
       )
       .finally(() => setSending(false));
   };
@@ -77,7 +78,6 @@ const BugReport = (props) => {
     >
       {!successView ? (
         <form className="bug__form" onSubmit={handleSubmit(onSubmit)}>
-          <Toast ref={toast}></Toast>
           <div className="bug__form__field">
             <h4 htmlFor="title">Intitulé du problème :</h4>
             <Controller
@@ -121,12 +121,7 @@ const BugReport = (props) => {
               name="file"
               control={control}
               render={({ field }) => (
-                <ImageUpload
-                  uploadToast={toast}
-                  cancelToast={toast}
-                  image={image}
-                  setImage={setImage}
-                ></ImageUpload>
+                <ImageUpload image={image} setImage={setImage}></ImageUpload>
               )}
             />
           </div>
