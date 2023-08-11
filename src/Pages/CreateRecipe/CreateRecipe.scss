@@ -40,11 +40,6 @@
     }
     .bouton {
       border: none;
-      font-size: 1.2rem;
-      svg {
-        width: 2rem;
-        height: 2rem;
-      }
     }
   }
   .bouton {
@@ -91,10 +86,6 @@
       width: 90% !important;
     }
     .ingredients {
-      input,
-      .p-dropdown {
-        margin: 0.25rem !important;
-      }
       .p-inputtext {
         width: 4rem !important;
       }

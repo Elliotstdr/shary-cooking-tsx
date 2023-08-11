@@ -22,6 +22,10 @@ const Accueil = (props) => {
   const recipesData = useFetchGet(recipeUrl, props.auth.token);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (props.auth.isConnected) {
       setRecipeUrl("/recipes");
     }
@@ -72,7 +76,6 @@ const Accueil = (props) => {
             <div className="first block">
               <img src={image} alt="accueil" />
               <div>
-                {/* style={{ backgroundImage: `url(${image})` }} */}
                 <h1>Bienvenue sur SHARY COOKING !</h1>
                 <span>Venez ajouter votre grain de sel...</span>
               </div>
@@ -80,7 +83,7 @@ const Accueil = (props) => {
             <div className="second block">
               <div className="second_text">
                 <span>
-                  Venez partager vos meilleurs recettes, donnez vos ingrédients
+                  Partagez vos meilleures recettes, donnez vos ingrédients
                   secrets !
                 </span>
                 <Bouton

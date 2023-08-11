@@ -132,9 +132,10 @@ export const exportRecipe = (chosenRecipes, data) => {
               " " +
               element.unit.label +
               " de " +
-              element.label +
+              element.label.toLowerCase() +
               " \n")
-          : (elementString = element.quantity + " " + element.label + " \n");
+          : (elementString =
+              element.quantity + " " + element.label.toLowerCase() + " \n");
         shoppingList += elementString;
       });
   }

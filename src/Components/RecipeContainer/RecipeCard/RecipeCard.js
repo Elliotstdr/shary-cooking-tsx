@@ -43,6 +43,9 @@ const RecipeCard = (props) => {
         }
       )
       .then(() => {
+        if (actionType === "delete" && props.recipe.favourite) {
+          props.updateFavouriteList(props.recipeItem.id);
+        }
         setIsFavorite(!isFavorite);
       });
   };
@@ -169,7 +172,7 @@ const RecipeCard = (props) => {
       </div>
       <div className="recipeCard__bottom">
         <div className="recipeCard__bottom__fav">
-          {isFavorite ? (
+          {isFavorite || props.recipe.favourite ? (
             <AiFillStar onClick={() => addToFavorites("delete")}></AiFillStar>
           ) : (
             <AiOutlineStar

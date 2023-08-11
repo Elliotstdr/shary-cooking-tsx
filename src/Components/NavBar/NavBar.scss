@@ -108,7 +108,7 @@
   color: c.$main-color !important;
 }
 
-@media (max-width: 1220px) {
+@media (max-width: 1270px) {
   .navigation ul {
     margin: 2rem 1rem;
     a {
@@ -117,7 +117,7 @@
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1150px) {
   .navigation {
     ul {
       margin: 2rem 1rem;
@@ -146,7 +146,7 @@
   }
 }
 
-@media (min-width: 950px) and (max-width: 1020px) {
+@media (min-width: 990px) and (max-width: 1050px) {
   .navigation {
     button {
       padding: 0 0.5rem;
@@ -157,7 +157,7 @@
   }
 }
 
-@media (max-width: 950px) {
+@media (max-width: 990px) {
   .navigation {
     align-items: center;
     .menu.desktop {

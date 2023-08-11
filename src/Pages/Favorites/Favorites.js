@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Favorites.scss";
 import RecipeContainer from "../../Components/RecipeContainer/RecipeContainer";
 import { connect } from "react-redux";
@@ -8,6 +8,16 @@ import Footer from "../../Components/Footer/Footer";
 import NavBar from "../../Components/NavBar/NavBar";
 
 const Favorites = (props) => {
+  useEffect(() => {
+    props.handleUpdateRecipes({
+      favourite: true,
+    });
+    return () =>
+      props.handleUpdateRecipes({
+        favourite: false,
+      });
+    // eslint-disable-next-line
+  }, []);
   return (
     <div className="favorites">
       <NavBar></NavBar>

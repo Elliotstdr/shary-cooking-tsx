@@ -47,6 +47,12 @@ const RecipeContainer = (props) => {
     // eslint-disable-next-line
   }, [boxFavorites, boxMine]);
 
+  const updateFavouriteList = (recipeId) => {
+    setFilteredRecipes(
+      filteredRecipes.filter((recipe) => recipe.id !== recipeId)
+    );
+  };
+
   return (
     <div className="recipeContainer" ref={ref}>
       {props.checkboxes && (
@@ -90,11 +96,17 @@ const RecipeContainer = (props) => {
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .slice(first, first + rows)
               .map((recipe, index) => (
-                <RecipeCard key={index} recipeItem={recipe}></RecipeCard>
+                <RecipeCard
+                  key={index}
+                  recipeItem={recipe}
+                  updateFavouriteList={(x) => updateFavouriteList(x)}
+                ></RecipeCard>
               ))
           ) : (
             <span className="noCard">
-              Je n'ai aucune recette à vous afficher malheureusement ...
+              {props.recipe.favourite
+                ? "Vous n'avez pas encore sélectionné vos recettes préférées !"
+                : "Je n'ai aucune recette à vous afficher malheureusement ..."}
             </span>
           )
         ) : (
@@ -124,9 +136,11 @@ const RecipeContainer = (props) => {
 RecipeContainer.propType = {
   dataToCall: PropTypes.string,
   auth: PropTypes.object,
+  recipe: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  recipe: state.recipe,
 });
 export default connect(mapStateToProps)(RecipeContainer);

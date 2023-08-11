@@ -55,7 +55,7 @@ const CardDetail = (props) => {
                 className="creatorPP"
               ></img>
             )}
-            <span>Créé par {recipeDetail.data.postedByUser?.name}</span>
+            <span>Créée par {recipeDetail.data.postedByUser?.name}</span>
           </div>
           <div className="cardDetail_container_group">
             <div className="cardDetail_container_time">
@@ -80,7 +80,7 @@ const CardDetail = (props) => {
                   {ingredient.unit.label !== "unité"
                     ? ingredient.quantity + " " + ingredient.unit.label + " de "
                     : ingredient.quantity + " "}
-                  <strong>{ingredient.label}</strong>
+                  <strong>{ingredient.label.toLowerCase()}</strong>
                 </li>
               ))}
           </ul>

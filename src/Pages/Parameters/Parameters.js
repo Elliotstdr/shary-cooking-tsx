@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Parameters.scss";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
@@ -38,6 +38,10 @@ const Parameters = (props) => {
     getValues,
     setValue,
   } = useForm({ defaultValues });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const getFormErrorMessage = (name) => {
     return (
@@ -113,7 +117,7 @@ const Parameters = (props) => {
       <NavBar></NavBar>
       <form className="param__form" onSubmit={handleSubmit(onSubmit)}>
         <div className="param__form__field">
-          <h4 htmlFor="image">Photo :</h4>
+          <h4 htmlFor="image">Photo</h4>
           {props.auth.userConnected.imageUrl && (
             <div className="param_profile_picture">
               <img
@@ -135,7 +139,7 @@ const Parameters = (props) => {
           {getFormErrorMessage("image")}
         </div>
         <div className="param__form__field">
-          <h4 htmlFor="name">Prénom :</h4>
+          <h4 htmlFor="name">Prénom</h4>
           <Controller
             name="name"
             control={control}
@@ -154,7 +158,7 @@ const Parameters = (props) => {
           {getFormErrorMessage("name")}
         </div>
         <div className="param__form__field">
-          <h4 htmlFor="lastname">Nom :</h4>
+          <h4 htmlFor="lastname">Nom</h4>
           <Controller
             name="lastname"
             control={control}
@@ -173,7 +177,7 @@ const Parameters = (props) => {
           {getFormErrorMessage("lastname")}
         </div>
         <div className="param__form__field">
-          <h4 htmlFor="email">Adresse email :</h4>
+          <h4 htmlFor="email">Adresse email</h4>
           <Controller
             name="email"
             control={control}
@@ -205,7 +209,7 @@ const Parameters = (props) => {
           <div>
             <Divider></Divider>
             <div className="param__form__field">
-              <h4 htmlFor="oldPassword">Précédent mot de passe :</h4>
+              <h4 htmlFor="oldPassword">Précédent mot de passe</h4>
               <Controller
                 name="oldPassword"
                 control={control}
@@ -228,7 +232,7 @@ const Parameters = (props) => {
               {getFormErrorMessage("oldPassword")}
             </div>
             <div className="param__form__field">
-              <h4 htmlFor="password">Nouveau mot de passe :</h4>
+              <h4 htmlFor="password">Nouveau mot de passe</h4>
               <Controller
                 name="password"
                 control={control}
@@ -245,7 +249,7 @@ const Parameters = (props) => {
               {getFormErrorMessage("password")}
             </div>
             <div className="param__form__field">
-              <h4 htmlFor="password">Confirmer le mot de passe :</h4>
+              <h4 htmlFor="password">Confirmer le mot de passe</h4>
               <Controller
                 name="confirmPassword"
                 control={control}
@@ -288,7 +292,7 @@ const Parameters = (props) => {
         {isModifying ? (
           <Loader></Loader>
         ) : (
-          <Bouton>Modifier mes informations</Bouton>
+          <Bouton>Valider mes modifications</Bouton>
         )}
       </form>
       <Footer></Footer>

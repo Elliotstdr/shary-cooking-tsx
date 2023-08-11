@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   .param_profile_picture {
-    width: 20rem;
+    width: 15rem;
     height: 10rem;
     overflow: hidden;
     display: flex;
@@ -46,30 +46,11 @@
           color: c.$main-color !important;
         }
       }
-      .bouton_valider,
-      .bouton_supprimer {
-        width: 3rem;
-        margin-top: 0;
-        display: flex;
-        border-radius: 50%;
-        padding: 0 !important;
-        width: 2.5rem;
-        height: 2.5rem;
-        .p-button-icon {
-          margin-left: 0.7rem;
-          margin-right: 0;
-          align-self: center;
-        }
-      }
-      .bouton_valider {
-        background: #367e18;
-        border-color: #367e18;
-      }
-      .bouton_supprimer {
-        background: #cc3636;
-        border-color: #cc3636;
-      }
       &-buttonbar {
+        min-width: 15rem;
+        padding: 0.5rem !important;
+        border: 1px solid #dee2e6 !important;
+        border-radius: 6px;
         flex-wrap: nowrap;
         background-color: white !important;
       }
@@ -78,10 +59,6 @@
         .p-progressbar {
           height: 0;
         }
-      }
-      &-row .p-button-danger,
-      &-row .p-badge {
-        display: none;
       }
     }
   }

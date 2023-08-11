@@ -86,8 +86,8 @@ const CreateRecipe = (props) => {
       }
     : {
         title: "",
-        number: 0,
-        time: "",
+        number: 1,
+        time: "00:00",
         image: null,
       };
 
@@ -109,7 +109,7 @@ const CreateRecipe = (props) => {
     let response = true;
     stepsList.forEach((step) => {
       if (step.description === "") {
-        response = "Une ou plusieurs étape n'est pas correctement remplie";
+        response = `L'étape ${step.stepIndex} est vide, veuillez la supprimer`;
       }
     });
     return response;
@@ -426,7 +426,8 @@ const CreateRecipe = (props) => {
                         unit: null,
                         label: "",
                         quantity: "",
-                        id: ingredientList[ingredientList.length - 1].id + 1,
+                        id:
+                          ingredientList.sort((a, b) => b.id - a.id)[0].id + 1,
                       },
                     ]);
                   }}

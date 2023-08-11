@@ -3,6 +3,7 @@ const INITIAL_STATE = {
   chosenRecipes: [],
   editable: false,
   shopping: false,
+  favourite: false,
 };
 
 const recipeReducer = (state = INITIAL_STATE, action) => {

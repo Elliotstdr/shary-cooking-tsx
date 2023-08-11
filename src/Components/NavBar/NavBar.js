@@ -33,7 +33,7 @@ const NavBar = (props) => {
           className={(nav) => (nav.isActive ? "nav-active" : "")}
         >
           <li>
-            <strong>Favoris</strong>
+            <strong>Mes favoris</strong>
           </li>
         </NavLink>
         <NavLink

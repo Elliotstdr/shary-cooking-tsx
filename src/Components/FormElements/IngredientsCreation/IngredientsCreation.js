@@ -22,9 +22,11 @@ const IngredientsCreation = (props) => {
     props.setIngredientList(tempArray);
   };
   const findIngredient = (word) => {
-    const filteredData = props.ingredientData.filter((element) =>
-      element.name.toLowerCase().includes(word.query.toLowerCase())
-    );
+    const filteredData = props.ingredientData
+      .filter((element) =>
+        element.name.toLowerCase().includes(word.query.toLowerCase())
+      )
+      .sort((a, b) => b.frequency - a.frequency);
     props.setAutocompleteData(filteredData);
   };
 
@@ -76,6 +78,11 @@ const IngredientsCreation = (props) => {
           });
           props.setIngredientList(tempArray);
         }}
+        tooltip={
+          props.id === 1 &&
+          "Pour les décimaux utilisez le point et non la virgule"
+        }
+        tooltipOptions={{ position: "top" }}
       />
       <Dropdown
         value={props.ingredient.unit}

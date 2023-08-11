@@ -106,6 +106,7 @@ const BugReport = (props) => {
               }}
               render={({ field }) => (
                 <InputTextarea
+                  autoResize
                   {...field}
                   placeholder="Où? Quand? Comment?"
                   className="bug__form__field-message"
