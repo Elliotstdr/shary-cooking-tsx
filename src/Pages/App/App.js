@@ -35,6 +35,10 @@ const App = (props) => {
   }, [props.auth.isConnected, props.auth.token]);
 
   const checkToken = () => {
+    if (!props.auth.token) {
+      logOut();
+      return;
+    }
     const decodedPayload = atob(props.auth.token.split(".")[1]);
     const payloadObject = JSON.parse(decodedPayload);
     if (payloadObject.exp * 1000 - new Date().getTime() < 0) {
