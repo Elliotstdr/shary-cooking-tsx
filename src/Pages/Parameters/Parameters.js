@@ -104,9 +104,11 @@ const Parameters = (props) => {
         successToast("Votre profil a bien été mis à jour", props.auth.toast);
         setIsModifying(false);
       })
-      .catch(() =>
+      .catch((err) =>
         errorToast(
-          "Une erreur est survenue lors de la modification de votre profil",
+          err.response.data.detail.includes("visiteur")
+            ? err.response.data.detail
+            : "Une erreur est survenue lors de la modification de votre profil",
           props.auth.toast
         )
       );

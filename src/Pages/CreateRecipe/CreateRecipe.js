@@ -201,9 +201,11 @@ const CreateRecipe = (props) => {
         reset();
         setIsCreating(false);
       })
-      .catch(() =>
+      .catch((err) =>
         errorToast(
-          "Une erreur est survenue lors de la création de votre recette",
+          err.response.data.detail.includes("visiteur")
+            ? err.response.data.detail
+            : "Une erreur est survenue lors de la création de votre recette",
           props.auth.toast
         )
       );
@@ -225,7 +227,15 @@ const CreateRecipe = (props) => {
       )
       .then((res) => {
         window.location.reload(false);
-      });
+      })
+      .catch((err) =>
+        errorToast(
+          err.response.data.detail.includes("visiteur")
+            ? err.response.data.detail
+            : "Une erreur est survenue lors de la modification de votre recette",
+          props.auth.toast
+        )
+      );
   };
 
   const itemIds = useMemo(
