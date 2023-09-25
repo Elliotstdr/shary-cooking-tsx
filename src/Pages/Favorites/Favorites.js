@@ -22,7 +22,7 @@ const Favorites = (props) => {
     <div className="favorites">
       <NavBar></NavBar>
       <RecipeContainer
-        dataToCall={`/favourites/user/${props.auth.userConnected.id}`}
+        dataToCall={`/recipes/user_fav/${props.auth.userConnected.id}`}
       ></RecipeContainer>
       <Footer></Footer>
     </div>
