@@ -24,7 +24,16 @@ const IngredientsCreation = (props) => {
   const findIngredient = (word) => {
     const filteredData = props.ingredientData
       .filter((element) =>
-        element.name.toLowerCase().includes(word.query.toLowerCase())
+        element.name
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .includes(
+            word.query
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+          )
       )
       .sort((a, b) => b.frequency - a.frequency);
     props.setAutocompleteData(filteredData);
