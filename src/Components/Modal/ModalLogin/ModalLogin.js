@@ -45,12 +45,16 @@ const ModalLogin = (props) => {
       .post(`${process.env.REACT_APP_BASE_URL_API}/auth`, data)
       .then((token) => {
         axios
-          .get(`${process.env.REACT_APP_BASE_URL_API}/api/users/by_email`, {
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${token.data.token}`,
-            },
-          })
+          .post(
+            `${process.env.REACT_APP_BASE_URL_API}/api/users/by_email`,
+            {},
+            {
+              headers: {
+                accept: "application/json",
+                Authorization: `Bearer ${token.data.token}`,
+              },
+            }
+          )
           .then((res) => {
             setIsLoging(false);
             props.handleAuth({
