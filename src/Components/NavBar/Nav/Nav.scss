@@ -1,0 +1,123 @@
+@use "src/Styles/_vars.scss" as c;
+
+.menu {
+  display: flex;
+  list-style-type: none;
+  a {
+    text-decoration: none;
+    padding: 0.5rem 1.5rem;
+
+    li {
+      color: c.$main-color;
+      transition: 0.2s;
+      cursor: pointer;
+      font-size: 1.3rem;
+    }
+  }
+  .nav-active {
+    position: relative;
+
+    &::after {
+      content: "";
+      height: 4px;
+      width: 0;
+      background: c.$bandeau;
+      position: absolute;
+      border-radius: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: anim 0.6s ease forwards;
+      @keyframes anim {
+        to {
+          width: 80%;
+        }
+      }
+    }
+  }
+
+  &.desktop {
+    height: 3rem;
+    margin: 2rem;
+  }
+  &.mobile {
+    position: absolute;
+    width: 13rem;
+    z-index: 1001;
+    background-color: white;
+    border-radius: 6px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0.5rem 0;
+    a,
+    li {
+      font-size: 1.1rem !important;
+      width: fit-content;
+    }
+    a {
+      padding: 0.5rem 1rem;
+    }
+    &.visible {
+      animation: show 0.3s ease-in-out forwards;
+    }
+    &.hidden {
+      animation: hide 0.3s ease-in-out forwards;
+    }
+  }
+}
+
+@media (max-width: 1270px) {
+  .menu.desktop {
+    margin: 2rem 0;
+    a {
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .menu.desktop {
+    padding: 0;
+    li {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media (max-width: 990px) {
+  .menu.desktop {
+    display: none;
+  }
+}
+
+@keyframes show {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+  }
+  1% {
+    display: flex;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    display: flex;
+  }
+}
+@keyframes hide {
+  0% {
+    visibility: visible;
+    opacity: 1;
+    display: flex;
+  }
+  99% {
+    display: flex;
+  }
+  100% {
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+  }
+}

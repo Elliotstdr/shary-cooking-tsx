@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./NavBar.scss";
 import { GiKnifeFork } from "react-icons/gi";
 import { updateAuth } from "../../Store/Actions/authActions";
@@ -7,106 +7,50 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { GiCook } from "react-icons/gi";
 import Bouton from "../../Utils/Bouton/Bouton";
-import { Accordion, AccordionTab } from "primereact/accordion";
+import Nav from "./Nav/Nav";
 
 const NavBar = (props) => {
   const [showParamMenu, setShowParamMenu] = useState(false);
+  const [visibleMobile, setVisibleMobile] = useState(false);
   const navigate = useNavigate();
+
+  const useOutsideAlerter = (ref, command) => {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          command();
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }; // eslint-disable-next-line
+    }, [ref]);
+  };
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, () => setShowParamMenu(false));
+
+  const menuRef = useRef(null);
+  useOutsideAlerter(menuRef, () => setVisibleMobile(false));
+
   return (
     <div className="navigation">
-      <ul className="menu desktop">
-        <NavLink to="/" className={(nav) => (nav.isActive ? "nav-active" : "")}>
-          <li>
-            <strong>Accueil</strong>
-          </li>
-        </NavLink>
-        <NavLink
-          to="/all"
-          className={(nav) => (nav.isActive ? "nav-active" : "")}
+      <Nav className="desktop"></Nav>
+      <div className="navigation__mobile" ref={menuRef}>
+        <div
+          className="navigation__mobile__header"
+          onClick={() => setVisibleMobile(!visibleMobile)}
         >
-          <li>
-            <strong>Galerie</strong>
-          </li>
-        </NavLink>
-        <NavLink
-          to="/fav"
-          className={(nav) => (nav.isActive ? "nav-active" : "")}
-        >
-          <li>
-            <strong>Mes favoris</strong>
-          </li>
-        </NavLink>
-        <NavLink
-          to="/myrecipes"
-          className={(nav) => (nav.isActive ? "nav-active" : "")}
-        >
-          <li>
-            <strong>Mes recettes</strong>
-          </li>
-        </NavLink>
-        <NavLink
-          to="/shop"
-          className={(nav) => (nav.isActive ? "nav-active" : "")}
-        >
-          <li>
-            <strong>Ma liste de courses</strong>
-          </li>
-        </NavLink>
-      </ul>
-      <Accordion
-        activeIndex=""
-        expandIcon="pi pi-bars"
-        collapseIcon="pi pi-bars"
-      >
-        <AccordionTab header="Menu">
-          <ul className="menu mobile">
-            <NavLink
-              to="/"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
-            >
-              <li>
-                <strong>Accueil</strong>
-              </li>
-            </NavLink>
-            <NavLink
-              to="/all"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
-            >
-              <li>
-                <strong>Gallerie</strong>
-              </li>
-            </NavLink>
-            <NavLink
-              to="/fav"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
-            >
-              <li>
-                <strong>Favoris</strong>
-              </li>
-            </NavLink>
-            <NavLink
-              to="/myrecipes"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
-            >
-              <li>
-                <strong>Mes recettes</strong>
-              </li>
-            </NavLink>
-            <NavLink
-              to="/shop"
-              className={(nav) => (nav.isActive ? "nav-active" : "")}
-            >
-              <li>
-                <strong>Ma liste de courses</strong>
-              </li>
-            </NavLink>
-          </ul>
-        </AccordionTab>
-      </Accordion>
+          <div className="pi pi-bars"></div>
+          Menu
+        </div>
+        <Nav className={`mobile ${visibleMobile ? "visible" : "hidden"}`}></Nav>
+      </div>
       <Bouton className="first" btnAction={() => navigate("/create")}>
         <GiKnifeFork></GiKnifeFork>Créer une recette
       </Bouton>
-      <div className="navigation_parameters">
+      <div className="navigation_parameters" ref={wrapperRef}>
         {props.auth.userConnected.imageUrl ? (
           <img
             src={

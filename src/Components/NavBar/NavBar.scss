@@ -3,51 +3,11 @@
 .navigation {
   font-family: "Dilgante Rocks", sans-serif;
   display: flex;
+  align-items: center;
   justify-content: space-around;
   box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.4);
-  ul {
-    display: flex;
-    margin: 2rem;
-    list-style-type: none;
-    height: 3rem;
-
-    a {
-      text-decoration: none;
-      padding: 0.5rem 1.5rem;
-
-      li {
-        color: c.$main-color;
-        transition: 0.2s;
-        cursor: pointer;
-        font-size: 1.3rem;
-      }
-    }
-
-    .nav-active {
-      position: relative;
-
-      &::after {
-        content: "";
-        height: 4px;
-        width: 0;
-        background: c.$bandeau;
-        position: absolute;
-        border-radius: 10px;
-        bottom: 0px;
-        left: 50%;
-        transform: translateX(-50%);
-        animation: anim 0.6s ease forwards;
-        @keyframes anim {
-          to {
-            width: 80%;
-          }
-        }
-      }
-    }
-  }
   button {
     font-family: "Dilgante Rocks", sans-serif;
-    margin-top: 2rem;
   }
   &_parameters {
     cursor: pointer;
@@ -94,107 +54,37 @@
       }
     }
   }
-  .menu.mobile,
-  .p-accordion {
+  .navigation__mobile {
     display: none;
-  }
-}
-
-.p-accordion-header-link {
-  padding: 0.75rem;
-  font-size: 1.3rem;
-  background-color: c.$fond-page !important;
-  border: none !important;
-  color: c.$main-color !important;
-}
-
-@media (max-width: 1270px) {
-  .navigation ul {
-    margin: 2rem 1rem;
-    a {
-      padding: 0.5rem 1rem;
-    }
-  }
-}
-
-@media (max-width: 1150px) {
-  .navigation {
-    ul {
-      margin: 2rem 1rem;
-      height: 2.5rem;
-      a {
-        padding: 0.5rem 1rem;
-        li {
-          font-size: 1.1rem !important;
-        }
-      }
-    }
-    button {
-      height: 2.2rem;
-      font-size: 0.9rem;
-      svg {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-    }
-    &_parameters {
-      svg {
-        width: 2rem !important;
-        height: 2rem !important;
+    width: 10rem;
+    position: relative;
+    &__header {
+      cursor: pointer;
+      padding: 1rem 1rem 0.5rem 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
+      .pi.pi-bars {
+        margin-right: 0.25rem;
       }
     }
   }
 }
 
-@media (min-width: 990px) and (max-width: 1050px) {
-  .navigation {
-    button {
-      padding: 0 0.5rem;
-    }
-    ul {
-      padding-left: 0.5rem;
-    }
+@media (max-width: 1100px) {
+  .navigation button {
+    padding: 0 1rem;
   }
 }
 
 @media (max-width: 990px) {
   .navigation {
-    align-items: center;
-    .menu.desktop {
-      display: none;
-    }
-    .bouton.first {
-      margin-top: 0;
-    }
-    .bouton.second {
-      display: none;
-    }
-    .p-accordion {
-      display: block;
-      align-self: center;
-      width: 10rem;
-      &-tab {
-        position: relative;
-      }
-      &-content {
-        z-index: 10001;
-        position: absolute;
-        border-radius: 10px !important;
-        height: 13.5rem;
-        width: 14rem;
-        padding: 1rem 0.5rem !important;
-        text-align: left;
-        .menu.mobile {
-          display: flex;
-          flex-direction: column;
-          margin: 0;
-          padding: 0;
-          a,
-          li {
-            width: fit-content;
-          }
-        }
-      }
+    &__mobile {
+      display: block !important;
     }
   }
 }
@@ -209,14 +99,11 @@
       width: 12rem;
       margin: 0.5rem 0rem;
     }
-    .p-accordion {
-      align-self: unset;
-    }
     &_parameters {
       position: absolute;
       top: 0;
       right: 2rem;
-      margin-top: 1rem;
+      margin-top: 0.75rem;
     }
   }
 }
