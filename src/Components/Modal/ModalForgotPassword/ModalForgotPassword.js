@@ -1,19 +1,23 @@
 import React, { useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import Modal from "../Modal";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { updateAuth } from "../../../Store/Actions/authActions";
 import { Password } from "primereact/password";
 import "./ModalForgotPassword.scss";
 import { Controller, useForm } from "react-hook-form";
 import Loader from "../../../Utils/Loader/loader";
 import { useState } from "react";
 import Bouton from "../../../Utils/Bouton/Bouton";
-import axios from "axios";
-import { errorToast, successToast } from "../../../Services/api";
+import { errorToast, successToast } from "../../../Services/functions";
+import { UPDATE_AUTH } from "../../../Store/Reducers/authReducer";
+import { fetchPost } from "../../../Services/api";
 
 const ModalForgotPassword = (props) => {
+  const dispatch = useDispatch();
+  const updateAuth = (value) => {
+    dispatch({ type: UPDATE_AUTH, value });
+  };
   const [error, setError] = useState(null);
   const [isloging, setIsLoging] = useState(false);
   const [isSendingMail, setIsSendingMail] = useState(true);
@@ -64,44 +68,35 @@ const ModalForgotPassword = (props) => {
     }
   };
 
-  const sendMail = (data) => {
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL_API}/api/users/mailReset`, data)
-      .then((res) => {
-        setOldValues(data);
-        reset();
-        setIsLoging(false);
-        setIsSendingMail(false);
-        successToast(res.data, props.auth.toast);
-      })
-      .catch((error) => {
-        setIsLoging(false);
-        errorToast(error.response.data["hydra:description"], props.auth.toast);
-      });
+  const sendMail = async (data) => {
+    const response = await fetchPost(`/users/mailReset`, data);
+    setIsLoging(false);
+    if (response.error) {
+      errorToast("Une erreur est survenue");
+      return;
+    }
+    setOldValues(data);
+    reset();
+    setIsSendingMail(false);
+    successToast(response.data);
   };
 
-  const resetPassword = (data) => {
-    axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL_API}/api/users/resetPassword`,
-        data
-      )
-      .then((res) => {
-        reset();
-        setIsLoging(false);
-        setIsSendingMail(true);
-        props.setVisible(false);
-        props.handleAuth({
-          isConnected: true,
-          token: res.data[1],
-          userConnected: res.data[0],
-          newLogTime: new Date().getTime(),
-        });
-      })
-      .catch((error) => {
-        setIsLoging(false);
-        errorToast(error.response.data["hydra:description"], props.auth.toast);
-      });
+  const resetPassword = async (data) => {
+    const response = await fetchPost(`/users/resetPassword`, data);
+    setIsLoging(false);
+    if (response.error) {
+      errorToast(response.error.response.data.detail);
+      return;
+    }
+    reset();
+    setIsSendingMail(true);
+    props.setVisible(false);
+    updateAuth({
+      isConnected: true,
+      token: response.data[1],
+      userConnected: response.data[0],
+      newLogTime: new Date().getTime(),
+    });
   };
 
   return (
@@ -191,22 +186,8 @@ const ModalForgotPassword = (props) => {
 };
 
 ModalForgotPassword.propTypes = {
-  auth: PropTypes.object,
-  handleAuth: PropTypes.func,
   visible: PropTypes.bool,
   setVisible: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleAuth: (value) => {
-    dispatch(updateAuth(value));
-  },
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalForgotPassword);
+export default ModalForgotPassword;

@@ -11,82 +11,70 @@ import { CiEdit } from "react-icons/ci";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import CardDetail from "./CardDetail/CardDetail";
 import Modal from "../../Modal/Modal";
-import axios from "axios";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Bouton from "../../../Utils/Bouton/Bouton";
 import SlideIn from "../../../Utils/SlideIn/SlideIn";
-import { updateRecipe } from "../../../Store/Actions/recipeActions";
-import { errorToast, timeToString } from "../../../Services/api";
+import { errorToast, timeToString } from "../../../Services/functions";
 import { GiCook } from "react-icons/gi";
 import CreateRecipe from "../../../Pages/CreateRecipe/CreateRecipe";
+import { UPDATE_RECIPE } from "../../../Store/Reducers/recipeReducer";
+import { fetchDelete, fetchPost } from "../../../Services/api";
 
 const RecipeCard = (props) => {
+  const auth = useSelector((state) => state.auth);
+  const recipe = useSelector((state) => state.recipe);
+  const dispatch = useDispatch();
+  const updateRecipe = (value) => {
+    dispatch({ type: UPDATE_RECIPE, value });
+  };
   const [visibleDetail, setVisibleDetail] = useState(false);
   const [visibleModif, setVisibleModif] = useState(false);
   const [wantToDelete, setWantToDelete] = useState(false);
   const [isFavorite, setIsFavorite] = useState(
     props.recipeItem.savedByUsers?.some(
-      (user) => user.id === props.auth.userConnected.id
+      (user) => user.id === auth.userConnected.id
     )
   );
 
-  const addToFavorites = (actionType) => {
-    axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipeItem.id}/users/${props.auth.userConnected.id}`,
-        { action: actionType },
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${props.auth.token}`,
-          },
-        }
-      )
-      .then(() => {
-        if (actionType === "delete" && props.recipe.favourite) {
-          props.updateFavouriteList(props.recipeItem.id);
-        }
-        setIsFavorite(!isFavorite);
-      });
+  const addToFavorites = async (actionType) => {
+    const response = await fetchPost(
+      `/recipes/${props.recipeItem.id}/users/${auth.userConnected.id}`,
+      { action: actionType }
+    );
+    if (response.error) {
+      errorToast("Une erreur est survenue");
+      return;
+    }
+    if (actionType === "delete" && recipe.favourite) {
+      props.updateFavouriteList(props.recipeItem.id);
+    }
+    setIsFavorite(!isFavorite);
   };
 
-  const deleteRecipe = () => {
-    axios
-      .delete(
-        `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipeItem.id}`,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${props.auth.token}`,
-          },
-        }
-      )
-      .then(() => {
-        setWantToDelete(false);
-        window.location.reload(false);
-      })
-      .catch(() =>
-        errorToast(
-          "Une erreur est survenue, la recette n'a pas pu etre supprimée",
-          props.auth.toast
-        )
-      );
+  const deleteRecipe = async () => {
+    const response = await fetchDelete(`/recipes/${props.recipeItem.id}`);
+    if (response.error) {
+      errorToast("Une erreur est survenue, la recette n'a pas été supprimée");
+      return;
+    }
+    setWantToDelete(false);
+    window.location.reload(false);
   };
 
   const shoppingAction = () => {
-    if (props.recipe.shopping) {
+    if (recipe.shopping) {
       if (
-        props.recipe.chosenRecipes.length === 0 ||
-        !props.recipe.chosenRecipes.some(
+        recipe.chosenRecipes.length === 0 ||
+        !recipe.chosenRecipes.some(
           (recipe) => recipe.id === props.recipeItem.id
         )
       ) {
-        props.handleUpdateRecipes({
-          chosenRecipes: [...props.recipe.chosenRecipes, props.recipeItem],
+        updateRecipe({
+          chosenRecipes: [...recipe.chosenRecipes, props.recipeItem],
         });
       } else {
-        props.handleUpdateRecipes({
-          chosenRecipes: props.recipe.chosenRecipes.filter(
+        updateRecipe({
+          chosenRecipes: recipe.chosenRecipes.filter(
             (recipe) => recipe.id !== props.recipeItem.id
           ),
         });
@@ -96,8 +84,8 @@ const RecipeCard = (props) => {
   return (
     <div
       className={`recipeCard cardHover ${
-        props.recipe.chosenRecipes?.length > 0 &&
-        props.recipe.chosenRecipes.some(
+        recipe.chosenRecipes?.length > 0 &&
+        recipe.chosenRecipes.some(
           (recipe) => recipe.id === props.recipeItem.id
         ) &&
         "chosen"
@@ -106,15 +94,15 @@ const RecipeCard = (props) => {
         shoppingAction();
       }}
     >
-      {props.recipe.chosenRecipes?.length > 0 &&
-        props.recipe.chosenRecipes.some(
+      {recipe.chosenRecipes?.length > 0 &&
+        recipe.chosenRecipes.some(
           (recipe) => recipe.id === props.recipeItem.id
         ) && (
           <BsFillCheckCircleFill className="chosen_check"></BsFillCheckCircleFill>
         )}
       <div
         className="recipeCard__top"
-        onClick={() => !props.recipe.shopping && setVisibleDetail(true)}
+        onClick={() => !recipe.shopping && setVisibleDetail(true)}
       >
         <div className="recipeCard__top__categorie">
           <span className="etiquette"> {props.recipeItem.type.label} </span>
@@ -133,7 +121,7 @@ const RecipeCard = (props) => {
       </div>
       <div
         className="recipeCard__corps"
-        onClick={() => !props.recipe.shopping && setVisibleDetail(true)}
+        onClick={() => !recipe.shopping && setVisibleDetail(true)}
       >
         <div className="recipeCard__corps__author">
           {props.recipeItem.postedByUser.imageUrl ? (
@@ -172,7 +160,7 @@ const RecipeCard = (props) => {
       </div>
       <div className="recipeCard__bottom">
         <div className="recipeCard__bottom__fav">
-          {isFavorite || props.recipe.favourite ? (
+          {isFavorite || recipe.favourite ? (
             <AiFillStar onClick={() => addToFavorites("delete")}></AiFillStar>
           ) : (
             <AiOutlineStar
@@ -180,12 +168,12 @@ const RecipeCard = (props) => {
             ></AiOutlineStar>
           )}
         </div>
-        {props.recipe.editable && (
+        {recipe.editable && (
           <div className="recipeCard__bottom__edit">
             <CiEdit onClick={() => setVisibleModif(true)}></CiEdit>
           </div>
         )}
-        {props.recipe.editable && (
+        {recipe.editable && (
           <div className="recipeCard__bottom__delete">
             <RiDeleteBin6Line
               onClick={() => setWantToDelete(true)}
@@ -243,17 +231,7 @@ const RecipeCard = (props) => {
 };
 
 RecipeCard.propType = {
-  auth: PropTypes.object,
-  recipe: PropTypes.object,
   recipeItem: PropTypes.object,
-  handleUpdateRecipes: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  recipe: state.recipe,
-});
-const mapDispatchToProps = (dispatch) => ({
-  handleUpdateRecipes: (value) => dispatch(updateRecipe(value)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(RecipeCard);
+export default RecipeCard;

@@ -1,19 +1,23 @@
 import React, { useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import Modal from "../Modal";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { updateAuth } from "../../../Store/Actions/authActions";
 import { Password } from "primereact/password";
 import "./ModalLogin.scss";
 import { Controller, useForm } from "react-hook-form";
 import Loader from "../../../Utils/Loader/loader";
 import { useState } from "react";
 import Bouton from "../../../Utils/Bouton/Bouton";
-import axios from "axios";
-import { errorToast } from "../../../Services/api";
+import { errorToast } from "../../../Services/functions";
+import { UPDATE_AUTH } from "../../../Store/Reducers/authReducer";
+import { fetchPost } from "../../../Services/api";
 
 const ModalLogin = (props) => {
+  const dispatch = useDispatch();
+  const updateAuth = (value) => {
+    dispatch({ type: UPDATE_AUTH, value });
+  };
   const [isloging, setIsLoging] = useState(false);
 
   const defaultValues = {
@@ -38,37 +42,33 @@ const ModalLogin = (props) => {
     );
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsLoging(true);
     const data = getValues();
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL_API}/auth`, data)
-      .then((token) => {
-        axios
-          .post(
-            `${process.env.REACT_APP_BASE_URL_API}/api/users/by_email`,
-            {},
-            {
-              headers: {
-                accept: "application/json",
-                Authorization: `Bearer ${token.data.token}`,
-              },
-            }
-          )
-          .then((res) => {
-            setIsLoging(false);
-            props.handleAuth({
-              isConnected: true,
-              token: token.data.token,
-              userConnected: res.data,
-              newLogTime: new Date().getTime(),
-            });
-          });
-      })
-      .catch(() => {
-        setIsLoging(false);
-        errorToast("L'authentification a échoué", props.auth.toast);
-      });
+
+    const response = await fetchPost(`/auth`, data, true);
+    if (response.error) {
+      setIsLoging(false);
+      errorToast("L'authentification a échoué");
+      return;
+    }
+    const subResponse = await fetchPost(
+      `/users/by_email`,
+      {},
+      null,
+      response.data.token
+    );
+    setIsLoging(false);
+    if (subResponse.error) {
+      errorToast("L'authentification a échoué");
+      return;
+    }
+    updateAuth({
+      isConnected: true,
+      token: response.data.token,
+      userConnected: subResponse.data,
+      newLogTime: new Date().getTime(),
+    });
   };
 
   return (
@@ -136,20 +136,9 @@ const ModalLogin = (props) => {
 };
 
 ModalLogin.propTypes = {
-  auth: PropTypes.object,
-  handleAuth: PropTypes.func,
   visible: PropTypes.bool,
   setVisible: PropTypes.func,
   setVisibleForgot: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleAuth: (value) => {
-    dispatch(updateAuth(value));
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(ModalLogin);
+export default ModalLogin;

@@ -6,25 +6,30 @@ import Bouton from "../../Utils/Bouton/Bouton";
 import { Password } from "primereact/password";
 import { Divider } from "primereact/divider";
 import ImageUpload from "../../Components/ImageUpload/ImageUpload";
-import axios from "axios";
-import { connect } from "react-redux";
-import { updateAuth } from "../../Store/Actions/authActions";
-import PropTypes from "prop-types";
-import { errorToast, successToast } from "../../Services/api";
+import { useDispatch, useSelector } from "react-redux";
+import { errorToast, successToast } from "../../Services/functions";
 import Loader from "../../Utils/Loader/loader";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
+import { UPDATE_AUTH } from "../../Store/Reducers/authReducer";
+import { fetchPut } from "../../Services/api";
 
-const Parameters = (props) => {
+const Parameters = () => {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const updateAuth = (value) => {
+    dispatch({ type: UPDATE_AUTH, value });
+  };
+
   const [isModifying, setIsModifying] = useState(false);
   const [showMDP, setShowMDP] = useState(false);
   const [isEqualPassword, setIsEqualPassword] = useState(false);
   const [image, setImage] = useState(null);
 
   const defaultValues = {
-    name: props.auth.userConnected.name,
-    lastname: props.auth.userConnected.lastname,
-    email: props.auth.userConnected.email,
+    name: auth.userConnected.name,
+    lastname: auth.userConnected.lastname,
+    email: auth.userConnected.email,
     password: "",
     confirmPassword: "",
     oldPassword: "",
@@ -68,50 +73,34 @@ const Parameters = (props) => {
     return data;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsModifying(true);
     const data = setFields();
 
-    axios
-      .put(
-        `${process.env.REACT_APP_BASE_URL_API}/api/users/${props.auth.userConnected.id}`,
-        data,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${props.auth.token}`,
-          },
-        }
-      )
-      .then((res) => {
-        if (res.data[1]) {
-          props.handleAuth({
-            token: res.data[1],
-          });
-        }
-        setShowMDP(false);
-        setValue("oldPassword", "");
-        setValue("password", "");
-        setValue("confirmPassword", "");
-        let tempArray = { ...props.auth.userConnected };
-        tempArray.email = data.email;
-        tempArray.name = data.name;
-        tempArray.lastname = data.lastname;
-        tempArray.imageUrl = res.data[0];
-        props.handleAuth({
-          userConnected: tempArray,
-        });
-        successToast("Votre profil a bien été mis à jour", props.auth.toast);
-        setIsModifying(false);
-      })
-      .catch((err) =>
-        errorToast(
-          err.response.data.detail.includes("visiteur")
-            ? err.response.data.detail
-            : "Une erreur est survenue lors de la modification de votre profil",
-          props.auth.toast
-        )
+    const response = await fetchPut(`/users/${auth.userConnected.id}`, data);
+    setIsModifying(false);
+    if (response.error) {
+      errorToast(
+        response.error.response.data.detail.includes("visiteur")
+          ? response.error.response.data.detail
+          : "Une erreur est survenue lors de la modification de votre profil"
       );
+      return;
+    }
+    if (response.data[1]) {
+      updateAuth({ token: response.data[1] });
+    }
+    setShowMDP(false);
+    setValue("oldPassword", "");
+    setValue("password", "");
+    setValue("confirmPassword", "");
+    let tempArray = { ...auth.userConnected };
+    tempArray.email = data.email;
+    tempArray.name = data.name;
+    tempArray.lastname = data.lastname;
+    tempArray.imageUrl = response.data[0];
+    updateAuth({ userConnected: tempArray });
+    successToast("Votre profil a bien été mis à jour");
   };
 
   return (
@@ -120,12 +109,12 @@ const Parameters = (props) => {
       <form className="param__form" onSubmit={handleSubmit(onSubmit)}>
         <div className="param__form__field">
           <h4 htmlFor="image">Photo</h4>
-          {props.auth.userConnected.imageUrl && (
+          {auth.userConnected.imageUrl && (
             <div className="param_profile_picture">
               <img
                 src={
                   process.env.REACT_APP_BASE_URL_API +
-                  props.auth.userConnected.imageUrl
+                  auth.userConnected.imageUrl
                 }
                 alt="Fond news"
               />
@@ -302,17 +291,4 @@ const Parameters = (props) => {
   );
 };
 
-Parameters.propTypes = {
-  auth: PropTypes.object,
-  handleAuth: PropTypes.func,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-const mapDispatchToProps = (dispatch) => ({
-  handleAuth: (value) => {
-    dispatch(updateAuth(value));
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Parameters);
+export default Parameters;

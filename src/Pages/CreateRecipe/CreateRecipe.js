@@ -3,11 +3,11 @@ import "./CreateRecipe.scss";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import axios from "axios";
 import ImageUpload from "../../Components/ImageUpload/ImageUpload";
-import { errorToast, successToast, useFetchGet } from "../../Services/api";
+import { fetchPost, fetchPut, useFetchGet } from "../../Services/api";
+import { errorToast, successToast } from "../../Services/functions";
 import IngredientsCreation from "../../Components/FormElements/IngredientsCreation/IngredientsCreation";
 import StepsCreation from "../../Components/FormElements/StepsCreation/StepsCreation";
 import { RadioButton } from "primereact/radiobutton";
@@ -24,6 +24,8 @@ import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
 
 const CreateRecipe = (props) => {
+  const auth = useSelector((state) => state.auth);
+  const secondaryTables = useSelector((state) => state.secondaryTables);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -34,10 +36,10 @@ const CreateRecipe = (props) => {
   const [image, setImage] = useState(null);
   const ref = useRef(null);
   const [typeId, setTypeId] = useState(
-    props.recipe ? props.recipe.type.id : props.secondaryTables.types[0]?.id
+    props.recipe ? props.recipe.type.id : secondaryTables.types[0]?.id
   );
   const [regimeId, setRegimeId] = useState(
-    props.recipe ? props.recipe.regime.id : props.secondaryTables.regimes[0]?.id
+    props.recipe ? props.recipe.regime.id : secondaryTables.regimes[0]?.id
   );
   const [stepsList, setStepsList] = useState(
     props.recipe
@@ -131,8 +133,8 @@ const CreateRecipe = (props) => {
   };
 
   const resetForm = () => {
-    setTypeId(props.secondaryTables.types[0]?.id);
-    setRegimeId(props.secondaryTables.regimes[0]?.id);
+    setTypeId(secondaryTables.types[0]?.id);
+    setRegimeId(secondaryTables.regimes[0]?.id);
     setStepsList([
       {
         description: "",
@@ -147,7 +149,7 @@ const CreateRecipe = (props) => {
         id: 1,
       },
     ]);
-    successToast("Votre recette a bien été créée", props.auth.toast);
+    successToast("Votre recette a bien été créée");
   };
 
   const setFields = () => {
@@ -156,11 +158,12 @@ const CreateRecipe = (props) => {
     data.number = Number(data.number);
     data.type = `/api/types/${typeId}`;
     data.regime = `/api/regimes/${regimeId}`;
-    data.postedByUser = `/api/users/${props.auth.userConnected.id}`;
+    data.postedByUser = `/api/users/${auth.userConnected.id}`;
     data.steps = stepsList;
     data.ingredients = ingredientList;
     data.ingredients.forEach((ingredient) => {
       ingredient.quantity = Number(ingredient.quantity);
+      ingredient.unit = `/api/units/${ingredient.unit.id}`;
       delete ingredient.id;
     });
     if (props.recipe) {
@@ -168,6 +171,8 @@ const CreateRecipe = (props) => {
     }
     if (image) {
       data.image = image;
+    } else {
+      data.image = null;
     }
     return data;
   };
@@ -186,56 +191,36 @@ const CreateRecipe = (props) => {
     }
   };
 
-  const createRecipeFunction = () => {
+  const createRecipeFunction = async () => {
     const data = setFields();
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL_API}/api/recipes`, data, {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${props.auth.token}`,
-        },
-      })
-      .then(() => {
-        setImage(null);
-        resetForm();
-        reset();
-        setIsCreating(false);
-      })
-      .catch((err) =>
-        errorToast(
-          err.response.data.detail.includes("visiteur")
-            ? err.response.data.detail
-            : "Une erreur est survenue lors de la création de votre recette",
-          props.auth.toast
-        )
+
+    const response = await fetchPost(`/recipes`, data);
+    setIsCreating(false);
+    if (response.error) {
+      errorToast(
+        "Une erreur est survenue lors de la création de votre recette"
       );
+      return;
+    }
+    setImage(null);
+    resetForm();
+    reset();
   };
 
-  const putRecipeFunction = () => {
+  const putRecipeFunction = async () => {
     const data = setFields();
 
-    axios
-      .put(
-        `${process.env.REACT_APP_BASE_URL_API}/api/recipes/${props.recipe.id}`,
-        data,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${props.auth.token}`,
-          },
-        }
-      )
-      .then((res) => {
-        window.location.reload(false);
-      })
-      .catch((err) =>
-        errorToast(
-          err.response.data.detail.includes("visiteur")
-            ? err.response.data.detail
-            : "Une erreur est survenue lors de la modification de votre recette",
-          props.auth.toast
-        )
+    const response = await fetchPut(`/recipes/${props.recipe.id}`, data);
+    setIsCreating(false);
+    if (response.error) {
+      errorToast(
+        response.error.response.data.detail.includes("visiteur")
+          ? response.error.response.data.detail
+          : "Une erreur est survenue lors de la modification de votre recette"
       );
+      return;
+    }
+    window.location.reload(false);
   };
 
   const itemIds = useMemo(
@@ -347,7 +332,7 @@ const CreateRecipe = (props) => {
         <div className="recipe__form__field">
           <h4 htmlFor="type">Type de plat</h4>
           <div className="checkboxes">
-            {props.secondaryTables.types.map((type, index) => (
+            {secondaryTables.types.map((type, index) => (
               <div className="checkbox" key={index}>
                 <RadioButton
                   checked={type.id === typeId}
@@ -361,7 +346,7 @@ const CreateRecipe = (props) => {
         <div className="recipe__form__field">
           <h4 htmlFor="type">Régime alimentaire</h4>
           <div className="checkboxes">
-            {props.secondaryTables.regimes.map((regime, index) => (
+            {secondaryTables.regimes.map((regime, index) => (
               <div className="checkbox" key={index}>
                 <RadioButton
                   checked={regime.id === regimeId}
@@ -483,12 +468,7 @@ const CreateRecipe = (props) => {
 };
 
 CreateRecipe.propTypes = {
-  secondaryTables: PropTypes.object,
-  auth: PropTypes.object,
+  recipe: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  secondaryTables: state.secondaryTables,
-  auth: state.auth,
-});
-export default connect(mapStateToProps)(CreateRecipe);
+export default CreateRecipe;

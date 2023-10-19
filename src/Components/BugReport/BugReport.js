@@ -8,15 +8,17 @@ import Loader from "../../Utils/Loader/loader";
 import Bouton from "../../Utils/Bouton/Bouton";
 import { InputText } from "primereact/inputtext";
 import ImageUpload from "../ImageUpload/ImageUpload";
-import axios from "axios";
-import { errorToast } from "../../Services/api";
+import { errorToast } from "../../Services/functions";
 import { BsFillCheckCircleFill } from "react-icons/bs";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
+import { fetchPost } from "../../Services/api";
 
 const BugReport = (props) => {
   const [sending, setSending] = useState(false);
   const [image, setImage] = useState(null);
   const [successView, setSuccessView] = useState(false);
+
+  const auth = useSelector((state) => state.auth);
 
   const defaultValues = {
     title: "",
@@ -37,36 +39,22 @@ const BugReport = (props) => {
     );
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setSending(true);
     let data = getValues();
-    data.firstname = props.auth.userConnected.name;
-    data.lastname = props.auth.userConnected.lastname;
+    data.firstname = auth.userConnected.name;
+    data.lastname = auth.userConnected.lastname;
     if (image) {
       data.file = image;
     }
 
-    axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL_API}/api/users/sendReport`,
-        data,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${props.auth.token}`,
-          },
-        }
-      )
-      .then(() => {
-        setSuccessView(true);
-      })
-      .catch(() =>
-        errorToast(
-          "Une erreur est survenue lors de l'envoi du mail",
-          props.auth.toast
-        )
-      )
-      .finally(() => setSending(false));
+    const response = await fetchPost(`/users/sendReport`, data);
+    setSending(false);
+    if (response.error) {
+      errorToast("Une erreur est survenue lors de l'envoi du mail");
+      return;
+    }
+    setSuccessView(true);
   };
 
   return (
@@ -143,12 +131,8 @@ const BugReport = (props) => {
 };
 
 BugReport.propTypes = {
-  auth: PropTypes.object,
   reportBugModal: PropTypes.bool,
   setReportBugModal: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-export default connect(mapStateToProps)(BugReport);
+export default BugReport;
