@@ -1,10 +1,14 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { store } from "../Store/store";
 
-export const useFetchGet = (url, token = null) => {
+export const useFetchGet = (url) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
+
+  const reduxStore = store.getState();
+  const token = reduxStore.auth.token;
 
   useEffect(() => {
     url &&
@@ -29,10 +33,13 @@ export const useFetchGet = (url, token = null) => {
   return { data, error, loaded };
 };
 
-export const useFetchGetConditional = (url, reduxData, token = null) => {
+export const useFetchGetConditional = (url, reduxData) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
+
+  const reduxStore = store.getState();
+  const token = reduxStore.auth.token;
 
   useEffect(() => {
     if (!reduxData || reduxData.length === 0) {
@@ -61,124 +68,106 @@ export const useFetchGetConditional = (url, reduxData, token = null) => {
   return { data, error, loaded };
 };
 
-export const exportRecipe = (chosenRecipes, data) => {
-  let ingredientList = [];
-  let finalList = [];
+export const fetchGet = async (url) => {
+  let data = null;
+  let error = null;
 
-  let tempArray = chosenRecipes.map((recipe) => {
-    if (recipe.multiplyer) {
-      let updatedIngredients = recipe.ingredients.map((element) => {
-        let updatedElement = { ...element };
-        updatedElement.quantity = updatedElement.quantity * recipe.multiplyer;
-        return updatedElement;
-      });
-
-      return {
-        ...recipe,
-        ingredients: updatedIngredients,
-      };
-    } else {
-      return recipe;
-    }
-  });
-
-  tempArray.forEach(
-    (recipe) => (ingredientList = ingredientList.concat(recipe.ingredients))
-  );
-
-  ingredientList.forEach((ingredient) => {
-    let isIn = false;
-    finalList.forEach((element, index) => {
-      if (
-        (element.label.toLowerCase() === ingredient.label.toLowerCase() ||
-          element.label.toLowerCase() + "s" ===
-            ingredient.label.toLowerCase() ||
-          element.label.toLowerCase() + "x" ===
-            ingredient.label.toLowerCase() ||
-          element.label.toLowerCase() ===
-            ingredient.label.toLowerCase() + "s" ||
-          element.label.toLowerCase() ===
-            ingredient.label.toLowerCase() + "x") &&
-        element.unit.label === ingredient.unit.label
-      ) {
-        let updatedElement = { ...element };
-        updatedElement.quantity += ingredient.quantity;
-        finalList[index] = updatedElement;
-        isIn = true;
-      }
-    });
-    if (!isIn) {
-      const elementInBase = data.find(
-        (element) => element.name === ingredient.label
-      );
-      if (elementInBase) {
-        ingredient.type = elementInBase.type.label;
-      } else {
-        ingredient.type = "unknown";
-      }
-      finalList.push(ingredient);
-    }
-  });
-
-  let shoppingList = "";
-  if (finalList.length > 0) {
-    finalList
-      .sort((a, b) => a.type.localeCompare(b.type))
-      .forEach((element) => {
-        let elementString = "";
-        element.unit.label !== "unité"
-          ? (elementString =
-              element.quantity +
-              " " +
-              element.unit.label +
-              " de " +
-              element.label.toLowerCase() +
-              " \n")
-          : (elementString =
-              element.quantity + " " + element.label.toLowerCase() + " \n");
-        shoppingList += elementString;
-      });
-  }
-
-  return shoppingList;
+  const reduxStore = store.getState();
+  const token = reduxStore.auth.token;
+  await axios
+    .get(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
+      headers: token
+        ? {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        : {
+            accept: "application/json",
+          },
+    })
+    .then((response) => (data = response.data))
+    .catch((e) => (error = e));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return { data, error };
 };
 
-export const successToast = (message, ref, summary = "Succès") => {
-  ref.current.show({
-    severity: "success",
-    summary: `${summary} : `,
-    detail: message,
-    life: 3000,
-  });
+export const fetchDelete = async (url) => {
+  let data = null;
+  let error = null;
+
+  const reduxStore = store.getState();
+  const token = reduxStore.auth.token;
+  await axios
+    .delete(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
+      headers: token
+        ? {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        : {
+            accept: "application/json",
+          },
+    })
+    .then((response) => (data = response.data))
+    .catch((e) => (error = e));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return { data, error };
 };
 
-export const errorToast = (message, ref, summary = "Erreur") => {
-  ref.current.show({
-    severity: "error",
-    summary: `${summary} : `,
-    detail: message,
-    life: 3000,
-  });
-};
+export const fetchPost = async (
+  url,
+  payload,
+  noAPI = false,
+  forcedToken = null
+) => {
+  let data = null;
+  let error = null;
 
-export const timeToString = (time) => {
-  const splittedTime = time.split(":");
-  const hours = Number(splittedTime[0]);
-  const minutes = Number(splittedTime[1]);
+  const reduxStore = store.getState();
+  const token = forcedToken ?? reduxStore.auth.token;
 
-  if (hours === 1) {
-    if (minutes === 0) {
-      return hours + " heure";
-    } else {
-      return hours + "h" + minutes;
-    }
-  } else if (hours > 1) {
-    if (minutes === 0) {
-      return hours + " heures";
-    } else {
-      return hours + "h" + minutes;
-    }
+  let fullUrl = "";
+  if (noAPI) {
+    fullUrl = `${process.env.REACT_APP_BASE_URL_API}${url}`;
   } else {
-    return minutes + " minutes";
+    fullUrl = `${process.env.REACT_APP_BASE_URL_API}/api${url}`;
   }
+  await axios
+    .post(fullUrl, payload, {
+      headers: token
+        ? {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        : {
+            accept: "application/json",
+          },
+    })
+    .then((response) => (data = response.data))
+    .catch((e) => (error = e));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return { data, error };
+};
+
+export const fetchPut = async (url, payload) => {
+  let data = null;
+  let error = null;
+
+  const reduxStore = store.getState();
+  const token = reduxStore.auth.token;
+  await axios
+    .put(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, payload, {
+      headers: token
+        ? {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        : {
+            accept: "application/json",
+          },
+    })
+    .then((response) => (data = response.data))
+    .catch((e) => (error = e));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return { data, error };
 };
