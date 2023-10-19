@@ -2,14 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NavBar.scss";
 import { GiKnifeFork } from "react-icons/gi";
-import { updateAuth } from "../../Store/Actions/authActions";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import { GiCook } from "react-icons/gi";
 import Bouton from "../../Utils/Bouton/Bouton";
 import Nav from "./Nav/Nav";
+import { UPDATE_AUTH } from "../../Store/Reducers/authReducer";
 
-const NavBar = (props) => {
+const NavBar = () => {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const updateAuth = (value) => {
+    dispatch({ type: UPDATE_AUTH, value });
+  };
   const [showParamMenu, setShowParamMenu] = useState(false);
   const [visibleMobile, setVisibleMobile] = useState(false);
   const navigate = useNavigate();
@@ -51,11 +55,10 @@ const NavBar = (props) => {
         <GiKnifeFork></GiKnifeFork>Créer une recette
       </Bouton>
       <div className="navigation_parameters" ref={wrapperRef}>
-        {props.auth.userConnected.imageUrl ? (
+        {auth.userConnected.imageUrl ? (
           <img
             src={
-              process.env.REACT_APP_BASE_URL_API +
-              props.auth.userConnected.imageUrl
+              process.env.REACT_APP_BASE_URL_API + auth.userConnected.imageUrl
             }
             alt="ma pp"
             onClick={() => setShowParamMenu(!showParamMenu)}
@@ -72,7 +75,7 @@ const NavBar = (props) => {
           <span onClick={() => navigate("/param")}>Mon profil</span>
           <span
             onClick={() => {
-              props.handleAuth({
+              updateAuth({
                 isConnected: false,
                 token: null,
                 userConnected: {},
@@ -89,18 +92,4 @@ const NavBar = (props) => {
   );
 };
 
-NavBar.propTypes = {
-  auth: PropTypes.object,
-  handleAuth: PropTypes.func,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleAuth: (value) => {
-    dispatch(updateAuth(value));
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default NavBar;

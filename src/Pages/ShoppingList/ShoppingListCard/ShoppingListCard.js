@@ -6,7 +6,7 @@ import { BiTimer } from "react-icons/bi";
 import default2 from "../../../assets/default2.jpg";
 import { Dropdown } from "primereact/dropdown";
 import PropTypes from "prop-types";
-import { timeToString } from "../../../Services/api";
+import { timeToString } from "../../../Services/functions";
 
 const ShoppingListCard = (props) => {
   return (

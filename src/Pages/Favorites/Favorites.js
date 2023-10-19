@@ -1,19 +1,24 @@
 import React, { useEffect } from "react";
 import "./Favorites.scss";
 import RecipeContainer from "../../Components/RecipeContainer/RecipeContainer";
-import { connect } from "react-redux";
-import { updateRecipe } from "../../Store/Actions/recipeActions";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../../Components/Footer/Footer";
 import NavBar from "../../Components/NavBar/NavBar";
+import { UPDATE_RECIPE } from "../../Store/Reducers/recipeReducer";
 
-const Favorites = (props) => {
+const Favorites = () => {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const updateRecipe = (value) => {
+    dispatch({ type: UPDATE_RECIPE, value });
+  };
+
   useEffect(() => {
-    props.handleUpdateRecipes({
+    updateRecipe({
       favourite: true,
     });
     return () =>
-      props.handleUpdateRecipes({
+      updateRecipe({
         favourite: false,
       });
     // eslint-disable-next-line
@@ -22,22 +27,11 @@ const Favorites = (props) => {
     <div className="favorites">
       <NavBar></NavBar>
       <RecipeContainer
-        dataToCall={`/recipes/user_fav/${props.auth.userConnected.id}`}
+        dataToCall={`/recipes/user_fav/${auth.userConnected.id}`}
       ></RecipeContainer>
       <Footer></Footer>
     </div>
   );
 };
 
-Favorites.propTypes = {
-  auth: PropTypes.object,
-  handleUpdateRecipes: PropTypes.func,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-const mapDispatchToProps = (dispatch) => ({
-  handleUpdateRecipes: (value) => dispatch(updateRecipe(value)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
+export default Favorites;

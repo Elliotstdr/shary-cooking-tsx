@@ -5,16 +5,18 @@ import SearchBar from "../SearchBar/SearchBar";
 import { useFetchGet } from "../../Services/api";
 import { Paginator } from "primereact/paginator";
 import Loader from "../../Utils/Loader/loader";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Checkbox } from "primereact/checkbox";
 
 const RecipeContainer = (props) => {
+  const auth = useSelector((state) => state.auth);
+  const recipe = useSelector((state) => state.recipe);
   const rows = 12;
   const [first, setFirst] = useState(0);
   const ref = useRef(null);
-  const recipesData = useFetchGet(props.dataToCall, props.auth.token);
+  const recipesData = useFetchGet(props.dataToCall);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [boxFavorites, setBoxFavorites] = useState(false);
   const [boxMine, setBoxMine] = useState(false);
@@ -33,13 +35,13 @@ const RecipeContainer = (props) => {
       if (boxFavorites) {
         tempArray = tempArray.filter((recipe) =>
           recipe.savedByUsers.some(
-            (element) => element.id === props.auth.userConnected.id
+            (element) => element.id === auth.userConnected.id
           )
         );
       }
       if (boxMine) {
         tempArray = tempArray.filter(
-          (recipe) => recipe.postedByUser.id === props.auth.userConnected.id
+          (recipe) => recipe.postedByUser.id === auth.userConnected.id
         );
       }
       setStartData(tempArray);
@@ -72,7 +74,6 @@ const RecipeContainer = (props) => {
       <div className="recipeContainer_searchbar">
         <SearchBar
           startData={startData}
-          filteredRecipes={filteredRecipes}
           setFilteredRecipes={setFilteredRecipes}
         ></SearchBar>
         <Accordion
@@ -83,7 +84,6 @@ const RecipeContainer = (props) => {
           <AccordionTab header="Filtrer">
             <SearchBar
               startData={startData}
-              filteredRecipes={filteredRecipes}
               setFilteredRecipes={setFilteredRecipes}
             ></SearchBar>
           </AccordionTab>
@@ -95,16 +95,16 @@ const RecipeContainer = (props) => {
             filteredRecipes
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .slice(first, first + rows)
-              .map((recipe, index) => (
+              .map((recipe) => (
                 <RecipeCard
-                  key={index}
+                  key={recipe.id}
                   recipeItem={recipe}
                   updateFavouriteList={(x) => updateFavouriteList(x)}
                 ></RecipeCard>
               ))
           ) : (
             <span className="noCard">
-              {props.recipe.favourite
+              {recipe.favourite
                 ? "Vous n'avez pas encore sélectionné vos recettes préférées !"
                 : "Je n'ai aucune recette à vous afficher malheureusement ..."}
             </span>
@@ -135,12 +135,6 @@ const RecipeContainer = (props) => {
 
 RecipeContainer.propType = {
   dataToCall: PropTypes.string,
-  auth: PropTypes.object,
-  recipe: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  recipe: state.recipe,
-});
-export default connect(mapStateToProps)(RecipeContainer);
+export default RecipeContainer;

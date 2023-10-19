@@ -1,19 +1,24 @@
 import React, { useEffect } from "react";
 import "./MyRecipes.scss";
 import RecipeContainer from "../../Components/RecipeContainer/RecipeContainer";
-import { connect } from "react-redux";
-import { updateRecipe } from "../../Store/Actions/recipeActions";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
+import { UPDATE_RECIPE } from "../../Store/Reducers/recipeReducer";
 
-const MyRecipes = (props) => {
+const MyRecipes = () => {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const updateRecipe = (value) => {
+    dispatch({ type: UPDATE_RECIPE, value });
+  };
+
   useEffect(() => {
-    props.handleUpdateRecipes({
+    updateRecipe({
       editable: true,
     });
     return () =>
-      props.handleUpdateRecipes({
+      updateRecipe({
         editable: false,
       });
     // eslint-disable-next-line
@@ -22,22 +27,11 @@ const MyRecipes = (props) => {
     <div className="myrecipes">
       <NavBar></NavBar>
       <RecipeContainer
-        dataToCall={`/recipes/user/${props.auth.userConnected.id}`}
+        dataToCall={`/recipes/user/${auth.userConnected.id}`}
       ></RecipeContainer>
       <Footer></Footer>
     </div>
   );
 };
 
-MyRecipes.propTypes = {
-  auth: PropTypes.object,
-  handleUpdateRecipes: PropTypes.func,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-const mapDispatchToProps = (dispatch) => ({
-  handleUpdateRecipes: (value) => dispatch(updateRecipe(value)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(MyRecipes);
+export default MyRecipes;

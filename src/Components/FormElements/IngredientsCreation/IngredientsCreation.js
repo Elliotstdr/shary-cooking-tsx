@@ -3,8 +3,7 @@ import "./IngredientsCreation.scss";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { AutoComplete } from "primereact/autocomplete";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -12,6 +11,8 @@ import { BiMoveVertical } from "react-icons/bi";
 import { AiOutlineStop } from "react-icons/ai";
 
 const IngredientsCreation = (props) => {
+  const secondaryTables = useSelector((state) => state.secondaryTables);
+
   const modifyIngredientList = (word, ingredient) => {
     let tempArray = [...props.ingredientList];
     tempArray.forEach((element) => {
@@ -95,7 +96,7 @@ const IngredientsCreation = (props) => {
       />
       <Dropdown
         value={props.ingredient.unit}
-        options={props.secondaryTables.units}
+        options={secondaryTables.units}
         optionLabel="label"
         placeholder="kg, unité..."
         className="recipe__form__field-unit"
@@ -124,11 +125,4 @@ const IngredientsCreation = (props) => {
   );
 };
 
-IngredientsCreation.propTypes = {
-  secondaryTables: PropTypes.object,
-};
-
-const mapStateToProps = (state) => ({
-  secondaryTables: state.secondaryTables,
-});
-export default connect(mapStateToProps)(IngredientsCreation);
+export default IngredientsCreation;

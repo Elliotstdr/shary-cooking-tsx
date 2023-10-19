@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { updateSecondaryTables } from "../../Store/Actions/secondaryTables";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Login from "../../Components/Login/Login";
-import PropTypes from "prop-types";
 import "./Accueil.scss";
 import { useFetchGet, useFetchGetConditional } from "../../Services/api";
 import NavBar from "../../Components/NavBar/NavBar";
@@ -14,38 +12,39 @@ import Bouton from "../../Utils/Bouton/Bouton";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../Utils/Loader/loader";
 import RecipeCard from "../../Components/RecipeContainer/RecipeCard/RecipeCard";
+import { UPDATE_SECONDARYTABLES } from "../../Store/Reducers/secondaryTablesReducer";
 
-const Accueil = (props) => {
+const Accueil = () => {
+  const auth = useSelector((state) => state.auth);
+  const secondaryTables = useSelector((state) => state.secondaryTables);
+  const dispatch = useDispatch();
+  const updateSecondaryTables = (value) => {
+    dispatch({ type: UPDATE_SECONDARYTABLES, value });
+  };
   const [recipeUrl, setRecipeUrl] = useState(null);
   const navigate = useNavigate();
 
-  const recipesData = useFetchGet(recipeUrl, props.auth.token);
+  const recipesData = useFetchGet(recipeUrl);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    if (props.auth.isConnected) {
+    if (auth.isConnected) {
       setRecipeUrl("/recipes");
     }
-  }, [props.auth.isConnected]);
+  }, [auth.isConnected]);
 
-  const typesData = useFetchGetConditional(
-    "/types",
-    props.secondaryTables.types
-  );
-  const unitsData = useFetchGetConditional(
-    "/units",
-    props.secondaryTables.units
-  );
+  const typesData = useFetchGetConditional("/types", secondaryTables.types);
+  const unitsData = useFetchGetConditional("/units", secondaryTables.units);
   const regimesData = useFetchGetConditional(
     "/regimes",
-    props.secondaryTables.regimes
+    secondaryTables.regimes
   );
   const ingredientTypeData = useFetchGetConditional(
     "/ingredient_types",
-    props.secondaryTables.ingTypes
+    secondaryTables.ingTypes
   );
 
   useEffect(() => {
@@ -53,7 +52,7 @@ const Accueil = (props) => {
       unitsData.loaded &&
       regimesData.loaded &&
       ingredientTypeData.loaded &&
-      props.handleUpdateSecondaryTables({
+      updateSecondaryTables({
         types: typesData.data,
         units: unitsData.data,
         regimes: regimesData.data,
@@ -69,7 +68,7 @@ const Accueil = (props) => {
 
   return (
     <div className="accueil_container">
-      {props.auth.isConnected ? (
+      {auth.isConnected ? (
         <div className="accueil">
           <NavBar></NavBar>
           <div className="accueil_connected">
@@ -130,20 +129,4 @@ const Accueil = (props) => {
   );
 };
 
-Accueil.propTypes = {
-  auth: PropTypes.object,
-  secondaryTables: PropTypes.object,
-  handleUpdateSecondaryTables: PropTypes.func,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  secondaryTables: state.secondaryTables,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleUpdateSecondaryTables: (value) =>
-    dispatch(updateSecondaryTables(value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Accueil);
+export default Accueil;

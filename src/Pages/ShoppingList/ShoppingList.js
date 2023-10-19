@@ -4,17 +4,23 @@ import Bouton from "../../Utils/Bouton/Bouton";
 import Modal from "../../Components/Modal/Modal";
 import RecipeContainer from "../../Components/RecipeContainer/RecipeContainer";
 import { InputTextarea } from "primereact/inputtextarea";
-import { exportRecipe, useFetchGet } from "../../Services/api";
+import { exportRecipe } from "../../Services/functions";
+import { useFetchGet } from "../../Services/api";
 import ShoppingListCard from "./ShoppingListCard/ShoppingListCard";
-import { connect } from "react-redux";
-import { updateRecipe } from "../../Store/Actions/recipeActions";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import image from "../../assets/HCDarkOp.jpg";
 import { BiEditAlt } from "react-icons/bi";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
+import { UPDATE_RECIPE } from "../../Store/Reducers/recipeReducer";
 
-const ShoppingList = (props) => {
+const ShoppingList = () => {
+  const recipe = useSelector((state) => state.recipe);
+  const dispatch = useDispatch();
+  const updateRecipe = (value) => {
+    dispatch({ type: UPDATE_RECIPE, value });
+  };
+
   const ingredientData = useFetchGet("/ingredient_datas");
 
   const [visibleRecipeContainer, setVisibleRecipeContainer] = useState(false);
@@ -24,11 +30,9 @@ const ShoppingList = (props) => {
   const [greenButton, setGreenButton] = useState(false);
 
   useEffect(() => {
-    props.handleUpdateRecipes({
-      shopping: true,
-    });
+    updateRecipe({ shopping: true });
     return () =>
-      props.handleUpdateRecipes({
+      updateRecipe({
         chosenRecipes: [],
         shopping: false,
       });
@@ -37,19 +41,17 @@ const ShoppingList = (props) => {
 
   useEffect(() => {
     !visibleRecipeContainer &&
-      setVisibleExport(props.recipe.chosenRecipes.length > 0);
-  }, [visibleRecipeContainer, props.recipe.chosenRecipes.length]);
+      setVisibleExport(recipe.chosenRecipes.length > 0);
+  }, [visibleRecipeContainer, recipe.chosenRecipes.length]);
 
   const modifyRecipeList = (word, recipe) => {
-    let tempArray = [...props.recipe.chosenRecipes];
+    let tempArray = [...recipe.chosenRecipes];
     tempArray.forEach((element) => {
       if (element.id === recipe.id) {
         element.multiplyer = word;
       }
     });
-    props.handleUpdateRecipes({
-      chosenRecipes: tempArray,
-    });
+    updateRecipe({ chosenRecipes: tempArray });
   };
 
   return (
@@ -71,7 +73,7 @@ const ShoppingList = (props) => {
               </Bouton>
             </div>
             <div className="shoppingList_container_export_recipes">
-              {props.recipe.chosenRecipes.map((recipe, index) => (
+              {recipe.chosenRecipes.map((recipe, index) => (
                 <ShoppingListCard
                   recipe={recipe}
                   modifyRecipeList={(word, recipe) =>
@@ -86,7 +88,7 @@ const ShoppingList = (props) => {
               btnTexte={"Créer ma liste de course"}
               btnAction={() => {
                 setStringShopping(
-                  exportRecipe(props.recipe.chosenRecipes, ingredientData.data)
+                  exportRecipe(recipe.chosenRecipes, ingredientData.data)
                 );
                 setVisibleList(true);
                 setGreenButton(false);
@@ -156,15 +158,4 @@ const ShoppingList = (props) => {
   );
 };
 
-ShoppingList.propTypes = {
-  recipe: PropTypes.object,
-  handleUpdateRecipes: PropTypes.func,
-};
-
-const mapStateToProps = (state) => ({
-  recipe: state.recipe,
-});
-const mapDispatchToProps = (dispatch) => ({
-  handleUpdateRecipes: (value) => dispatch(updateRecipe(value)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);
+export default ShoppingList;

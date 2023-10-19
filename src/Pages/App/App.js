@@ -7,18 +7,23 @@ import ShoppingList from "../ShoppingList/ShoppingList";
 import Parameters from "../Parameters/Parameters";
 import MyRecipes from "../MyRecipes/MyRecipes";
 import CreateRecipe from "../CreateRecipe/CreateRecipe";
-import { connect } from "react-redux";
-import { updateAuth } from "../../Store/Actions/authActions";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
+import { UPDATE_AUTH } from "../../Store/Reducers/authReducer";
 
-const App = (props) => {
+const App = () => {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const updateAuth = (value) => {
+    dispatch({ type: UPDATE_AUTH, value });
+  };
   const toast = useRef(null);
   const interval = useRef(0);
   const timer = 60 * 1000; // 1 minute
   useEffect(() => {
-    if (props.auth.isConnected) {
+    if (auth.isConnected) {
       interval.current = setInterval(() => {
         checkToken();
       }, timer); // Commence toutes les minutes l'écoute si connecté
@@ -32,14 +37,14 @@ const App = (props) => {
     }; // Stoppe l'écoute si quitte la page
 
     // eslint-disable-next-line
-  }, [props.auth.isConnected, props.auth.token]);
+  }, [auth.isConnected, auth.token]);
 
   const checkToken = () => {
-    if (!props.auth.token) {
+    if (!auth.token) {
       logOut();
       return;
     }
-    const decodedPayload = atob(props.auth.token.split(".")[1]);
+    const decodedPayload = atob(auth.token.split(".")[1]);
     const payloadObject = JSON.parse(decodedPayload);
     if (payloadObject.exp * 1000 - new Date().getTime() < 0) {
       // Si le token expire on logout
@@ -49,16 +54,16 @@ const App = (props) => {
       axios
         .post(
           `${process.env.REACT_APP_BASE_URL_API}/api/users/loginCheck`,
-          { email: props.auth.userConnected.email },
+          { email: auth.userConnected.email },
           {
             headers: {
               accept: "application/json",
-              Authorization: `Bearer ${props.auth.token}`,
+              Authorization: `Bearer ${auth.token}`,
             },
           }
         )
         .then((token) => {
-          props.handleAuth({
+          updateAuth({
             token: token.data,
           });
         });
@@ -66,18 +71,18 @@ const App = (props) => {
   };
 
   const checkActivity = () => {
-    if (props.auth.isConnected) {
+    if (auth.isConnected) {
       // Si la dernière action de l'utilisateur était il y a plus d'une heure on logout
-      if (new Date().getTime() - props.auth.newLogTime > 60 * 60 * 1000) {
+      if (new Date().getTime() - auth.newLogTime > 60 * 60 * 1000) {
         logOut();
       } else {
         // Sinon on met à jour l'heure de sa dernière action
-        props.handleAuth({
+        updateAuth({
           newLogTime: new Date().getTime(),
         });
       }
-    } else if (props.auth.newLogTime) {
-      props.handleAuth({
+    } else if (auth.newLogTime) {
+      updateAuth({
         newLogTime: null,
       });
     }
@@ -86,7 +91,7 @@ const App = (props) => {
   // Fonction de logout
   const logOut = () => {
     window.location.href = "/";
-    props.handleAuth({
+    updateAuth({
       isConnected: false,
       newLogTime: null,
       token: null,
@@ -97,10 +102,10 @@ const App = (props) => {
   // Au (re)chargement de la page on check l'activité du user et l'état de son token s'il est connecté
   useEffect(() => {
     checkActivity();
-    if (props.auth.isConnected) {
+    if (auth.isConnected) {
       checkToken();
     }
-    props.handleAuth({
+    updateAuth({
       toast: toast,
     });
     // eslint-disable-next-line
@@ -112,7 +117,7 @@ const App = (props) => {
         <Toast ref={toast}></Toast>
         <Routes>
           <Route path="/" element={<Accueil />}></Route>
-          {props.auth.isConnected && (
+          {auth.isConnected && (
             <>
               <Route path="/all" element={<AllRecipes />}></Route>
               <Route path="/fav" element={<Favorites />}></Route>
@@ -128,12 +133,4 @@ const App = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-const mapDispatchToProps = (dispatch) => ({
-  handleAuth: (value) => {
-    dispatch(updateAuth(value));
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

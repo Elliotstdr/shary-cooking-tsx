@@ -1,6 +1,7 @@
 import React from "react";
 import "./CardDetail.scss";
-import { timeToString, useFetchGet } from "../../../../Services/api";
+import { useFetchGet } from "../../../../Services/api";
+import { timeToString } from "../../../../Services/functions";
 import Loader from "../../../../Utils/Loader/loader";
 import PropTypes from "prop-types";
 import default2 from "../../../../assets/default2.jpg";
@@ -10,10 +11,11 @@ import { BiTimer } from "react-icons/bi";
 import { BiAward } from "react-icons/bi";
 import { Divider } from "primereact/divider";
 import { CiEdit } from "react-icons/ci";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const CardDetail = (props) => {
-  const recipeDetail = useFetchGet(`/recipes/${props.id}`, props.auth.token);
+  const auth = useSelector((state) => state.auth);
+  const recipeDetail = useFetchGet(`/recipes/${props.id}`);
 
   return (
     <div className="cardDetail_container">
@@ -32,8 +34,7 @@ const CardDetail = (props) => {
           </div>
           <h2 className="cardDetail_container_title">
             {recipeDetail.data.title}
-            {recipeDetail.data.postedByUser.id ===
-              props.auth.userConnected.id && (
+            {recipeDetail.data.postedByUser.id === auth.userConnected.id && (
               <div className="recipeCard__bottom__edit">
                 <CiEdit
                   onClick={() => {
@@ -107,13 +108,8 @@ const CardDetail = (props) => {
 
 CardDetail.propType = {
   id: PropTypes.number,
-  auth: PropTypes.object,
   setVisible: PropTypes.func,
   setVisibleModif: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps)(CardDetail);
+export default CardDetail;

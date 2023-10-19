@@ -3,14 +3,15 @@ import "./SearchBar.scss";
 import { MultiSelect } from "primereact/multiselect";
 import { useFetchGet } from "../../Services/api";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 
 const SearchBar = (props) => {
+  const secondaryTables = useSelector((state) => state.secondaryTables);
   const ingredientData = useFetchGet("/ingredient_datas");
-  const usersData = useFetchGet("/users", props.auth.token);
+  const usersData = useFetchGet("/users");
   const [moreVisible, setMoreVisible] = useState(false);
   const [regime, setRegime] = useState(null);
   const [type, setType] = useState(null);
@@ -146,7 +147,7 @@ const SearchBar = (props) => {
             onChange={(e) => {
               setRegime(e.value);
             }}
-            options={props.secondaryTables.regimes.filter((regime) =>
+            options={secondaryTables.regimes.filter((regime) =>
               props.startData?.some((recipe) => recipe.regime.id === regime.id)
             )}
             optionLabel="label"
@@ -160,7 +161,7 @@ const SearchBar = (props) => {
             onChange={(e) => {
               setType(e.value);
             }}
-            options={props.secondaryTables.types.filter((type) =>
+            options={secondaryTables.types.filter((type) =>
               props.startData?.some((recipe) => recipe.type.id === type.id)
             )}
             optionLabel="label"
@@ -213,13 +214,6 @@ const SearchBar = (props) => {
 SearchBar.propTypes = {
   setFilteredRecipes: PropTypes.func,
   startData: PropTypes.array,
-  secondaryTables: PropTypes.object,
-  auth: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  secondaryTables: state.secondaryTables,
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps)(SearchBar);
+export default SearchBar;
