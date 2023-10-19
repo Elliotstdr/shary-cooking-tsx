@@ -1,4 +1,3 @@
-import { UPDATE_AUTH } from "../Actions/authActions.js";
 const INITIAL_STATE = {
   isConnected: false,
   token: null,
@@ -6,6 +5,8 @@ const INITIAL_STATE = {
   newLogTime: null,
   toast: null,
 };
+
+export const UPDATE_AUTH = "UPDATE_AUTH";
 
 const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {

@@ -1,10 +1,11 @@
-import { UPDATE_SECONDARYTABLES } from "../Actions/secondaryTables.js";
 const INITIAL_STATE = {
   types: null,
   units: null,
   regimes: null,
   ingTypes: null,
 };
+
+export const UPDATE_SECONDARYTABLES = "UPDATE_SECONDARYTABLES";
 
 const secondaryTablesReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {

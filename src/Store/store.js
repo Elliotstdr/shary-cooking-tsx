@@ -2,8 +2,10 @@ import { legacy_createStore as createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-
-import rootReducer from "./rootReducer";
+import { combineReducers } from "redux";
+import authReducer from "./Reducers/authReducer";
+import secondaryTablesReducer from "./Reducers/secondaryTablesReducer";
+import recipeReducer from "./Reducers/recipeReducer";
 
 const persistConfig = {
   key: "root",
@@ -11,6 +13,12 @@ const persistConfig = {
   blacklist: ["recipe"],
   whitelist: ["auth", "secondaryTables"],
 };
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+  secondaryTables: secondaryTablesReducer,
+  recipe: recipeReducer,
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
