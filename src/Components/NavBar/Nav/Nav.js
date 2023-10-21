@@ -16,7 +16,7 @@ const Nav = (props) => {
         className={(nav) => (nav.isActive ? "nav-active" : "")}
       >
         <li>
-          <strong>Gallerie</strong>
+          <strong>Galerie</strong>
         </li>
       </NavLink>
       <NavLink
