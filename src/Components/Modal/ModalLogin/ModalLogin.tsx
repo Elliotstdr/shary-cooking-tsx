@@ -12,6 +12,7 @@ import Bouton from "../../../Utils/Bouton/Bouton";
 import { errorToast } from "../../../Services/functions";
 import { UPDATE_AUTH } from "../../../Store/Reducers/authReducer";
 import { fetchPost } from "../../../Services/api";
+import { ClassUser } from "../../../Types/class";
 
 interface Props {
   visible: boolean,
@@ -62,7 +63,8 @@ const ModalLogin = (props: Props) => {
       `/users/by_email`,
       {},
       false,
-      response.data.token
+      response.data.token,
+      new ClassUser()
     );
     setIsLoging(false);
     if (subResponse.error) {

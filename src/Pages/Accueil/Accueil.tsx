@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../Utils/Loader/loader";
 import RecipeCard from "../../Components/RecipeContainer/RecipeCard/RecipeCard";
 import { UPDATE_SECONDARYTABLES } from "../../Store/Reducers/secondaryTablesReducer";
-import { ClassIngredientType, ClassRegime, ClassType, ClassUnit } from "../../Types/class";
+import { ClassIngredientType, ClassRecipe, ClassRegime, ClassType, ClassUnit } from "../../Types/class";
 import { errorToast } from "../../Services/functions";
 
 const Accueil = () => {
@@ -27,7 +27,7 @@ const Accueil = () => {
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
-  const recipesData = useFetchGet(recipeUrl);
+  const recipesData = useFetchGet<Recipe[]>(recipeUrl, new ClassRecipe());
 
   useEffect(() => {
     window.scrollTo(0, 0);

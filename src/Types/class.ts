@@ -5,7 +5,11 @@ export class ClassUser implements User {
   email = "";
   imageUrl = ""
 }
-
+export class ClassRestrictedUser implements RestrictedUser {
+  id = 0;
+  name = "";
+  imageUrl = ""
+}
 export class ClassRecipe implements Recipe {
   id = 0;
   title = "";
@@ -20,46 +24,41 @@ export class ClassRecipe implements Recipe {
   ingredients = [new ClassIngredient()];
   steps = [new ClassStep()];
 }
-
-export class ClassType implements Type {
-  id = 0;
-  label = ""
+export class ClassStep implements Step {
+  description = "";
+  stepIndex = 0
 }
-
-export class ClassRegime implements Regime {
-  id = 0;
-  label = ""
-}
-
-export class ClassUnit implements Unit {
-  id = 0;
-  label = ""
-}
-
-export class ClassIngredientType implements IngredientType {
-  id = 0;
-  label = ""
-}
-
-export class ClassIngredientData implements IngredientData {
-  name = "";
-  type = new ClassType();
-  frequency = 0
-}
-
 export class ClassIngredient implements Ingredient {
   quantity = 0;
   label = "";
   unit = new ClassUnit();
 }
-
-export class ClassStep implements Step {
-  description = "";
-  stepIndex = 0
-}
-
-export class ClassRestrictedUser implements RestrictedUser {
+export class ClassType implements Type {
   id = 0;
+  label = ""
+}
+export class ClassRegime implements Regime {
+  id = 0;
+  label = ""
+}
+export class ClassUnit implements Unit {
+  id = 0;
+  label = ""
+}
+export class ClassIngredientType implements IngredientType {
+  id = 0;
+  label = ""
+}
+export class ClassIngredientData implements IngredientData {
   name = "";
-  imageUrl = ""
+  type = new ClassType();
+  frequency = 0
+}
+export class ClassUpdateUserResponse {
+  imageUrl= "";
+  token= ""
+}
+export class ClassResetPasswordResponse {
+  user = new ClassUser();
+  token = ""
 }

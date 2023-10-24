@@ -12,6 +12,7 @@ import Bouton from "../../../Utils/Bouton/Bouton";
 import { errorToast, successToast } from "../../../Services/functions";
 import { UPDATE_AUTH } from "../../../Store/Reducers/authReducer";
 import { fetchPost } from "../../../Services/api";
+import { ClassResetPasswordResponse } from "../../../Types/class";
 
 interface Props {
   visible: boolean,
@@ -94,10 +95,10 @@ const ModalForgotPassword = (props: Props) => {
   };
 
   const resetPassword = async (data: Partial<Values>) => {
-    const response = await fetchPost(`/users/resetPassword`, data);
+    const response = await fetchPost(`/users/resetPassword`, data, false, null, new ClassResetPasswordResponse());
     setIsLoging(false);
     if (response.error || !response.data) {
-      errorToast(response.error?.response.data.detail);
+      errorToast(response.error?.response?.data?.detail ?? "");
       return;
     }
     reset();
@@ -105,8 +106,8 @@ const ModalForgotPassword = (props: Props) => {
     props.setVisible(false);
     updateAuth({
       isConnected: true,
-      token: response.data[1],
-      userConnected: response.data[0],
+      token: response.data.token ?? null,
+      userConnected: response.data.user ?? null,
       newLogTime: new Date().getTime(),
     });
   };

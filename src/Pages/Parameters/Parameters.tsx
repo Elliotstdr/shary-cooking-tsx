@@ -13,6 +13,7 @@ import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
 import { UPDATE_AUTH } from "../../Store/Reducers/authReducer";
 import { fetchPut } from "../../Services/api";
+import { ClassUpdateUserResponse } from "../../Types/class";
 
 const Parameters = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -78,18 +79,18 @@ const Parameters = () => {
     setIsModifying(true);
     const data = setFields();
 
-    const response = await fetchPut(`/users/${auth.userConnected.id}`, data);
+    const response = await fetchPut(`/users/${auth.userConnected.id}`, data, new ClassUpdateUserResponse());
     setIsModifying(false);
     if (response.error || !response.data) {
       errorToast(
-        response.error.response.data.detail.includes("visiteur")
+        response.error?.response?.data?.detail?.includes("visiteur")
           ? response.error.response.data.detail
           : "Une erreur est survenue lors de la modification de votre profil"
       );
       return;
     }
-    if (response.data[1]) {
-      updateAuth({ token: response.data[1] });
+    if (response.data?.token) {
+      updateAuth({ token: response.data.token });
     }
     setShowMDP(false);
     setValue("oldPassword", "");
@@ -99,7 +100,7 @@ const Parameters = () => {
     tempArray.email = data.email;
     tempArray.name = data.name;
     tempArray.lastname = data.lastname;
-    tempArray.imageUrl = response.data[0];
+    tempArray.imageUrl = response.data?.imageUrl ?? null;
     updateAuth({ userConnected: tempArray });
     successToast("Votre profil a bien été mis à jour");
   };

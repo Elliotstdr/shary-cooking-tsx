@@ -1,18 +1,22 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
 import { store } from "../Store/store";
+import { isOfType } from "./validator";
 
-function isOfType<T>(obj: any, expectedKeys: (keyof T)[]): obj is T {
-  return expectedKeys.every(key => key in obj);
-}
-
-export const useFetchGet = (url: string) => {
-  const [data, setData] = useState<any|null>(null);
+/**
+ * @template { Object | Object[] } T
+ * @param { string } url
+ * @param { ElementType<T> } example as T or element of T
+ * @return { FetchGetReturn<T> }
+ */
+export const useFetchGet = <T extends Object | Object[]> (
+  url: string, 
+  example: ElementType<T>
+): UseFetchGetResponse<T> => {
+  const [data, setData] = useState<T|null>(null);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
-
-  const reduxStore = store.getState();
-  const token = reduxStore.auth.token;
+  const token = store.getState().auth.token;
 
   useEffect(() => {
     url &&
@@ -27,26 +31,38 @@ export const useFetchGet = (url: string) => {
                 accept: "application/json",
               },
         })
-        .then((response) => {
+        .then((response: AxiosResponse) => {
+          if (!isOfType<T>(response.data, example)) {
+            setError("La réponse de l'API ne correspond pas au type attendu.");
+            return
+          }
           setData(response.data);
         })
-        .catch((error) => setError(error.message))
+        .catch((error: AxiosError) => setError(error.message))
         .finally(() => setLoaded(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url]);
   return { data, error, loaded };
 };
 
-export const useFetchGetConditional = <T> (url: string, reduxData: any, example: any) => {
+/**
+ * @template { Object | Object[] } T
+ * @param { string } url
+ * @param { ElementType<T> } example as T or element of T
+ * @return { FetchGetReturn<T> }
+ */
+export const useFetchGetConditional = <T extends Object | Object[]> (
+  url: string, 
+  reduxData: T | null, 
+  example: ElementType<T>
+): UseFetchGetResponse<T> => {
   const [data, setData] = useState<T|null>(null);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
-
-  const reduxStore = store.getState();
-  const token = reduxStore.auth.token;
+  const token = store.getState().auth.token;
 
   useEffect(() => {
-    if (!reduxData || reduxData.length === 0) {
+    if (!reduxData || (Array.isArray(reduxData) && reduxData.length === 0)) {
       axios
         .get(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
           headers: token
@@ -58,13 +74,10 @@ export const useFetchGetConditional = <T> (url: string, reduxData: any, example:
                 accept: "application/json",
               },
         })
-        .then((response: AxiosResponse<T>) => {
-          if (Array.isArray(response.data) && response.data.length > 0) {
-            const expectedKeys = Object.keys(example) as (keyof T)[];
-            if (!isOfType<T>(response.data[0], expectedKeys)) {
-              setError("La réponse de l'API ne correspond pas au type attendu.");
-              return;
-            }
+        .then((response: AxiosResponse) => {
+          if (!isOfType(response.data, example)) {
+            setError("La réponse de l'API ne correspond pas au type attendu.");
+            return;
           }
           setData(response.data);
         })
@@ -79,35 +92,11 @@ export const useFetchGetConditional = <T> (url: string, reduxData: any, example:
   return { data, error, loaded };
 };
 
-export const fetchGet = async (url: string) => {
+export const fetchDelete = async (url: string): Promise<FetchResponse> => {
   let data = null;
   let error = null;
-
-  const reduxStore = store.getState();
-  const token = reduxStore.auth.token;
-  await axios
-    .get(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
-      headers: token
-        ? {
-            accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          }
-        : {
-            accept: "application/json",
-          },
-    })
-    .then((response) => (data = response.data))
-    .catch((e) => (error = e));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  return { data, error };
-};
-
-export const fetchDelete = async (url: string) => {
-  let data = null;
-  let error = null;
-
-  const reduxStore = store.getState();
-  const token = reduxStore.auth.token;
+  const token = store.getState().auth.token;
+  
   await axios
     .delete(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, {
       headers: token
@@ -129,13 +118,12 @@ export const fetchPost = async (
   url: string,
   payload: any,
   noAPI: boolean = false,
-  forcedToken: string|null = null
-) => {
+  forcedToken: string|null = null,
+  example: Object | null = null
+): Promise<FetchResponse> => {
   let data: any = null;
   let error: any = null;
-
-  const reduxStore = store.getState();
-  const token = forcedToken ?? reduxStore.auth.token;
+  const token = forcedToken ?? store.getState().auth.token;
 
   let fullUrl = "";
   if (noAPI) {
@@ -154,18 +142,27 @@ export const fetchPost = async (
             accept: "application/json",
           },
     })
-    .then((response) => (data = response.data))
-    .catch((e) => (error = e));
+    .then((response: AxiosResponse) => {
+      if(example && !isOfType(response.data, example)) {
+        error = "Votre actions a bien été effectuée mais la réponse de l'API ne correspond pas au type attendu.";
+        return;
+      }
+      data = response.data
+    })
+    .catch((e: AxiosError) => (error = e));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return { data, error };
 };
 
-export const fetchPut = async (url: string, payload: any) => {
+export const fetchPut = async (
+  url: string, 
+  payload: any, 
+  example: Object | null = null
+): Promise<FetchResponse> => {
   let data = null;
   let error: any = null;
+  const token = store.getState().auth.token
 
-  const reduxStore = store.getState();
-  const token = reduxStore.auth.token;
   await axios
     .put(`${process.env.REACT_APP_BASE_URL_API}/api${url}`, payload, {
       headers: token
@@ -177,8 +174,14 @@ export const fetchPut = async (url: string, payload: any) => {
             accept: "application/json",
           },
     })
-    .then((response) => (data = response.data))
-    .catch((e) => (error = e));
+    .then((response: AxiosResponse) => {
+      if(example && !isOfType(response.data, example)) {
+        error = "Votre actions a bien été effectuée mais la réponse de l'API ne correspond pas au type attendu.";
+        return;
+      }
+      data = response.data
+    })
+    .catch((e: AxiosError) => (error = e));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return { data, error };
 };

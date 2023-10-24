@@ -22,6 +22,7 @@ import {
 import Loader from "../../Utils/Loader/loader";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
+import { ClassIngredientData } from "../../Types/class";
 
 interface Props {
   recipe?: Recipe
@@ -60,7 +61,7 @@ const CreateRecipe = (props: Props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const ingredientData = useFetchGet("/ingredient_datas");
+  const ingredientData = useFetchGet<IngredientData[]>("/ingredient_datas", new ClassIngredientData());
   const [isCreating, setIsCreating] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [autocompleteData, setAutocompleteData] = useState<Array<IngredientData>>([]);
@@ -183,7 +184,6 @@ const CreateRecipe = (props: Props) => {
   const setFields = () => {
     let data: Payload = { ...getValues(), number: Number(getValues("number")) };
     data.createdAt = new Date();
-    // data.number = Number(data.number);
     data.type = `/api/types/${typeId}`;
     data.regime = `/api/regimes/${regimeId}`;
     data.postedByUser = `/api/users/${auth.userConnected?.id}`;
@@ -244,7 +244,7 @@ const CreateRecipe = (props: Props) => {
     setIsCreating(false);
     if (response.error) {
       errorToast(
-        response.error.response.data.detail.includes("visiteur")
+        response.error?.response?.data?.detail?.includes("visiteur")
           ? response.error.response.data.detail
           : "Une erreur est survenue lors de la modification de votre recette"
       );
@@ -410,70 +410,74 @@ const CreateRecipe = (props: Props) => {
             rules={{
               validate: () => checkIngredients(),
             }}
-            render={({ field }) => (
+            render={({ field }) =>
               <>
-                <div className="ingredients">
-                  <IngredientsCreation
-                    key={ingredientList[0].id}
-                    id={ingredientList[0].id ?? 1}
-                    ingredient={ingredientList[0]}
-                    ingredientList={ingredientList}
-                    setIngredientList={setIngredientList}
-                    ingredientData={ingredientData.data}
-                    autocompleteData={autocompleteData}
-                    setAutocompleteData={setAutocompleteData}
-                    activeIndex={activeIndex}
-                    setActiveIndex={setActiveIndex}
-                  ></IngredientsCreation>
-                  <DndContext
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}
-                  >
-                    <SortableContext
-                      items={itemIds}
-                      strategy={verticalListSortingStrategy}
+                {ingredientData.data ?
+                  <>
+                    <div className="ingredients">
+                      <IngredientsCreation
+                        key={ingredientList[0].id}
+                        id={ingredientList[0].id ?? 1}
+                        ingredient={ingredientList[0]}
+                        ingredientList={ingredientList}
+                        setIngredientList={setIngredientList}
+                        ingredientData={ingredientData.data}
+                        autocompleteData={autocompleteData}
+                        setAutocompleteData={setAutocompleteData}
+                        activeIndex={activeIndex}
+                        setActiveIndex={setActiveIndex}
+                      ></IngredientsCreation>
+                      <DndContext
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                      >
+                        <SortableContext
+                          items={itemIds}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          {ingredientList.map(
+                            (ingredient) =>
+                              ingredient.id !== 1 && ingredient.id && ingredientData.data && (
+                                <IngredientsCreation
+                                  key={ingredient.id}
+                                  id={ingredient.id}
+                                  ingredient={ingredient}
+                                  ingredientList={ingredientList}
+                                  setIngredientList={setIngredientList}
+                                  ingredientData={ingredientData.data}
+                                  autocompleteData={autocompleteData}
+                                  setAutocompleteData={setAutocompleteData}
+                                  activeIndex={activeIndex}
+                                  setActiveIndex={setActiveIndex}
+                                ></IngredientsCreation>
+                              )
+                          )}
+                        </SortableContext>
+                      </DndContext>
+                    </div>
+                    <Bouton
+                      type={"normal"}
+                      btnAction={(e) => {
+                        e.preventDefault();
+                        const lastId = getLastId(ingredientList)
+                        lastId && setIngredientList([
+                          ...ingredientList,
+                          {
+                            unit: null,
+                            label: "",
+                            quantity: undefined,
+                            id: lastId
+                          },
+                        ]);
+                      }}
                     >
-                      {ingredientList.map(
-                        (ingredient) =>
-                          ingredient.id !== 1 && ingredient.id && (
-                            <IngredientsCreation
-                              key={ingredient.id}
-                              id={ingredient.id}
-                              ingredient={ingredient}
-                              ingredientList={ingredientList}
-                              setIngredientList={setIngredientList}
-                              ingredientData={ingredientData.data}
-                              autocompleteData={autocompleteData}
-                              setAutocompleteData={setAutocompleteData}
-                              activeIndex={activeIndex}
-                              setActiveIndex={setActiveIndex}
-                            ></IngredientsCreation>
-                          )
-                      )}
-                    </SortableContext>
-                  </DndContext>
-                </div>
-                <Bouton
-                  type={"normal"}
-                  btnAction={(e) => {
-                    e.preventDefault();
-                    const lastId = getLastId(ingredientList)
-                    lastId && setIngredientList([
-                      ...ingredientList,
-                      {
-                        unit: null,
-                        label: "",
-                        quantity: undefined,
-                        id: lastId
-                      },
-                    ]);
-                  }}
-                >
-                  <AiOutlinePlusCircle />
-                  Ajouter un ingrédient
-                </Bouton>
+                      <AiOutlinePlusCircle />
+                      Ajouter un ingrédient
+                    </Bouton>
+                  </>
+                  : <Loader></Loader>}
               </>
-            )}
+            }
           />
           {errors.ingredients && <small className="p-error">{errors.ingredients.message}</small>}
         </div>

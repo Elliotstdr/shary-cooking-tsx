@@ -13,6 +13,7 @@ import { BiEditAlt } from "react-icons/bi";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
 import { UPDATE_RECIPE } from "../../Store/Reducers/recipeReducer";
+import { ClassIngredientData } from "../../Types/class";
 
 const ShoppingList = () => {
   const recipeR = useSelector((state: RootState) => state.recipe);
@@ -21,7 +22,7 @@ const ShoppingList = () => {
     dispatch({ type: UPDATE_RECIPE, value });
   };
 
-  const ingredientData = useFetchGet("/ingredient_datas");
+  const ingredientData = useFetchGet<IngredientData[]>("/ingredient_datas", new ClassIngredientData());
 
   const [visibleRecipeContainer, setVisibleRecipeContainer] = useState(false);
   const [visibleExport, setVisibleExport] = useState(false);
@@ -58,7 +59,7 @@ const ShoppingList = () => {
     <div className="shopping">
       <NavBar></NavBar>
       <div className="shoppingList_container">
-        {visibleExport ? (
+        {visibleExport && ingredientData.data ? (
           <div className="shoppingList_container_export">
             <div className="shoppingList_container_export_top">
               <h2 className="shoppingList_container_export_top_title">
@@ -87,7 +88,7 @@ const ShoppingList = () => {
               type={"normal"}
               btnTexte={"Créer ma liste de course"}
               btnAction={() => {
-                setStringShopping(
+                ingredientData.data && setStringShopping(
                   exportRecipe(recipeR.chosenRecipes, ingredientData.data)
                 );
                 setVisibleList(true);

@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Checkbox } from "primereact/checkbox";
+import { ClassRecipe } from "../../Types/class";
 
 interface Props {
   checkboxes?: boolean,
@@ -21,18 +22,18 @@ const RecipeContainer = (props: Props) => {
   const rows = 12;
   const [first, setFirst] = useState(0);
   const ref = useRef(null);
-  const recipesData = useFetchGet(props.dataToCall);
+  const recipesData = useFetchGet<Recipe[]>(props.dataToCall, new ClassRecipe());
   const [filteredRecipes, setFilteredRecipes] = useState<Array<Recipe>>([]);
   const [boxFavorites, setBoxFavorites] = useState(false);
   const [boxMine, setBoxMine] = useState(false);
   const [startData, setStartData] = useState<Recipe[]>([]);
 
   useEffect(() => {
-    if (recipesData.loaded) {
+    if (recipesData.loaded && recipesData.data) {
       setFilteredRecipes(recipesData.data);
       setStartData(recipesData.data);
     }
-  }, [recipesData.loaded, recipesData.data]);
+  }, [recipesData]);
 
   useEffect(() => {
     if (recipesData.loaded && recipesData.data) {
