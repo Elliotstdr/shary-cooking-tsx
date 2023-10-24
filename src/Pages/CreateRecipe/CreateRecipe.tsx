@@ -4,7 +4,6 @@ import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import ImageUpload from "../../Components/ImageUpload/ImageUpload";
 import { fetchPost, fetchPut, useFetchGet } from "../../Services/api";
 import { errorToast, successToast } from "../../Services/functions";
@@ -511,10 +510,6 @@ const CreateRecipe = (props: Props) => {
       {!props.recipe && <Footer></Footer>}
     </div>
   );
-};
-
-CreateRecipe.propTypes = {
-  recipe: PropTypes.object,
 };
 
 export default CreateRecipe;

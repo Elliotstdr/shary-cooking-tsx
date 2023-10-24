@@ -3,7 +3,6 @@ import "./CardDetail.scss";
 import { useFetchGet } from "../../../../Services/api";
 import { timeToString } from "../../../../Services/functions";
 import Loader from "../../../../Utils/Loader/loader";
-import PropTypes from "prop-types";
 import default2 from "../../../../assets/default2.jpg";
 import { GiKnifeFork } from "react-icons/gi";
 import { BsPeople } from "react-icons/bs";
@@ -110,12 +109,6 @@ const CardDetail = (props: Props) => {
       )}
     </div>
   );
-};
-
-CardDetail.propType = {
-  id: PropTypes.number,
-  setVisible: PropTypes.func,
-  setVisibleModif: PropTypes.func,
 };
 
 export default CardDetail;

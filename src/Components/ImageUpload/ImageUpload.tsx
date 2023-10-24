@@ -1,6 +1,5 @@
 import { FileUpload } from "primereact/fileupload";
 import React from "react";
-import PropTypes from "prop-types";
 import "./ImageUpload.scss";
 import { successToast } from "../../Services/functions";
 
@@ -32,11 +31,6 @@ const ImageUpload = (props: Props) => {
       accept="image/*"
     ></FileUpload>
   );
-};
-
-ImageUpload.propType = {
-  setImage: PropTypes.func,
-  image: PropTypes.object,
 };
 
 export default ImageUpload;

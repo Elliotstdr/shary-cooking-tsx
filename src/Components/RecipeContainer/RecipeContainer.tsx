@@ -6,7 +6,6 @@ import { useFetchGet } from "../../Services/api";
 import { Paginator } from "primereact/paginator";
 import Loader from "../../Utils/Loader/loader";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Checkbox } from "primereact/checkbox";
 import { ClassRecipe } from "../../Types/class";
@@ -137,10 +136,6 @@ const RecipeContainer = (props: Props) => {
       )}
     </div>
   );
-};
-
-RecipeContainer.propType = {
-  dataToCall: PropTypes.string,
 };
 
 export default RecipeContainer;

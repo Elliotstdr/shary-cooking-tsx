@@ -5,7 +5,6 @@ import { BsPeople } from "react-icons/bs";
 import { BiTimer } from "react-icons/bi";
 import default2 from "../../../assets/default2.jpg";
 import { Dropdown } from "primereact/dropdown";
-import PropTypes from "prop-types";
 import { timeToString } from "../../../Services/functions";
 
 interface Props {
@@ -80,11 +79,6 @@ const ShoppingListCard = (props: Props) => {
       </div>
     </div>
   );
-};
-
-ShoppingListCard.propTypes = {
-  recipe: PropTypes.object,
-  modifyRecipeList: PropTypes.func,
 };
 
 export default ShoppingListCard;

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import Modal from "../Modal";
 import { useDispatch } from "react-redux";
-import PropTypes from "prop-types";
 import { Password } from "primereact/password";
 import "./ModalForgotPassword.scss";
 import { Controller, useForm } from "react-hook-form";
@@ -196,11 +195,6 @@ const ModalForgotPassword = (props: Props) => {
       </form>
     </Modal>
   );
-};
-
-ModalForgotPassword.propTypes = {
-  visible: PropTypes.bool,
-  setVisible: PropTypes.func,
 };
 
 export default ModalForgotPassword;

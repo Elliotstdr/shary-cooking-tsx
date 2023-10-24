@@ -1,6 +1,5 @@
 import React from "react";
 import "./Bouton.scss";
-import PropTypes from "prop-types";
 
 interface Props {
   className?: string,
@@ -20,14 +19,6 @@ const Bouton = (props: Props) => {
       {props.btnTexte}
     </button>
   );
-};
-
-Bouton.propTypes = {
-  btnAction: PropTypes.func,
-  btnTexte: PropTypes.string,
-  className: PropTypes.string,
-  type: PropTypes.string,
-  children: PropTypes.any,
 };
 
 Bouton.defaultProps = {

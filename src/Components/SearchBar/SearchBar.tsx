@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./SearchBar.scss";
 import { MultiSelect } from "primereact/multiselect";
 import { useFetchGet } from "../../Services/api";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
@@ -224,11 +223,6 @@ const SearchBar = (props: Props) => {
       }
     </>
   );
-};
-
-SearchBar.propTypes = {
-  setFilteredRecipes: PropTypes.func,
-  startData: PropTypes.array,
 };
 
 export default SearchBar;

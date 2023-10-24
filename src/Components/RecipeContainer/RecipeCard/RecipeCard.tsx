@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./RecipeCard.scss";
 import default2 from "../../../assets/default2.jpg";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import PropTypes from "prop-types";
 import { GiKnifeFork } from "react-icons/gi";
 import { BsPeople } from "react-icons/bs";
 import { BiTimer } from "react-icons/bi";
@@ -231,10 +230,6 @@ const RecipeCard = (props: Props) => {
       )}
     </div>
   );
-};
-
-RecipeCard.propType = {
-  recipeItem: PropTypes.object,
 };
 
 export default RecipeCard;

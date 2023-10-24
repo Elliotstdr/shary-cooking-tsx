@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./BugReport.scss";
-import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
 import { Controller, useForm } from "react-hook-form";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -134,11 +133,6 @@ const BugReport = (props: Props) => {
       )}
     </Modal>
   );
-};
-
-BugReport.propTypes = {
-  reportBugModal: PropTypes.bool,
-  setReportBugModal: PropTypes.func,
 };
 
 export default BugReport;
