@@ -69,16 +69,9 @@ export const exportRecipe = (chosenRecipes: Array<RecipeShopping>, data: Array<I
       .sort((a, b) => a.type.localeCompare(b.type))
       .forEach((element) => {
         let elementString = "";
-        element.unit.label !== "unité"
-          ? (elementString =
-              element.quantity +
-              " " +
-              element.unit.label +
-              " de " +
-              element.label.toLowerCase() +
-              " \n")
-          : (elementString =
-              element.quantity + " " + element.label.toLowerCase() + " \n");
+        if(element.unit.label !== "un peu") elementString += element.quantity + " "
+        if(element.unit.label !== "unité") elementString += element.unit.label + " de "
+        elementString += element.label.toLowerCase() + " \n"
         shoppingList += elementString;
       });
   }

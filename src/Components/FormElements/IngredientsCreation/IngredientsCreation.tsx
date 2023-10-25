@@ -131,6 +131,9 @@ const IngredientsCreation = (props: Props) => {
           tempArray.forEach((element) => {
             if (element.id === props.id) {
               element.unit = e.target.value;
+              if ((e.target.value as Unit).label === "un peu") {
+                element.quantity = 1
+              }
             }
           });
           props.setIngredientList(tempArray);

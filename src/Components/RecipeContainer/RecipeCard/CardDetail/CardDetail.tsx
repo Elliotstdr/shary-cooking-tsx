@@ -83,9 +83,11 @@ const CardDetail = (props: Props) => {
             {recipeDetail.data.ingredients
               .map((ingredient: Ingredient, index: Key) => (
                 <li className="cardDetail_container_ingredient" key={index}>
-                  {ingredient.unit.label !== "unité"
-                    ? ingredient.quantity + " " + ingredient.unit.label + " de "
-                    : ingredient.quantity + " "}
+                  {ingredient.unit.label === "unité"
+                    ? ingredient.quantity + " "
+                    : ingredient.unit.label === "un peu"
+                      ? ingredient.unit.label + " de "
+                      : ingredient.quantity + " " + ingredient.unit.label + " de "}
                   <strong>{ingredient.label.toLowerCase()}</strong>
                 </li>
               ))}
