@@ -32,7 +32,7 @@ const RecipeContainer = (props: Props) => {
       setFilteredRecipes(recipesData.data);
       setStartData(recipesData.data);
     }
-  }, [recipesData]);
+  }, [recipesData.loaded, recipesData.data]);
 
   useEffect(() => {
     if (recipesData.loaded && recipesData.data) {
@@ -53,12 +53,6 @@ const RecipeContainer = (props: Props) => {
     }
     // eslint-disable-next-line
   }, [boxFavorites, boxMine]);
-
-  const updateFavouriteList = (recipeId: number) => {
-    setFilteredRecipes(
-      filteredRecipes.filter((recipe) => recipe.id !== recipeId)
-    );
-  };
 
   return (
     <div className="recipeContainer" ref={ref}>
@@ -104,7 +98,8 @@ const RecipeContainer = (props: Props) => {
                 <RecipeCard
                   key={recipe.id}
                   recipeItem={recipe}
-                  updateFavouriteList={(x) => updateFavouriteList(x)}
+                  filteredRecipes={filteredRecipes}
+                  setFilteredRecipes={setFilteredRecipes}
                 ></RecipeCard>
               ))
           ) : (

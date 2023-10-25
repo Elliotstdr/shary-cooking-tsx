@@ -276,7 +276,8 @@ const CreateRecipe = (props: Props) => {
 
   const getLastId = (ingredientArray: FormIngredient[]) => {
     if (!ingredientArray) return null;
-    const sortedList = ingredientArray.sort((a, b) => {
+    let sortedList = [...ingredientArray]
+    sortedList = sortedList.sort((a, b) => {
       if (a.id !== undefined && b.id !== undefined) {
         return b.id - a.id
       } else {

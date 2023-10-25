@@ -21,7 +21,8 @@ import { fetchDelete, fetchPost } from "../../../Services/api";
 
 interface Props {
   recipeItem: Recipe,
-  updateFavouriteList?: (x: number) => void
+  filteredRecipes?: Recipe[],
+  setFilteredRecipes?: React.Dispatch<React.SetStateAction<Recipe[]>>,
 }
 
 const RecipeCard = (props: Props) => {
@@ -49,8 +50,10 @@ const RecipeCard = (props: Props) => {
       errorToast("Une erreur est survenue");
       return;
     }
-    if (actionType === "delete" && recipe.favourite && props.updateFavouriteList) {
-      props.updateFavouriteList(props.recipeItem.id);
+    if (actionType === "delete" && props.filteredRecipes && props.setFilteredRecipes) {
+      props.setFilteredRecipes(
+        props.filteredRecipes.filter((recipe) => recipe.id !== props.recipeItem.id)
+      );
     }
     setIsFavorite(!isFavorite);
   };
