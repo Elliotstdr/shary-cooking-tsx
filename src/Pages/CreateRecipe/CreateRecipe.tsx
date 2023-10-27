@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
 import { useSelector } from "react-redux";
-import ImageUpload from "../../Components/ImageUpload/ImageUpload";
+import ImageUpload from "../../Components/FormElements/ImageUpload/ImageUpload";
 import { fetchPost, fetchPut, useFetchGet } from "../../Services/api";
 import { errorToast, successToast } from "../../Services/functions";
 import IngredientsCreation from "../../Components/FormElements/IngredientsCreation/IngredientsCreation";

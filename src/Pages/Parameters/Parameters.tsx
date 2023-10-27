@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 import Bouton from "../../Utils/Bouton/Bouton";
 import { Password } from "primereact/password";
 import { Divider } from "primereact/divider";
-import ImageUpload from "../../Components/ImageUpload/ImageUpload";
+import ImageUpload from "../../Components/FormElements/ImageUpload/ImageUpload";
 import { useDispatch, useSelector } from "react-redux";
 import { errorToast, successToast } from "../../Services/functions";
 import Loader from "../../Utils/Loader/loader";
@@ -40,9 +40,9 @@ const Parameters = () => {
   const {
     control,
     formState: { errors },
+    reset,
     handleSubmit,
     getValues,
-    setValue,
   } = useForm({ defaultValues });
 
   useEffect(() => {
@@ -93,9 +93,7 @@ const Parameters = () => {
       updateAuth({ token: response.data.token });
     }
     setShowMDP(false);
-    setValue("oldPassword", "");
-    setValue("password", "");
-    setValue("confirmPassword", "");
+    reset()
     let tempArray = { ...auth.userConnected };
     tempArray.email = data.email;
     tempArray.name = data.name;
@@ -236,6 +234,13 @@ const Parameters = () => {
                     placeholder={"Mot de passe"}
                     className="param__form__field-password"
                     feedback={false}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                      setIsEqualPassword(
+                        getValues("confirmPassword").length > 0 &&
+                        e.target.value === getValues("confirmPassword")
+                      );
+                    }}
                   />
                 )}
               />
@@ -249,7 +254,7 @@ const Parameters = () => {
                 rules={{
                   required:
                     getValues("password").length > 0
-                      ? "L'ancien mot de passe est obligatoire"
+                      ? "Veuillez confirmer le nouveau mot de passe"
                       : false,
                   validate: (value) =>
                     value === getValues("password") ||

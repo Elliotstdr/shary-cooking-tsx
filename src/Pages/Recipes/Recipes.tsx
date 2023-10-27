@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
-import "./MyRecipes.scss";
 import RecipeContainer from "../../Components/RecipeContainer/RecipeContainer";
 import { useDispatch, useSelector } from "react-redux";
-import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
+import NavBar from "../../Components/NavBar/NavBar";
 import { UPDATE_RECIPE } from "../../Store/Reducers/recipeReducer";
 
-const MyRecipes = () => {
+interface Props {
+  mine?: boolean
+  favourite?: boolean
+}
+
+const Recipes = (props: Props) => {
   const auth = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const updateRecipe = (value: Partial<RecipeState>) => {
@@ -15,23 +19,31 @@ const MyRecipes = () => {
 
   useEffect(() => {
     updateRecipe({
-      editable: true,
+      editable: props.mine,
+      favourite: props.favourite,
     });
     return () =>
       updateRecipe({
-        editable: false,
+        editable: props.mine,
+        favourite: props.favourite,
       });
     // eslint-disable-next-line
   }, []);
   return (
-    <div className="myrecipes">
+    <div className="recipes">
       <NavBar></NavBar>
       <RecipeContainer
-        dataToCall={`/recipes/user/${auth.userConnected?.id}`}
+        dataToCall={
+          props.favourite
+            ? `/recipes/user_fav/${auth.userConnected?.id}`
+            : props.mine
+              ? `/recipes/user/${auth.userConnected?.id}`
+              : "/recipes"
+        }
       ></RecipeContainer>
       <Footer></Footer>
     </div>
   );
 };
 
-export default MyRecipes;
+export default Recipes;

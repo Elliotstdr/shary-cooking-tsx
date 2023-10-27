@@ -171,6 +171,13 @@ const ModalLogin = (props: Props) => {
                 placeholder={"Mot de passe"}
                 className="login__form__field-password"
                 feedback={true}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                  setIsEqualPassword(
+                    getValues("confirmpassword").length > 0 &&
+                    e.target.value === getValues("confirmpassword")
+                  );
+                }}
               />
             )}
           />
@@ -182,7 +189,7 @@ const ModalLogin = (props: Props) => {
             name="confirmpassword"
             control={control}
             rules={{
-              required: "Le mot de passe est obligatoire",
+              required: "Veuillez confirmer le mot de passe",
               validate: (value) => {
                 return value === getValues("password");
               },

@@ -1,7 +1,7 @@
 import { FileUpload } from "primereact/fileupload";
 import React from "react";
 import "./ImageUpload.scss";
-import { successToast } from "../../Services/functions";
+import { successToast } from "../../../Services/functions";
 
 interface Props {
   image: any,

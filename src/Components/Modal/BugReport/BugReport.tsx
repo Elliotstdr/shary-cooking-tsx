@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import "./BugReport.scss";
-import Modal from "../Modal/Modal";
+import Modal from "../Modal";
 import { Controller, useForm } from "react-hook-form";
 import { InputTextarea } from "primereact/inputtextarea";
-import Loader from "../../Utils/Loader/loader";
-import Bouton from "../../Utils/Bouton/Bouton";
+import Loader from "../../../Utils/Loader/loader";
+import Bouton from "../../../Utils/Bouton/Bouton";
 import { InputText } from "primereact/inputtext";
-import ImageUpload from "../ImageUpload/ImageUpload";
-import { errorToast } from "../../Services/functions";
+import ImageUpload from "../../FormElements/ImageUpload/ImageUpload";
+import { errorToast } from "../../../Services/functions";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
-import { fetchPost } from "../../Services/api";
+import { fetchPost } from "../../../Services/api";
 
 interface Props {
   reportBugModal: boolean,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Footer.scss";
 import { useNavigate } from "react-router-dom";
 import image from "../../assets/white-hat.png";
-import BugReport from "../BugReport/BugReport";
+import BugReport from "../Modal/BugReport/BugReport";
 
 const Footer = () => {
   const navigate = useNavigate();
