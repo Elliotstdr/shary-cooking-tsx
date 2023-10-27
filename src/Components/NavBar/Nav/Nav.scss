@@ -95,29 +95,23 @@
   0% {
     visibility: hidden;
     opacity: 0;
-    display: none;
-  }
-  1% {
-    display: flex;
+    max-height: 0;
   }
   100% {
     visibility: visible;
     opacity: 1;
-    display: flex;
+    max-height: 50rem;
   }
 }
 @keyframes hide {
   0% {
     visibility: visible;
     opacity: 1;
-    display: flex;
-  }
-  99% {
-    display: flex;
+    max-height: 50rem;
   }
   100% {
     visibility: hidden;
     opacity: 0;
-    display: none;
+    max-height: 0rem;
   }
 }

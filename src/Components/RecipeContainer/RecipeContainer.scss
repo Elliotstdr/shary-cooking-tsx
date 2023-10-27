@@ -18,6 +18,9 @@
   &_searchbar {
     margin-top: 4rem;
     display: flex;
+    &__mobile {
+      display: none;
+    }
   }
   .p-paginator {
     margin-bottom: 2rem;
@@ -40,9 +43,6 @@
     align-items: center;
     justify-content: center;
   }
-  .p-accordion {
-    display: none;
-  }
 }
 
 .shopping_list_checkboxes {
@@ -58,39 +58,27 @@
 
 @media (max-width: 1020px) {
   .recipeContainer {
-    .searchbar_container {
-      display: none;
-    }
     &_cards {
       padding: 2rem 1rem !important;
     }
     &_searchbar {
+      display: flex;
+      flex-direction: column;
       margin-top: 2rem;
       justify-content: center;
-      .p-accordion {
-        display: block;
-        &-content {
-          padding: 0 1.25rem !important;
-          background-color: c.$fond-page !important;
-          border-radius: 10px !important;
-          border: unset !important;
-          .searchbar_container {
-            width: unset;
-            display: flex;
-            flex-direction: column;
-            padding: 0rem 1rem;
-            background-color: c.$fond-page;
-            border-radius: unset;
-            box-shadow: unset;
-            overflow: unset;
-            .filter-icon {
-              display: none;
-            }
-            .p-multiselect,
-            .p-inputtext {
-              margin: 0.5rem 0;
-            }
-          }
+      &__mobile {
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        background-color: white;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 1rem;
+        margin: 0 auto;
+        .pi {
+          margin-right: 0.5rem;
         }
       }
     }

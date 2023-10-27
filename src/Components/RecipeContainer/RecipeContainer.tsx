@@ -6,7 +6,6 @@ import { useFetchGet } from "../../Services/api";
 import { Paginator } from "primereact/paginator";
 import Loader from "../../Utils/Loader/loader";
 import { useSelector } from "react-redux";
-import { Accordion, AccordionTab } from "primereact/accordion";
 import { Checkbox } from "primereact/checkbox";
 import { ClassRecipe } from "../../Types/class";
 
@@ -26,6 +25,7 @@ const RecipeContainer = (props: Props) => {
   const [boxFavorites, setBoxFavorites] = useState(false);
   const [boxMine, setBoxMine] = useState(false);
   const [startData, setStartData] = useState<Recipe[]>([]);
+  const [visibleMobile, setVisibleMobile] = useState(false);
 
   useEffect(() => {
     if (recipesData.loaded && recipesData.data) {
@@ -71,22 +71,18 @@ const RecipeContainer = (props: Props) => {
         </div>
       )}
       <div className="recipeContainer_searchbar">
+        <div
+          className="recipeContainer_searchbar__mobile"
+          onClick={() => setVisibleMobile(!visibleMobile)}
+        >
+          <div className="pi pi-sliders-h"></div>
+          Filtrer
+        </div>
         <SearchBar
           startData={startData}
           setFilteredRecipes={setFilteredRecipes}
+          className={visibleMobile ? "visible" : "hidden"}
         ></SearchBar>
-        <Accordion
-          activeIndex={undefined}
-          expandIcon="pi pi-sliders-h"
-          collapseIcon="pi pi-sliders-h"
-        >
-          <AccordionTab header="Filtrer">
-            <SearchBar
-              startData={startData}
-              setFilteredRecipes={setFilteredRecipes}
-            ></SearchBar>
-          </AccordionTab>
-        </Accordion>
       </div>
       <div className="recipeContainer_cards">
         {recipesData.loaded ? (

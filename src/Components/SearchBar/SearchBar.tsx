@@ -12,6 +12,7 @@ import Loader from "../../Utils/Loader/loader";
 interface Props {
   startData: Array<Recipe>
   setFilteredRecipes: React.Dispatch<React.SetStateAction<Array<Recipe>>>,
+  className?: string
 }
 
 interface TimeList {
@@ -127,7 +128,7 @@ const SearchBar = (props: Props) => {
   return (
     <>
       {usersData.data && ingredientData.data ?
-        <div className={`searchbar_container`}>
+        <div className={`searchbar_container ${props.className}`}>
           <div className="filters">
             <div className="group">
               <InputText

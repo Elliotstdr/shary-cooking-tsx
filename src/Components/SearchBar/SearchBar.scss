@@ -1,4 +1,5 @@
 @use "src/Styles/_vars.scss" as c;
+@import "src/Components/NavBar/Nav/Nav.scss";
 
 .searchbar_container {
   width: 63rem;
@@ -48,27 +49,31 @@
   }
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1020px) {
   .searchbar_container {
-    .p-multiselect,
-    .p-inputtext,
-    .p-dropdown {
-      margin: 0.5rem;
+    width: unset;
+    flex-direction: column;
+    padding: 0rem 1rem;
+    background-color: c.$fond-page;
+    box-shadow: unset;
+    &.visible {
+      animation: show 0.3s ease-in-out forwards;
     }
-  }
-}
-@media (max-width: 950px) {
-  .searchbar_container {
+    &.hidden {
+      animation: hide 0.3s ease-in-out forwards;
+    }
     .p-multiselect,
     .p-inputtext,
     .p-dropdown {
-      margin: 0;
+      margin: 0.5rem 0;
       width: 12rem !important;
+      text-align: left;
     }
     .filters {
       flex-direction: column;
+      margin: 1rem 0;
       .group {
-        margin: 0.5rem 0;
+        margin: 0 !important;
         flex-direction: column;
         &.true {
           margin: 0;
