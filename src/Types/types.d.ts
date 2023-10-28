@@ -60,3 +60,13 @@ interface IngredientData {
   type: Type,
   frequency: number|null
 }
+
+/**
+ * Specific types
+ */
+type FormIngredient = {
+  id?: number,
+  label: string,
+  quantity: string | undefined,
+  unit: Unit | null,
+}

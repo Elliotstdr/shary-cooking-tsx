@@ -37,21 +37,19 @@ interface Body {
   regime?: string,
   postedByUser?: string,
   steps?: Array<Step>,
-  ingredients?: Array<any>
+  ingredients?: Array<PayloadIngredient>
 }
 interface Values extends Body {
   number: string,
 }
-
 interface Payload extends Body {
   number: number,
 }
 
-type FormIngredient = {
-  id?: number,
+type PayloadIngredient = {
   label: string,
   quantity: number | undefined,
-  unit: Unit | null
+  unit: string
 }
 
 const CreateRecipe = (props: Props) => {
@@ -100,8 +98,7 @@ const CreateRecipe = (props: Props) => {
   const [ingredientList, setIngredientList] = useState<Array<FormIngredient>>(
     props.recipe
       ? props.recipe.ingredients.map((ingredient, index) => {
-        ingredient.id = index + 1;
-        return ingredient;
+        return { id: index + 1, ...ingredient, quantity: ingredient.quantity.toString() };
       })
       : [
         {
@@ -151,7 +148,7 @@ const CreateRecipe = (props: Props) => {
     ingredientList.forEach((ing) => {
       if (
         ing.label === "" ||
-        ing.quantity === 0 ||
+        ing.quantity === "0" ||
         !ing.unit
       ) {
         response = "Un ou plusieurs ingrédient n'est pas correctement rempli";
@@ -187,11 +184,13 @@ const CreateRecipe = (props: Props) => {
     data.regime = `/api/regimes/${regimeId}`;
     data.postedByUser = `/api/users/${auth.userConnected?.id}`;
     data.steps = stepsList;
-    data.ingredients = ingredientList;
-    data.ingredients && data.ingredients.forEach((ingredient: any) => {
-      ingredient.quantity = Number(ingredient.quantity);
-      ingredient.unit = `/api/units/${ingredient.unit.id}`;
-      delete ingredient.id;
+    data.ingredients = ingredientList.map((ingredient: FormIngredient) => {
+      let tempIngredient: PayloadIngredient = {
+        label: ingredient.label,
+        quantity: Number(ingredient.quantity),
+        unit: `/api/units/${ingredient?.unit?.id}`
+      }
+      return tempIngredient
     });
     if (props.recipe) {
       data.id = props.recipe.id;

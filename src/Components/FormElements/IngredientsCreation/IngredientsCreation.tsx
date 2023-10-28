@@ -22,13 +22,6 @@ interface Props {
   ingredient: FormIngredient
 }
 
-type FormIngredient = {
-  id?: number,
-  label: string,
-  quantity: number | undefined,
-  unit: Unit | null
-}
-
 const IngredientsCreation = (props: Props) => {
   const secondaryTables = useSelector((state: RootState) => state.secondaryTables);
 
@@ -102,13 +95,13 @@ const IngredientsCreation = (props: Props) => {
       <InputText
         placeholder="3, 2.5..."
         className="recipe__form__field-quantity"
-        value={props.ingredient.quantity?.toString()}
+        value={props.ingredient.quantity}
         keyfilter="num"
         onChange={(e) => {
           let tempArray = [...props.ingredientList];
           tempArray.forEach((element) => {
             if (element.id === props.id) {
-              element.quantity = Number(e.target.value);
+              element.quantity = e.target.value;
             }
           });
           props.setIngredientList(tempArray);
@@ -132,7 +125,7 @@ const IngredientsCreation = (props: Props) => {
             if (element.id === props.id) {
               element.unit = e.target.value;
               if ((e.target.value as Unit).label === "un peu") {
-                element.quantity = 1
+                element.quantity = "1"
               }
             }
           });
