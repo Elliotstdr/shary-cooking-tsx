@@ -6,8 +6,8 @@ import NavBar from "../../Components/NavBar/NavBar";
 import { UPDATE_RECIPE } from "../../Store/Reducers/recipeReducer";
 
 interface Props {
-  mine?: boolean
-  favourite?: boolean
+  mine: boolean
+  favourite: boolean
 }
 
 const Recipes = (props: Props) => {
@@ -24,8 +24,8 @@ const Recipes = (props: Props) => {
     });
     return () =>
       updateRecipe({
-        editable: props.mine,
-        favourite: props.favourite,
+        editable: false,
+        favourite: false,
       });
     // eslint-disable-next-line
   }, []);
@@ -44,6 +44,11 @@ const Recipes = (props: Props) => {
       <Footer></Footer>
     </div>
   );
+};
+
+Recipes.defaultProps = {
+  mine: false,
+  favourite: false,
 };
 
 export default Recipes;

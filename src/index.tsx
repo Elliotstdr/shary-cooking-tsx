@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.scss";
-import App from "./Pages/App/App";
+import App from "./App/App";
 import { Provider } from "react-redux";
 import { store } from "./Store/store";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme

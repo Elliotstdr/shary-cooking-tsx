@@ -1,15 +1,15 @@
 import "./App.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Accueil from "../Accueil/Accueil";
-import ShoppingList from "../ShoppingList/ShoppingList";
-import Parameters from "../Parameters/Parameters";
-import CreateRecipe from "../CreateRecipe/CreateRecipe";
+import Accueil from "../Pages/Accueil/Accueil";
+import ShoppingList from "../Pages/ShoppingList/ShoppingList";
+import Parameters from "../Pages/Parameters/Parameters";
+import CreateRecipe from "../Pages/CreateRecipe/CreateRecipe";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
-import { UPDATE_AUTH } from "../../Store/Reducers/authReducer";
-import Recipes from "../Recipes/Recipes";
+import { UPDATE_AUTH } from "../Store/Reducers/authReducer";
+import Recipes from "../Pages/Recipes/Recipes";
 
 const App = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -117,9 +117,9 @@ const App = () => {
           <Route path="/" element={<Accueil />}></Route>
           {auth.isConnected && (
             <>
-              <Route path="/all" element={<Recipes />}></Route>
-              <Route path="/fav" element={<Recipes favourite />}></Route>
-              <Route path="/myrecipes" element={<Recipes mine />}></Route>
+              <Route path="/all" element={<Recipes key={document.location.href} />}></Route>
+              <Route path="/fav" element={<Recipes favourite key={document.location.href} />}></Route>
+              <Route path="/myrecipes" element={<Recipes mine key={document.location.href} />}></Route>
               <Route path="/shop" element={<ShoppingList />}></Route>
               <Route path="/param" element={<Parameters />}></Route>
               <Route path="/create" element={<CreateRecipe />}></Route>
