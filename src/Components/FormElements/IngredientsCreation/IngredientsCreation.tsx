@@ -49,10 +49,10 @@ const IngredientsCreation = (props: Props) => {
           )
       )
       .sort((a, b) => {
-        if (a.frequency && b.frequency) {
-          return b.frequency - a.frequency
-        }
-        return 0
+        if (a.frequency === null && b.frequency === null) { return 0 }
+        if (a.frequency === null) { return 1 }
+        if (b.frequency === null) { return -1 }
+        return b.frequency - a.frequency;
       });
     props.setAutocompleteData(filteredData);
   };

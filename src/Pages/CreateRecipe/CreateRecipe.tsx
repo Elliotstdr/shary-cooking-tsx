@@ -277,11 +277,10 @@ const CreateRecipe = (props: Props) => {
     if (!ingredientArray) return null;
     let sortedList = [...ingredientArray]
     sortedList = sortedList.sort((a, b) => {
-      if (a.id !== undefined && b.id !== undefined) {
-        return b.id - a.id
-      } else {
-        return 0
-      }
+      if (a.id === undefined && b.id === undefined) { return 0 }
+      if (a.id === undefined) { return 1 }
+      if (b.id === undefined) { return -1 }
+      return b.id - a.id;
     })
     return sortedList[0].id ? sortedList[0].id + 1 : null
   }
