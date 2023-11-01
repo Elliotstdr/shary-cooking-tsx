@@ -25,7 +25,6 @@ const RecipeContainer = (props: Props) => {
   const [boxFavorites, setBoxFavorites] = useState(false);
   const [boxMine, setBoxMine] = useState(false);
   const [startData, setStartData] = useState<Recipe[]>([]);
-  const [visibleMobile, setVisibleMobile] = useState(false);
 
   useEffect(() => {
     if (recipesData.loaded && recipesData.data) {
@@ -70,20 +69,10 @@ const RecipeContainer = (props: Props) => {
           <span>Mes recettes</span>
         </div>
       )}
-      <div className="recipeContainer_searchbar">
-        <div
-          className="recipeContainer_searchbar__mobile"
-          onClick={() => setVisibleMobile(!visibleMobile)}
-        >
-          <div className="pi pi-sliders-h"></div>
-          Filtrer
-        </div>
-        <SearchBar
-          startData={startData}
-          setFilteredRecipes={setFilteredRecipes}
-          className={visibleMobile ? "visible" : "hidden"}
-        ></SearchBar>
-      </div>
+      <SearchBar
+        startData={startData}
+        setFilteredRecipes={setFilteredRecipes}
+      ></SearchBar>
       <div className="recipeContainer_cards">
         {recipesData.loaded ? (
           filteredRecipes.length > 0 ? (

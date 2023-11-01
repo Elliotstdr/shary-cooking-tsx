@@ -2,14 +2,10 @@
 
 .login_container {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include c.flexCenterCol;
   position: relative;
   img {
-    width: 100%;
-    height: 100%;
+    @include c.square(100%);
     object-fit: cover;
     position: absolute;
   }
@@ -18,18 +14,14 @@
     background-color: c.$fond-page;
     padding: 1.5rem;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @include c.flexCenterCol;
     z-index: 100;
     &_title {
       color: c.$main-color;
       margin-bottom: 3rem;
     }
     &_buttons {
-      display: flex;
-      flex-direction: column;
+      @include c.flexCol;
       button {
         width: 12rem;
         margin-bottom: 1rem;

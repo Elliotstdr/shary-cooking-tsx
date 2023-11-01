@@ -46,10 +46,10 @@
     background-color: white;
     border-radius: 6px;
     text-align: left;
-    display: flex;
-    flex-direction: column;
+    @include c.flexCol;
     margin: 0;
     padding: 0.5rem 0;
+    transition: all 0.3s ease-in-out;
     a,
     li {
       font-size: 1.1rem !important;
@@ -59,10 +59,10 @@
       padding: 0.5rem 1rem;
     }
     &.visible {
-      animation: show 0.3s ease-in-out forwards;
+      @include c.visible(50);
     }
     &.hidden {
-      animation: hide 0.3s ease-in-out forwards;
+      @include c.hidden;
     }
   }
 }
@@ -88,30 +88,5 @@
 @media (max-width: 990px) {
   .menu.desktop {
     display: none;
-  }
-}
-
-@keyframes show {
-  0% {
-    visibility: hidden;
-    opacity: 0;
-    max-height: 0;
-  }
-  100% {
-    visibility: visible;
-    opacity: 1;
-    max-height: 50rem;
-  }
-}
-@keyframes hide {
-  0% {
-    visibility: visible;
-    opacity: 1;
-    max-height: 50rem;
-  }
-  100% {
-    visibility: hidden;
-    opacity: 0;
-    max-height: 0rem;
   }
 }

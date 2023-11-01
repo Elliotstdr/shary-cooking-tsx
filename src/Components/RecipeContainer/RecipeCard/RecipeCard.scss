@@ -53,19 +53,16 @@
     }
   }
   &__corps {
-    display: flex;
-    flex-direction: column;
+    @include c.flexCol;
     height: 15.5rem;
     padding: 1rem 1rem 0 1rem;
     align-items: flex-start;
     &__author {
       font-size: 0.8rem;
-      display: flex;
-      align-items: center;
+      @include c.flexAlign;
       .creatorPP,
       .cooker {
-        width: 1.5rem;
-        height: 1.5rem;
+        @include c.square(1.5rem);
         border-radius: 50%;
         margin-right: 0.5rem;
         object-fit: cover;
@@ -86,8 +83,7 @@
     &__number,
     &__regime {
       span {
-        display: flex;
-        align-items: center;
+        @include c.flexAlign;
         svg {
           margin: 0 0.5rem;
         }
@@ -95,9 +91,8 @@
     }
   }
   &__bottom {
-    display: flex;
+    @include c.flexAlign;
     justify-content: space-around;
-    align-items: center;
     padding: 0.5rem 1rem 1rem 1rem;
     &__edit,
     &__fav,
@@ -105,8 +100,7 @@
       cursor: pointer;
       svg {
         color: c.$main-color;
-        width: 2rem;
-        height: 2rem;
+        @include c.square(2rem);
       }
     }
     &__fav svg {
@@ -120,8 +114,7 @@
     margin: 2rem 0;
   }
   &_buttons {
-    display: flex;
-    justify-content: center;
+    @include c.flexJustify;
     button {
       margin-right: 1rem;
     }

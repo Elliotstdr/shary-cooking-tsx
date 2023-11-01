@@ -4,7 +4,6 @@
   .ingredients {
     .ingredient {
       display: flex;
-      flex-direction: row;
       position: relative;
       input,
       .p-dropdown {
@@ -13,8 +12,7 @@
       .bin {
         cursor: pointer;
         color: c.$main-color;
-        height: 1.5rem;
-        width: 1.5rem;
+        @include c.square(1.5rem);
         align-self: center;
       }
       .move_ing {

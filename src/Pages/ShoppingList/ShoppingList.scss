@@ -2,23 +2,18 @@
 
 .shoppingList_container {
   margin: 5% auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include c.flexCenter;
   &_export {
-    display: flex;
+    @include c.flexCol;
     width: 60%;
-    flex-direction: column;
     &_recipes {
-      display: flex;
-      flex-direction: column;
+      @include c.flexCol;
     }
     .bouton {
       align-self: center;
     }
     &_top {
-      display: flex;
-      justify-content: center;
+      @include c.flexJustify;
       .bouton {
         height: 2rem;
         margin-left: 1rem;
@@ -32,15 +27,12 @@
     width: 40rem;
     height: 25rem;
     margin: 5rem 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include c.flexCenter;
     position: relative;
     img {
       position: absolute;
       border-radius: 10px;
-      width: 100%;
-      height: 100%;
+      @include c.square(100%);
       object-fit: cover;
     }
     .bouton {
@@ -61,9 +53,7 @@
   .p-dialog-content {
     padding-bottom: 4rem !important;
     background-color: c.$fond-page !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include c.flexAlignCol;
     .recipeContainer {
       width: 100%;
     }
@@ -85,16 +75,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 5rem;
-    height: 5rem;
+    @include c.square(5rem);
     color: green;
   }
 }
 
 .modal_liste_courses {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include c.flexAlignCol;
   .bouton {
     margin-top: 1rem;
     &.copied {

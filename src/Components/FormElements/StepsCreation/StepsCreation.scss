@@ -2,10 +2,9 @@
 
 .recipe__form {
   .steps {
-    width: 40%;
+    width: 600px;
     .step {
       display: flex;
-      flex-direction: row;
       width: 100%;
       position: relative;
       .bin {
@@ -13,8 +12,7 @@
         cursor: pointer;
         right: -3rem;
         color: c.$main-color;
-        height: 1.5rem;
-        width: 1.5rem;
+        @include c.square(1.5rem);
         align-self: center;
       }
       .p-inputtextarea {

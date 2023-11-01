@@ -6,9 +6,7 @@
   height: 12rem;
   background-color: c.$main-color;
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include c.flexCenter;
   position: relative;
   span {
     cursor: pointer;
@@ -17,8 +15,7 @@
   img {
     position: absolute;
     top: 2rem;
-    width: 8rem;
-    height: 8rem;
+    @include c.square(8rem);
     object-fit: cover;
     &.footer__left {
       transform: rotateY(180deg);
@@ -28,12 +25,10 @@
       right: 4rem;
     }
   }
-  &__center {
-    &__top {
-      font-size: 2.2rem;
-      margin-top: 0;
-      margin-bottom: 3rem;
-    }
+  &__center__top {
+    font-size: 2.2rem;
+    margin-top: 0;
+    margin-bottom: 3rem;
   }
 }
 
@@ -44,8 +39,7 @@
       margin: 2rem;
     }
     img {
-      width: 6rem;
-      height: 6rem;
+      @include c.square(6rem);
       &.footer__left {
         left: 2rem;
       }
@@ -53,10 +47,8 @@
         right: 2rem;
       }
     }
-    &__center {
-      &__top {
-        margin-bottom: 2rem;
-      }
+    &__center__top {
+      margin-bottom: 2rem;
     }
   }
 }
@@ -94,8 +86,7 @@
 @media (max-width: 500px) {
   .footer {
     img {
-      width: 4rem;
-      height: 4rem;
+      @include c.square(4rem);
     }
   }
 }
@@ -103,13 +94,10 @@
 @media (max-width: 340px) {
   .footer {
     img {
-      width: 3rem;
-      height: 3rem;
+      @include c.square(3rem);
     }
-    &__center {
-      &__bottom span {
-        font-size: 0.8rem;
-      }
+    &__center__bottom span {
+      font-size: 0.8rem;
     }
   }
 }

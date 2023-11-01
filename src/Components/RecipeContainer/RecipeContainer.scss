@@ -1,8 +1,7 @@
 @use "src/Styles/_vars.scss" as c;
 
 .recipeContainer {
-  display: flex;
-  flex-direction: column;
+  @include c.flexCol;
   &_cards {
     padding: 3rem 8rem;
     display: grid;
@@ -13,13 +12,6 @@
       font-size: 1.2rem;
       line-height: 2rem;
       margin: 6rem 0;
-    }
-  }
-  &_searchbar {
-    margin-top: 4rem;
-    display: flex;
-    &__mobile {
-      display: none;
     }
   }
   .p-paginator {
@@ -39,17 +31,13 @@
   }
   &_loader {
     height: 25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include c.flexCenter;
   }
 }
 
 .shopping_list_checkboxes {
   margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include c.flexCenter;
   span {
     margin-right: 1rem;
     margin-left: 0.25rem;
@@ -60,27 +48,6 @@
   .recipeContainer {
     &_cards {
       padding: 2rem 1rem !important;
-    }
-    &_searchbar {
-      display: flex;
-      flex-direction: column;
-      margin-top: 2rem;
-      justify-content: center;
-      &__mobile {
-        cursor: pointer;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        width: fit-content;
-        background-color: white;
-        border: 1px solid #dee2e6;
-        border-radius: 6px;
-        padding: 1rem;
-        margin: 0 auto;
-        .pi {
-          margin-right: 0.5rem;
-        }
-      }
     }
   }
 }

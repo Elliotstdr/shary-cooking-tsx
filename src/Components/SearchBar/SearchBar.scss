@@ -1,86 +1,108 @@
 @use "src/Styles/_vars.scss" as c;
 @import "src/Components/NavBar/Nav/Nav.scss";
 
-.searchbar_container {
-  width: 63rem;
-  padding: 1rem;
-  background-color: white;
-  border-radius: 50px;
+.searchbar {
+  margin-top: 4rem;
   display: flex;
-  align-items: center;
-  box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
-  margin: 0 auto;
-  .filters {
-    display: flex;
-    flex-direction: column;
-    .group {
-      margin: 1rem 0;
-      display: flex;
-      justify-content: space-evenly;
-      &.false {
-        display: none;
-      }
-      &.true {
-        justify-content: unset;
-      }
-    }
-  }
-  .more {
-    cursor: pointer;
-    color: c.$bandeau;
-    margin-left: 2rem;
-    width: 2rem;
-    height: 2rem;
-  }
-  .p-multiselect,
-  .p-inputtext,
-  .p-dropdown {
-    margin: 0 1rem;
-    width: 12rem;
-    .p-multiselect-clear-icon {
-      cursor: pointer;
-      right: 2.5rem;
-      margin-top: -1rem;
-      top: 70%;
-    }
-  }
-  .p-accordion {
+  &__mobile {
     display: none;
-  }
-}
-
-@media (max-width: 1020px) {
-  .searchbar_container {
-    width: unset;
-    flex-direction: column;
-    padding: 0rem 1rem;
-    background-color: c.$fond-page;
-    box-shadow: unset;
-    &.visible {
-      animation: show 0.3s ease-in-out forwards;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0 auto;
+    .pi {
+      margin-right: 0.5rem;
     }
-    &.hidden {
-      animation: hide 0.3s ease-in-out forwards;
+  }
+  .searchbar_container {
+    @include c.flexAlign;
+    width: 63rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 50px;
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+    margin: 0 auto;
+    .filters {
+      @include c.flexCol;
+      .group {
+        margin: 1rem 0;
+        display: flex;
+        justify-content: space-evenly;
+        &.false {
+          display: none;
+        }
+        &.true {
+          justify-content: unset;
+        }
+      }
+    }
+    .more {
+      cursor: pointer;
+      color: c.$bandeau;
+      margin-left: 2rem;
+      @include c.square(2rem);
     }
     .p-multiselect,
     .p-inputtext,
     .p-dropdown {
-      margin: 0.5rem 0;
-      width: 12rem !important;
-      text-align: left;
+      margin: 0 1rem;
+      width: 12rem;
+      .p-multiselect-clear-icon {
+        cursor: pointer;
+        right: 2.5rem;
+        margin-top: -1rem;
+        top: 70%;
+      }
     }
-    .filters {
+    .p-accordion {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 1020px) {
+  .searchbar {
+    flex-direction: column;
+    margin-top: 2rem;
+    &__mobile {
+      @include c.flexAlign;
+    }
+    .searchbar_container {
+      width: unset;
       flex-direction: column;
-      margin: 1rem 0;
-      .group {
-        margin: 0 !important;
+      padding: 0rem 1rem;
+      background-color: c.$fond-page;
+      box-shadow: unset;
+      transition: all 0.3s ease-in-out;
+      &.visible {
+        @include c.visible(50);
+      }
+      &.hidden {
+        @include c.hidden;
+      }
+      .p-multiselect,
+      .p-inputtext,
+      .p-dropdown {
+        margin: 0.5rem 0;
+        width: 12rem !important;
+        text-align: left;
+      }
+      .filters {
         flex-direction: column;
-        &.true {
-          margin: 0;
-          margin-bottom: 1rem;
-        }
-        .p-dropdown-label {
-          margin: 0;
+        margin: 1rem 0;
+        .group {
+          margin: 0 !important;
+          flex-direction: column;
+          &.true {
+            margin: 0;
+            margin-bottom: 1rem;
+          }
+          .p-dropdown-label {
+            margin: 0;
+          }
         }
       }
     }

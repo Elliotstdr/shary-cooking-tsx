@@ -31,3 +31,47 @@ $font-size-x-normal: 1.2rem;
 $font-size-medium: 1.5rem;
 $font-size-large: 2rem;
 $font-size-x-large: 2.5rem;
+
+@mixin visible($max) {
+  visibility: visible;
+  opacity: 1;
+  max-height: $max * 1rem;
+}
+@mixin hidden {
+  visibility: hidden;
+  opacity: 0;
+  max-height: 0;
+}
+@mixin flexCol {
+  display: flex;
+  flex-direction: column;
+}
+@mixin flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@mixin flexJustify {
+  display: flex;
+  justify-content: center;
+}
+@mixin flexAlign {
+  display: flex;
+  align-items: center;
+}
+@mixin flexCenterCol {
+  @include flexCenter;
+  flex-direction: column;
+}
+@mixin flexJustifyCol {
+  @include flexJustify;
+  flex-direction: column;
+}
+@mixin flexAlignCol {
+  @include flexAlign;
+  flex-direction: column;
+}
+@mixin square($length) {
+  width: $length;
+  height: $length;
+}

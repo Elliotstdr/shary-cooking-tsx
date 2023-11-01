@@ -1,3 +1,5 @@
+@use "src/Styles/_vars.scss" as c;
+
 .shoppingList_container_export_recipes_recipe {
   border-radius: 10px;
   background-color: white;
@@ -11,15 +13,13 @@
     object-fit: cover;
   }
   .infos {
-    display: flex;
-    flex-direction: column;
+    @include c.flexCol;
     padding: 2rem 1.5rem;
     flex-grow: 1;
     justify-content: space-between;
     &_top {
-      display: flex;
+      @include c.flexAlign;
       justify-content: space-between;
-      align-items: center;
       &_title {
         font-size: 1.2rem;
         font-weight: bold;
@@ -33,16 +33,13 @@
       }
     }
     &_bottom {
-      display: flex;
+      @include c.flexAlign;
       justify-content: space-between;
-      align-items: center;
       &_left {
-        display: flex;
-        flex-direction: column;
+        @include c.flexCol;
         text-align: start;
         span {
-          display: flex;
-          align-items: center;
+          @include c.flexAlign;
           padding: 0.125rem;
           svg {
             margin-right: 0.5rem;

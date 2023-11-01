@@ -3,10 +3,10 @@
 .upload_image {
   width: fit-content;
   .p-fileupload-buttonbar {
-    display: flex;
-    justify-content: center;
+    @include c.flexJustify;
     flex-wrap: nowrap;
     background-color: white !important;
+    padding: 0.5rem 1rem !important;
     .p-fileupload-choose {
       padding: 0.25rem 0.5rem !important;
       background: none !important;

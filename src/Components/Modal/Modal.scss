@@ -33,10 +33,7 @@
     height: 10rem;
   }
   .description {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @include c.flexCenterCol;
     flex-wrap: wrap;
   }
 }
